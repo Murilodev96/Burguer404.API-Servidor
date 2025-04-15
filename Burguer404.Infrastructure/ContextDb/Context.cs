@@ -18,6 +18,8 @@ namespace Burguer404.Infrastructure.Data.ContextDb
         public DbSet<StatusPedidoEntity> StatusPedidos { get; set; }
         public DbSet<CategoriaPedidoEntity> CategoriaPedidos { get; set; }
         public DbSet<PedidoProdutoEntity> PedidoProduto { get; set; }
+        public DbSet<PerfilClienteEntity> PerfilCliente { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

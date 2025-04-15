@@ -30,6 +30,14 @@ namespace Burguer404.Infrastructure.Data.Maps
             builder.Property(x => x.Status)
                    .IsRequired();
 
+            builder.Property(x => x.PerfilClienteId)
+                   .IsRequired();
+
+            builder.HasOne(x => x.PerfilCliente)
+                    .WithMany(y => y.Cliente)
+                    .HasForeignKey(x => x.PerfilClienteId)
+                    .OnDelete(DeleteBehavior.Restrict);  
+
             builder.HasIndex(x => x.Cpf).IsUnique();
         }
     }
