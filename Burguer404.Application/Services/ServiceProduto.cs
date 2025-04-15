@@ -1,0 +1,107 @@
+﻿using AutoMapper;
+using Burguer404.Application.Arguments.Produto;
+using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Entities.Produto;
+using Burguer404.Domain.Ports.Repositories.Produto;
+using Burguer404.Domain.Ports.Services.Produto;
+
+namespace Burguer404.Application.Services
+{
+    public class ServiceProduto : IServiceProduto
+    {
+        private readonly IMapper _mapper;
+        private readonly IRepositoryProduto _produtoRepository;
+
+        public ServiceProduto(IMapper mapper, IRepositoryProduto produtoRepository)
+        {
+            _mapper = mapper;
+            _produtoRepository = produtoRepository;
+        }
+
+        public async Task<ResponseBase<ProdutoResponse>> CadastrarProduto(ProdutoRequest request)
+        {
+            var response = new ResponseBase<ProdutoResponse>();
+
+            if (string.IsNullOrEmpty(request.Nome) && string.IsNullOrEmpty(request.Descricao) || request.Preco <= 0 || request.CategoriaPedidoId <= 0 || request.Imagem == null)
+            {
+                response.Mensagem = "Todos os campos são obrigatórios para cadastro de um produto!";
+                return response;
+            }
+
+            var entidade = _mapper.Map<ProdutoRequest, ProdutoEntity>(request);
+            entidade = await _produtoRepository.CadastrarProduto(entidade);
+
+            response.Resultado = [_mapper.Map<ProdutoEntity, ProdutoResponse>(entidade)];
+            response.Sucesso = true;
+            response.Mensagem = "Produto cadastrado com sucesso!";
+
+            return response;
+        }
+
+        public async Task<ResponseBase<ProdutoResponse>> ListarProdutos()
+        {
+            var response = new ResponseBase<ProdutoResponse>();
+            var produtos = await _produtoRepository.ListarProdutos();
+
+            var produtosResponse = new List<ProdutoResponse>();
+            Parallel.ForEach(produtos, cliente => { produtosResponse.Add(_mapper.Map<ProdutoEntity, ProdutoResponse>(cliente)); });
+
+            response.Resultado = produtosResponse;
+            response.Sucesso = true;
+            response.Mensagem = "Listagem de produtos realizadas com sucesso!";
+
+            return response;
+        }
+
+        public async Task<ResponseBase<ProdutoResponse>> AtualizarProduto(ProdutoRequest request)
+        {
+            var response = new ResponseBase<ProdutoResponse>();
+
+            if (string.IsNullOrEmpty(request.Nome) && string.IsNullOrEmpty(request.Descricao) || request.Preco <= 0 || request.CategoriaPedidoId <= 0 || request.Imagem == null)
+            {
+                response.Mensagem = "Todos os campos são obrigatórios para atualização de um produto!";
+                return response;
+            }
+
+            var entidade = _mapper.Map<ProdutoRequest, ProdutoEntity>(request);
+            entidade = await _produtoRepository.AtualizarCadastro(entidade);
+
+            if (entidade == null)
+            {
+                response.Mensagem = "Não foi encontrado produto ativo na base de dados!";
+                return response;
+            }
+
+            response.Resultado = [_mapper.Map<ProdutoEntity, ProdutoResponse>(entidade)];
+            response.Sucesso = true;
+            response.Mensagem = "Produto cadastrado com sucesso!";
+
+            return response;
+        }
+
+        public async Task<ResponseBase<bool>> RemoverProduto(int produtoId)
+        {
+            var response = new ResponseBase<bool>();
+
+            if (produtoId <= 0)
+            {
+                response.Mensagem = "Selecione um produto para remover!";
+                return response;
+            }
+
+            var produto = await _produtoRepository.ObterProdutoPorId(produtoId);
+            if (produto == null)
+            {
+                response.Mensagem = "Não foi encontrado produto atino na base de dados para o id informado!";
+                return response;
+            }
+
+            await _produtoRepository.RemoverProduto(produto);
+
+            response.Sucesso = true;
+            response.Mensagem = "Produto removido com sucesso!";
+
+            return response;
+        }
+    }
+}

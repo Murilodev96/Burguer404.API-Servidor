@@ -1,0 +1,36 @@
+﻿@page
+@model IndexModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Burguer 404";
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/css/principal.css" />
+
+    <!-- jQuery (carregado antes do seu script!) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/principal.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🍔 Burguer404</h1>
+
+        <label for="cpf">Digite seu CPF:</label>
+        <input type="text" id="cpf" maxlength="14" oninput="mascaraCPF(this)" />
+
+        <button class="btn" onclick="Login()">Entrar</button>
+        <button class="btn" onclick="Cadastrar()">Cadastrar</button>
+        <button class="btn" onclick="Login()">Anônimo</button>
+
+        <div class="footer">Feito com amor para os amantes de hambúrguer</div>
+    </div>
+</body>
+</html>
