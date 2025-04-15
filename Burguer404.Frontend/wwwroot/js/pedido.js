@@ -11,7 +11,9 @@
             {
                 data: null,
                 render: function (data, type, row) {
-                    return `<button class="btn btn-primary" onclick="VisualizarPedido(${row.codigoPedido})"></button>`;
+                    return `<button class="btn-visualizar" onclick="VisualizarPedido(${row.codigoPedido})">
+                                🔍
+                            </button>`;
                 }
             }
         ],

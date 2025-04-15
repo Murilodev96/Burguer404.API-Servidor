@@ -28,3 +28,31 @@ table.dataTable thead th {
     background-color: #e74c3c;
     color: white;
 }
+
+table.dataTable tbody tr td {
+    justify-content: center;
+}
+
+.btn-visualizar {
+    background: white;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .btn-visualizar:hover {
+        background: #e74c3c;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    .btn-visualizar i {
+        margin-right: 5px;
+    }
