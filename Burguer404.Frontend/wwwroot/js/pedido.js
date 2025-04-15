@@ -1,4 +1,7 @@
 ﻿$(document).ready(function () {
+
+
+
     $('#tabelaPedidos').DataTable({
         ajax: {
             type: "GET",
@@ -19,7 +22,7 @@
         ],
         language: {
             url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
-        }
+        }    
     });
 });
 
