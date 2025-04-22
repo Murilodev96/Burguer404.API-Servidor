@@ -8,6 +8,8 @@
         },
         columns: [
             { data: 'codigoPedido' },
+            { data: 'nomeCliente' },
+            { data: 'dataFormatada' },
             { data: 'statusPedidoDescricao' },
             {
                 data: null,

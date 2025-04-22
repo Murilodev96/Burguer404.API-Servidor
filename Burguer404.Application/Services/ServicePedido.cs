@@ -73,6 +73,8 @@ namespace Burguer404.Application.Services
             Parallel.ForEach(pedidos, pedido =>
             {
                 pedido.StatusPedidoDescricao = pedido.StatusPedido.Descricao;
+                pedido.NomeCliente = pedido.Cliente.Nome;
+                pedido.DataFormatada = pedido.DataPedido.ToString("dd/MM/yyyy hh:mm");
                 pedidosResponse.Add(_mapper.Map<PedidoEntity, PedidoResponse>(pedido));
             });
 

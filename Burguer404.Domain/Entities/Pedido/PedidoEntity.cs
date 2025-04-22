@@ -20,5 +20,12 @@ namespace Burguer404.Domain.Entities.Pedido
 
         [NotMapped]
         public string StatusPedidoDescricao { get; set; }
+        
+        [NotMapped]
+        public string NomeCliente { get; set; }
+
+        [NotMapped]
+        public string DataFormatada { get; set; }
+
     }
 }
