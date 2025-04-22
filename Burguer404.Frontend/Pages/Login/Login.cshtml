@@ -35,4 +35,27 @@
             </thead>
         </table>
     </div>
+
+    <!-- Modal do Pedido -->
+    <div id="modalPedido" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharModal()">×</span>
+            <h2>Detalhes do Pedido</h2>
+            <div id="infoPedido"></div>
+            <hr />
+            <table id="tabelaProdutosPedido">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Descrição</th>
+                        <th>Quantidade</th>
+                        <th>Preço</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
 </body>

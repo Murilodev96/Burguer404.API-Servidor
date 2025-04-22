@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using Burguer404.Application.Arguments.Pedido;
+using Burguer404.Application.Arguments.Produto;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Arguments.Pedido;
 using Burguer404.Domain.Entities.Pedido;
+using Burguer404.Domain.Entities.Produto;
 using Burguer404.Domain.Ports.Repositories.Pedido;
+using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Ports.Services.Pedido;
 
 namespace Burguer404.Application.Services
@@ -11,11 +15,13 @@ namespace Burguer404.Application.Services
     {
         private readonly IMapper _mapper;
         private readonly IRepositoryPedido _pedidoRepository;
+        private readonly IRepositoryProduto _produtoRepository;
 
-        public ServicePedido(IMapper mapper, IRepositoryPedido pedidoRepository)
+        public ServicePedido(IMapper mapper, IRepositoryPedido pedidoRepository, IRepositoryProduto produtoRepository)
         {
             _mapper = mapper;
             _pedidoRepository = pedidoRepository;
+            _produtoRepository = produtoRepository;
         }
 
         public async Task<ResponseBase<bool>> CadastrarPedido(PedidoRequest request)
@@ -102,17 +108,17 @@ namespace Burguer404.Application.Services
             return response;
         }
 
-        public async Task<ResponseBase<PedidoResponse>> VisualizarPedido(int pedidoId)
+        public async Task<ResponseBase<PedidoResponse>> VisualizarPedido(string codigo)
         {
             var response = new ResponseBase<PedidoResponse>();
 
-            if (pedidoId <= 0)
+            if (string.IsNullOrWhiteSpace(codigo))
             {
                 response.Mensagem = "Informar um pedido válido!";
                 return response;
             }
 
-            var pedido = await _pedidoRepository.ObterPedidoPorId(pedidoId);
+            var pedido = await _pedidoRepository.ObterPedidoPorCodigoPedido(codigo);
 
             if (pedido == null)
             {
@@ -120,9 +126,26 @@ namespace Burguer404.Application.Services
                 return response;
             }
 
+            var resultado = _mapper.Map<PedidoEntity, PedidoResponse>(pedido);
+
+            foreach (var item in pedido.PedidoProduto)
+            {
+                var produto = await _produtoRepository.ObterProdutoPorId(item.ProdutoId);
+
+                var pedProd = new PedidoProdutoResponse()
+                {
+                    PedidoId = item.PedidoId,
+                    ProdutoId = item.ProdutoId,
+                    Quantidade = item.Quantidade,
+                    Produto = _mapper.Map<ProdutoEntity, ProdutoResponse>(produto)
+                };
+
+                resultado.ProdutosSelecionados.Add(pedProd);
+            }
+
             response.Sucesso = true;
-            response.Mensagem = "Pedido cancelado com sucesso!";
-            response.Resultado = [_mapper.Map<PedidoEntity, PedidoResponse>(pedido)];
+            response.Mensagem = "Pedido obtido com sucesso!";
+            response.Resultado = [resultado];
 
             return response;
         }

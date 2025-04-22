@@ -1,4 +1,5 @@
 ﻿using Burguer404.Application.Arguments.Base;
+using Burguer404.Domain.Arguments.Pedido;
 
 namespace Burguer404.Application.Arguments.Pedido
 {
@@ -8,6 +9,6 @@ namespace Burguer404.Application.Arguments.Pedido
         public string StatusPedidoDescricao { get; set; }
         public int ClienteId { get; set; }
         public DateTime DataPedido { get; set; }
-        public List<int> ProdutosSelecionados { get; set; }
+        public List<PedidoProdutoResponse> ProdutosSelecionados { get; set; }
     }
 }

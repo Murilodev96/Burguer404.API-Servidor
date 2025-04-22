@@ -143,13 +143,13 @@ table.dataTable tbody tr td {
 
 .dataTables_paginate .paginate_button:hover {
     background-color: #e74c3c;
-    color: white !important;
+    color: white;
     border-color: #e74c3c;
 }
 
 .dataTables_paginate .paginate_button.current {
     background-color: #e74c3c;
-    color: white !important;
+    color: white;
     border-color: #e74c3c;
 }
 
@@ -187,4 +187,54 @@ input[type="number"]:focus {
     border-color: #e74c3c;
     box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
     background-color: #fff;
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1050;
+    inset: 0; 
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+}
+
+.modal.show {
+    display: flex; 
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+}
+
+#tabelaProdutosPedido {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#tabelaProdutosPedido th,
+#tabelaProdutosPedido td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
 }

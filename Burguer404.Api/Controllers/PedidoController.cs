@@ -59,12 +59,12 @@ namespace Burguer404.Api.Controllers
         }
 
         [HttpGet("visualizar")]
-        public async Task<ActionResult> VisualizarPedido(int pedidoId)
+        public async Task<ActionResult> VisualizarPedido(string codigo)
         {
             var response = new ResponseBase<PedidoResponse>();
             try
             {
-                response = await _service.VisualizarPedido(pedidoId);
+                response = await _service.VisualizarPedido(codigo);
                 return Ok(response);
             }
             catch (Exception ex)

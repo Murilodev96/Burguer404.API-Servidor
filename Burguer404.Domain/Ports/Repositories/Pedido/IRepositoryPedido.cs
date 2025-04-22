@@ -8,6 +8,6 @@ namespace Burguer404.Domain.Ports.Repositories.Pedido
         Task InserirProdutosNoPedido(List<PedidoProdutoEntity> pedidoProdutos);
         Task<List<PedidoEntity>> ListarPedidos();
         Task<bool> CancelarPedido(int pedidoId);
-        Task<PedidoEntity?> ObterPedidoPorId(int pedidoId);
+        Task<PedidoEntity?> ObterPedidoPorCodigoPedido(string codigo);
     }
 }

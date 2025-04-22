@@ -57,9 +57,9 @@ namespace Burguer404.Infrastructure.Data.Repositories.Pedido
             return true;
         }
 
-        public async Task<PedidoEntity?> ObterPedidoPorId(int pedidoId)
+        public async Task<PedidoEntity?> ObterPedidoPorCodigoPedido(string codigo)
         {
-            var pedido = await _context.Pedidos.Where(p => p.Id == pedidoId)
+            var pedido = await _context.Pedidos.Where(p => p.CodigoPedido == codigo)
                                      .Include(p => p.StatusPedido)
                                      .Include(p => p.Cliente)
                                      .Include(p => p.PedidoProduto)
