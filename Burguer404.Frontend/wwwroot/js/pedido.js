@@ -39,11 +39,14 @@ function VisualizarPedido(codigo) {
 
             const pedido = response.resultado[0];
             const produtos = pedido.produtosSelecionados;
+            const valorTotal = produtos.reduce((total, p) => {
+                return total + (p.produto.preco * p.quantidade);
+            }, 0);
 
             $('#infoPedido').html(`
-                <p><strong>Código:</strong> ${pedido.codigoPedido}</p>
-                <p><strong>Data:</strong> ${new Date(pedido.dataPedido).toLocaleString()}</p>
-                <p><strong>Status do Pedido:</strong> ${pedido.Status}</p>
+                <p><strong>Código do pedido:</strong> ${pedido.codigoPedido}</p>
+                <p><strong>Pedido realizado em:</strong> ${new Date(pedido.dataPedido).toLocaleString()}</p>
+                <p><strong>Valor total do pedido:</strong> R$${valorTotal.toFixed(2)}</p>
             `);
 
             const tbody = $('#tabelaProdutosPedido tbody');
