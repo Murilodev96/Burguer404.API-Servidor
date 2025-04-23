@@ -24,7 +24,7 @@
 
     <div class="container">
         <h2>Pedidos</h2>
-
+        <button class="btn-pedidos" onclick="solicitarPedido()">Solicitar Pedido</button>
         <table id="tabelaPedidos" class="display">
             <thead>
                 <tr>
@@ -35,7 +35,10 @@
                     <th>Visualizar Pedido</th>
                 </tr>
             </thead>
-        </table>
+        </table> 
+        <button onclick="history.back()" class="btn-pedidos">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </button>
     </div>
 
     <!-- Modal do Pedido -->
@@ -56,8 +59,7 @@
                     </tr>
                 </thead>
                 <tbody></tbody>
-            </table>
+            </table>            
         </div>
     </div>
-
 </body>
