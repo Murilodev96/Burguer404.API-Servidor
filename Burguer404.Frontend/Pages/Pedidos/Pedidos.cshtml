@@ -13,6 +13,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/pedidos.css" />
 
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/js/solicitacaoPedido.js"></script>
     
 </head>
 <body>
@@ -24,41 +29,24 @@
         <div class="form-group">
             <label for="lanche">🍔 Lanche</label>
             <select id="lanche">
-                <option value="">Selecione</option>
-                <option>Hambúrguer</option>
-                <option>X-Salada</option>
-                <option>X-Bacon</option>
-                <option>Cheddar Duplo</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="acompanhamento">🍟 Acompanhamento</label>
             <select id="acompanhamento">
-                <option value="">Selecione</option>
-                <option>Batata Frita</option>
-                <option>Nuggets</option>
-                <option>Onion Rings</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="bebida">🥤 Bebida</label>
             <select id="bebida">
-                <option value="">Selecione</option>
-                <option>Refrigerante</option>
-                <option>Suco</option>
-                <option>Água</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="sobremesa">🍨 Sobremesa</label>
             <select id="sobremesa">
-                <option value="">Selecione</option>
-                <option>Casquinha</option>
-                <option>Sundae</option>
-                <option>McFlurry</option>
             </select>
         </div>
 
@@ -90,54 +78,5 @@
             </button>
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            // Inicializa o select2
-            $('select').select2();
-
-            // Inicializa a DataTable
-            $('#tabelaPedidos').DataTable({
-                paging: false,
-                searching: false,
-                info: false,
-                ordering: false,
-                language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
-                }
-            });
-        });
-
-        function adicionarItem() 
-        {
-            const lanche = $('#lanche').val() || '-';
-            const acompanhamento = $('#acompanhamento').val() || '-';
-            const bebida = $('#bebida').val() || '-';
-            const sobremesa = $('#sobremesa').val() || '-';
-
-            const botaoExcluir = `<button onclick="removerLinha(this)" style="background:none;border:none;color:red;font-size:18px;">
-                                    <i class='bi bi-trash'></i>
-                                    </button>`;
-
-            const table = $('#tabelaPedidos').DataTable();
-            table.row.add([botaoExcluir, lanche, acompanhamento, bebida, sobremesa]).draw();
-
-            $('select').val('').trigger('change');
-        }
-        function removerLinha(botao) 
-        {
-            const table = $('#tabelaPedidos').DataTable();
-            table.row($(botao).parents('tr')).remove().draw();
-        }
-        function continuarPagamento()
-        {
-            alert("Espera um pouco safado, ainda não implementei o metodo");            
-        }
-    </script>
 
 </body>

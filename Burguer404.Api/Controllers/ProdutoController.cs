@@ -1,5 +1,6 @@
 ﻿using Burguer404.Application.Arguments.Produto;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Arguments.Produto;
 using Burguer404.Domain.Ports.Services.Produto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,6 +65,22 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _service.RemoverProduto(produtoId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("obterCardapio")]
+        public async Task<ActionResult> ObterCardapio()
+        {
+            var response = new ResponseBase<CardapioResponse>();
+            try
+            {
+                response = await _service.ObterCardapio();
                 return Ok(response);
             }
             catch (Exception ex)

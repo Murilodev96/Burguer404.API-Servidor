@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Burguer404.Application.Arguments.Produto;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Arguments.Produto;
 using Burguer404.Domain.Entities.Produto;
+using Burguer404.Domain.Enums;
 using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Ports.Services.Produto;
 
@@ -100,6 +102,35 @@ namespace Burguer404.Application.Services
 
             response.Sucesso = true;
             response.Mensagem = "Produto removido com sucesso!";
+
+            return response;
+        }
+
+        public async Task<ResponseBase<CardapioResponse>> ObterCardapio()
+        {
+            var response = new ResponseBase<CardapioResponse>();
+            var itensCardapio = new List<ProdutoResponse>();
+
+            var produtos = await ListarProdutos();
+
+            if (produtos.Sucesso && produtos.Resultado != null && produtos.Resultado.Any())
+                itensCardapio = [.. produtos.Resultado!];
+            else 
+            {
+                response.Mensagem = "Nenhum produto encontrado!";
+                return response;
+            }
+
+            var cardapio = new CardapioResponse() {
+                Lanches = [.. itensCardapio.Where(x => x.CategoriaPedidoId == (int)EnumCategoriaPedido.Lanche)],
+                Acompanhamentos = [.. itensCardapio.Where(x => x.CategoriaPedidoId == (int)EnumCategoriaPedido.Acompanhamento)],
+                Bebidas = [.. itensCardapio.Where(x => x.CategoriaPedidoId == (int)EnumCategoriaPedido.Bebida)],
+                Sobremesas = [.. itensCardapio.Where(x => x.CategoriaPedidoId == (int)EnumCategoriaPedido.Sobremesa)],
+            };
+
+            response.Sucesso = true;
+            response.Mensagem = "Produtos listados com sucesso!";
+            response.Resultado = [cardapio];
 
             return response;
         }

@@ -1,5 +1,30 @@
 ﻿function Login() {
-    window.location.href = "/Login/Login"
+    var cpf = $('#cpf').val();
+    $('#msgErroAutenticacao').text('');
+
+    $.ajax({
+        url: 'http://localhost:5000/api/Cliente/autenticar/cliente',
+        type: 'GET',
+        data: { cpf: cpf },
+        success: function (response) {
+
+            if (response.sucesso) {
+                window.location.href = "/Login/Login"
+            }
+            else
+            {
+                $('#msgErroAutenticacao').text(response.mensagem)
+                                         .css({
+                                             'color': 'red',
+                                             'font-size': '12px' 
+                                         });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro ao tentar realizar login:", error);
+            alert("Erro ao tentar realizar login.");
+        }
+    });
 }
 
 function Cadastrar() {

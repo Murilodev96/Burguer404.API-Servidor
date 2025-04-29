@@ -34,6 +34,9 @@ label {
 
 select {
     width: 100%;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
 }
 
 button {
@@ -88,3 +91,14 @@ table.dataTable tbody tr td {
     justify-content: center;
 }
 
+select.select2-hidden-accessible {
+    display: none !important;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 38px;
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: white;
+}
