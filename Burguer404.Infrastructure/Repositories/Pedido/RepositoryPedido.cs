@@ -67,5 +67,18 @@ namespace Burguer404.Infrastructure.Data.Repositories.Pedido
 
             return pedido;
         }
+
+        public async Task<bool> AlterarStatusPedido(PedidoEntity pedido)
+        {
+            var pedidoEntity = await _context.Pedidos.FindAsync(pedido.Id);
+
+            if (pedido == null)
+                return false;
+
+            pedido!.StatusPedidoId = pedido.StatusPedidoId;
+            _context.Pedidos.Update(pedido);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

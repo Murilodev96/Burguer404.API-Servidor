@@ -9,5 +9,6 @@ namespace Burguer404.Domain.Ports.Services.Pedido
         Task<ResponseBase<PedidoResponse>> ListarPedidos();
         Task<ResponseBase<bool>> CancelarPedido(int pedidoId);
         Task<ResponseBase<PedidoResponse>> VisualizarPedido(string codigo);
+        Task<ResponseBase<bool>> AvancarStatusPedido(string codigo);
     }
 }

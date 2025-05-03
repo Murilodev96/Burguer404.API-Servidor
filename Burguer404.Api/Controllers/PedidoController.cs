@@ -73,5 +73,21 @@ namespace Burguer404.Api.Controllers
                 return BadRequest(response);
             }
         }
+        
+        [HttpGet("avancarStatusPedido")]
+        public async Task<ActionResult> AvancarStatusPedido(string codigo)
+        {
+            var response = new ResponseBase<bool>();
+            try
+            {
+                response = await _service.AvancarStatusPedido(codigo);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                return BadRequest(response);
+            }
+        }
     }
 }

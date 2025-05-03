@@ -5,9 +5,11 @@ using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Pedido;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Entities.Produto;
+using Burguer404.Domain.Enums;
 using Burguer404.Domain.Ports.Repositories.Pedido;
 using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Ports.Services.Pedido;
+using Burguer404.Domain.Utils;
 
 namespace Burguer404.Application.Services
 {
@@ -150,6 +152,52 @@ namespace Burguer404.Application.Services
             response.Resultado = [resultado];
 
             return response;
+        }
+
+        public async Task<ResponseBase<bool>> AvancarStatusPedido(string codigo)
+        {
+            var response = new ResponseBase<bool>();
+
+            if (string.IsNullOrWhiteSpace(codigo))
+            {
+                response.Mensagem = "Informar um pedido válido!";
+                return response;
+            }
+
+            var pedido = await _pedidoRepository.ObterPedidoPorCodigoPedido(codigo);
+
+            if (pedido == null)
+            {
+                response.Mensagem = "Pedido não encontrado!";
+                return response;
+            }
+
+            pedido.StatusPedidoId = ValidacoesDeStatusDePedido(pedido.StatusPedidoId);
+            
+            var statusAlterado = await _pedidoRepository.AlterarStatusPedido(pedido);
+
+            if (!statusAlterado)
+            {
+                response.Mensagem = "Ocorreu um erro ao tentar avançar o status d o pedido!";
+                return response;
+            }
+
+            response.Sucesso = true;
+            response.Resultado = [true];
+            response.Mensagem = $"Status do pedido alterado para {EnumExtensions.GetDisplayNamePorValorEnum<EnumStatusPedido>(pedido.StatusPedidoId)}";
+
+            return response;
+        }
+
+        public int ValidacoesDeStatusDePedido(int statusPedidoId)
+        {
+            if (statusPedidoId == (int)EnumStatusPedido.Finalizado ||
+                statusPedidoId == (int)EnumStatusPedido.Cancelado)
+            {
+                return statusPedidoId;
+            }
+
+            return statusPedidoId + 1;
         }
     }
 }

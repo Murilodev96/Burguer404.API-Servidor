@@ -16,6 +16,9 @@
                     render: function (data, type, row) {
                         return `<button class="btn-visualizar" onclick="VisualizarPedido('${row.codigoPedido}')">
                                     🔍
+                                </button>
+                                <button class="btn-visualizar" onclick="AvancarStatus('${row.codigoPedido}')">
+                                    🍔➡️
                                 </button>`;
                     }
                 }
@@ -33,7 +36,6 @@ function VisualizarPedido(codigo) {
         data: { codigo: codigo },
         success: function (response) {
 
-            debugger;
             if (!response.sucesso) {
                 alert(response.Mensagem);
                 return;
@@ -74,6 +76,27 @@ function VisualizarPedido(codigo) {
 
             // Foco no modal (acessibilidade)
             $('.modal-content').attr('tabindex', '-1').focus();
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro ao visualizar pedido:", error);
+            alert("Erro ao buscar os dados do pedido.");
+        }
+    });
+}
+
+function AvancarStatus(codigo) {
+    $.ajax({
+        url: 'http://localhost:5000/api/Pedido/avancarStatusPedido',
+        type: 'GET',
+        data: { codigo: codigo },
+        success: function (response) {
+
+            if (!response.sucesso) {
+                alert(response.Mensagem);
+                return;
+            }
+
+            window.location.reload();
         },
         error: function (xhr, status, error) {
             console.error("Erro ao visualizar pedido:", error);

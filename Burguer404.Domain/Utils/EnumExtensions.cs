@@ -13,5 +13,20 @@ namespace Burguer404.Domain.Utils
                         .GetCustomAttribute<DisplayAttribute>()?
                         .GetName() ?? value.ToString();
         }
+
+        public static string GetDisplayNamePorValorEnum<TEnum>(int value) where TEnum : Enum
+        {
+            var enumValue = (TEnum)Enum.ToObject(typeof(TEnum), value);
+            var member = typeof(TEnum).GetMember(enumValue.ToString()).FirstOrDefault();
+
+            if (member != null)
+            {
+                var displayAttr = member.GetCustomAttribute<DisplayAttribute>();
+                if (displayAttr != null)
+                    return displayAttr.Name ?? string.Empty;
+            }
+
+            return enumValue.ToString() ?? string.Empty; 
+        }
     }
 }

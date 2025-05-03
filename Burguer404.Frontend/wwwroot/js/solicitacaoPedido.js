@@ -3,7 +3,7 @@
     $('select').select2({
         templateResult: formatOption,
         templateSelection: formatSelection,
-        escapeMarkup: function (m) { return m; } // Importantíssimo para não quebrar o HTML dos ícones/imagens
+        escapeMarkup: function (m) { return m; }
     });
 
     $('select').html('<option>Carregando...</option>');
@@ -39,28 +39,43 @@
         language: {
             url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
         }
-    });
+    }); 
 });
 
 function adicionarItem() {
     const lancheId = $('#lanche').val() || '-';
     const lancheNome = $('#lanche option:selected').data('nome') || '-';
+    const lancheValor = $('#lanche option:selected').data('preco') || 0;
 
     const acompanhamentoId = $('#acompanhamento').val() || '-';
     const acompanhamentoNome = $('#acompanhamento option:selected').data('nome') || '-';
+    const acompanhamentoValor = $('#acompanhamento option:selected').data('preco') || 0;
 
     const bebidaId = $('#bebida').val() || '-';
     const bebidaNome = $('#bebida option:selected').data('nome') || '-';
+    const bebidaValor = $('#bebida option:selected').data('preco') || 0;
 
     const sobremesaId = $('#sobremesa').val() || '-';
     const sobremesaNome = $('#sobremesa option:selected').data('nome') || '-';
+    const sobremesaValor = $('#sobremesa option:selected').data('preco') || 0;
 
-    const botaoExcluir = `<button onclick="removerLinha(this)" style="background:none;border:none;color:red;font-size:18px;">
+    const valorCombo = (lancheValor + acompanhamentoValor + bebidaValor + sobremesaValor).toFixed(2);
+
+    const botaoExcluir = `<div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                            <button onclick="removerLinha(this)" style="background:none;border:none;color:red;font-size:18px;">                            
                                 <i class='bi bi-trash'></i>
-                            </button>`;
+                            </button>
+                                <button onclick="alterarQuantidade(this, -1)" style="background:none; border:none; color:#e74c3c; font-size:18px;">
+                                    <i class="bi bi-dash-circle"></i>
+                                </button>
+                                <input type="text" value="1" readonly style="width: 30px; text-align: center; border: none; background: transparent; font-size: 16px;" />
+                                <button onclick="alterarQuantidade(this, 1)" style="background:none; border:none; color:#27ae60; font-size:18px;">
+                                    <i class="bi bi-plus-circle"></i>
+                                </button>
+                            </div>`;
 
     const table = $('#tabelaPedidos').DataTable();
-    table.row.add([botaoExcluir, lancheNome, acompanhamentoNome, bebidaNome, sobremesaNome]).draw();
+    table.row.add([botaoExcluir, lancheNome, acompanhamentoNome, bebidaNome, sobremesaNome, valorCombo]).draw();
 
     $('select').val('').trigger('change');
 }
@@ -79,7 +94,7 @@ function preencherSelect(idSelect, lista) {
     select.append(new Option("Selecione", "", true, true));
 
     lista.forEach(item => {
-        const option = new Option(item.nome, item.nome, false, false); // SÓ nome como texto!!
+        const option = new Option(item.nome, item.nome, false, false);
         $(option).data('nome', item.nome);
         $(option).data('descricao', item.descricao);
         $(option).data('preco', item.preco);
@@ -129,4 +144,23 @@ function inicializarSelects() {
         templateSelection: formatSelection,
         escapeMarkup: function (m) { return m; }
     });
+}
+
+function alterarQuantidade(botao, delta) {
+    const container = botao.parentElement;
+    const input = container.querySelector("input");
+    let quantidadeAtual = parseInt(input.value);
+    debugger;
+    let novaQuantidade = quantidadeAtual + delta;
+    if (novaQuantidade < 1) novaQuantidade = 1;
+
+    input.value = novaQuantidade;
+    const rowElement = botao.closest('tr');
+
+    let valorTotalText = $(rowElement).find('td').eq(5).text().replace('R$', '').replace(',', '.').trim();
+    let valorTotalAtual = parseFloat(valorTotalText);
+    let valorUnitario = valorTotalAtual / quantidadeAtual;
+    let novoValorTotal = (valorUnitario * novaQuantidade).toFixed(2).replace('.', ',');
+
+    $(rowElement).find('td').eq(5).text(`R$ ${novoValorTotal}`);
 }
