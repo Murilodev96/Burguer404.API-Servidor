@@ -26,6 +26,7 @@ namespace Burguer404.Api.Controllers
                 return BadRequest(response);
             }
         }
+
         [HttpPost("pagamento")]
         public async Task<ActionResult> ContinuarPagamento(List<PagamentoRequest> request)
         {

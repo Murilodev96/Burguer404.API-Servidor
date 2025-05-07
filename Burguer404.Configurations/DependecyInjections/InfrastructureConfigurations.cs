@@ -5,6 +5,7 @@ using Burguer404.Infrastructure.Data.ContextDb;
 using Burguer404.Infrastructure.Data.Repositories.Cliente;
 using Burguer404.Infrastructure.Data.Repositories.Pedido;
 using Burguer404.Infrastructure.Data.Repositories.Produto;
+using Burguer404.Infrastructure.Pagamentos.Operacoes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,7 @@ namespace Burguer404.Configurations.DependecyInjections
             services.AddScoped<IRepositoryCliente, RepositoryCliente>();
             services.AddScoped<IRepositoryPedido, RepositoryPedido>();
             services.AddScoped<IRepositoryProduto, RepositoryProduto>();
+            services.AddScoped<IRepositoryMercadoPago, SolicitarPagamentoMercadoPago>();
 
             return services;
         }
