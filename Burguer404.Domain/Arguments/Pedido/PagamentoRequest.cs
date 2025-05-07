@@ -1,7 +1,4 @@
-﻿using Burguer404.Application.Arguments.Base;
-
-
-namespace Burguer404.Domain.Arguments.Pedido
+﻿namespace Burguer404.Domain.Arguments.Pedido
 {
     public class PagamentoRequest
     {
@@ -11,5 +8,6 @@ namespace Burguer404.Domain.Arguments.Pedido
         public int Quantidade { get; set; }
         public int SobremesaId { get; set; }
         public double Valor { get; set; }
+        public int ClienteId { get; set; }
     }
 }

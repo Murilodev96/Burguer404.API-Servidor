@@ -9,6 +9,7 @@
         success: function (response) {
 
             if (response.sucesso) {
+                sessionStorage.setItem("clienteLogadoId", response.resultado[0].id);
                 window.location.href = "/Login/Login"
             }
             else

@@ -26,7 +26,7 @@ namespace Burguer404.Infrastructure.Data.ContextDb
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(Context).Assembly);
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.HasSequence<int>("CodPedidoSequence", schema: "dbo")
+            modelBuilder.HasSequence<long>("CodPedidoSequence", schema: "dbo")
                         .StartsAt(1)
                         .IncrementsBy(1);
         }

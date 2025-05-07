@@ -17,19 +17,20 @@ namespace Burguer404.Infrastructure.Data.Repositories.Pedido
 
         public async Task<PedidoEntity> CriarPedido(PedidoEntity pedido)
         {
-            pedido.CodigoPedido = await GerarCodigoPedido();
+            pedido.CodigoPedido = GerarCodigoPedido();
             _context.Pedidos.Add(pedido);
             await _context.SaveChangesAsync();
             return pedido;
         }
 
-        public async Task<string> GerarCodigoPedido()
+        public string GerarCodigoPedido()
         {
-            var codigoPedido = await _context.Pedidos.FromSqlInterpolated($"SELECT NEXT VALUE FOR dbo.PedidoSequence AS CodigoPedido")
-                                                     .Select(x => x.CodigoPedido)
-                                                     .FirstAsync();
+            var valor = _context.Database
+                        .SqlQuery<long>($"SELECT NEXT VALUE FOR dbo.CodPedidoSequence")
+                        .AsEnumerable()
+                        .First();
 
-            return $"PED-{codigoPedido}";
+            return $"PED-{valor}";
         }
 
         public async Task InserirProdutosNoPedido(List<PedidoProdutoEntity> pedidoProdutos)

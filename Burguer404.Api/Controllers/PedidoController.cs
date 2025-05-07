@@ -27,18 +27,18 @@ namespace Burguer404.Api.Controllers
             }
         }
         [HttpPost("pagamento")]
-        public async Task<JsonResult> ContinuarPagamento(List<PagamentoRequest> request)
+        public async Task<ActionResult> ContinuarPagamento(List<PagamentoRequest> request)
         {
-            var response = new ResponseBase<bool>();
+            var response = new ResponseBase<string>();
             try
             {
                 response = await _service.gerarQrCode(request);
-                return new JsonResult(new { data = response.Resultado });
+                return Ok(response);
             }
             catch (Exception ex)
             {
                 response.Mensagem = ex.Message;
-                return new JsonResult(new { });
+                return BadRequest(response);
             }
         }
 

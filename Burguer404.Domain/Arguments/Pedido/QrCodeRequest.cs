@@ -6,38 +6,50 @@ namespace Burguer404.Domain.Arguments.Pedido
     public class QrCodeRequest
     {
         [JsonPropertyName("external_reference")]
-        public string ExternalReference { get; set; }
+        public string external_reference { get; set; }
+
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string title { get; set; }
+
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string description { get; set; }
+
         [JsonPropertyName("notification_url")]
-        public string NotificationUrl { get; set; }
+        public string notification_url { get; set; }
+
         [JsonPropertyName("total_amount")]
-        public int TotalAmount { get; set; }
+        public double total_amount { get; set; }
+
         [JsonPropertyName("items")]
-        public ItemQrCode[] Itens { get; set; }
+        public List<ItemQrCode> items { get; set; } = new List<ItemQrCode>();
 
     }
 
     public class ItemQrCode
     {
         [JsonPropertyName("sku_number")]
-        public string SkuNumber { get; set; }
+        public string sku_number { get; set; }
+
         [JsonPropertyName("category")]
-        public string Category { get; set; }
+        public string category { get; set; }
+
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string title { get; set; }
+
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string description { get; set; }
+
         [JsonPropertyName("unit_price")]
-        public int UnitPrice { get; set; }
+        public double unit_price { get; set; }
+
         [JsonPropertyName("quantity")]
-        public int Quantity { get; set; }
+        public int quantity { get; set; }
+
         [JsonPropertyName("unit_measure")]
-        public string UnitMeasure { get; set; }
+        public string unit_measure { get; set; }
+
         [JsonPropertyName("total_amount")]
-        public int TotalAmount { get; set; }
+        public double total_amount { get; set; }
     }
 
 }

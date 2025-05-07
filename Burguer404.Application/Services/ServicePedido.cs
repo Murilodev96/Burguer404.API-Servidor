@@ -10,6 +10,10 @@ using Burguer404.Domain.Ports.Repositories.Pedido;
 using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Ports.Services.Pedido;
 using Burguer404.Domain.Utils;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace Burguer404.Application.Services
 {
@@ -18,12 +22,14 @@ namespace Burguer404.Application.Services
         private readonly IMapper _mapper;
         private readonly IRepositoryPedido _pedidoRepository;
         private readonly IRepositoryProduto _produtoRepository;
+        private readonly IConfiguration _configuration;
 
-        public ServicePedido(IMapper mapper, IRepositoryPedido pedidoRepository, IRepositoryProduto produtoRepository)
+        public ServicePedido(IMapper mapper, IRepositoryPedido pedidoRepository, IRepositoryProduto produtoRepository, IConfiguration configuration)
         {
             _mapper = mapper;
             _pedidoRepository = pedidoRepository;
             _produtoRepository = produtoRepository;
+            _configuration = configuration;
         }
 
         public async Task<ResponseBase<string>> CadastrarPedido(PedidoRequest request)
@@ -200,9 +206,10 @@ namespace Burguer404.Application.Services
             return statusPedidoId + 1;
         }
 
-        public async Task<ResponseBase<bool>> gerarQrCode(List<PagamentoRequest> itens)
+        public async Task<ResponseBase<string>> gerarQrCode(List<PagamentoRequest> itens)
         {
-            if (itens.Count() > 0)
+            var response = new ResponseBase<string>();
+            if (itens != null && itens.Count > 0)
             {
                 List<int> itensPedido = new List<int>();
                 Parallel.ForEach(itens, item =>
@@ -215,32 +222,96 @@ namespace Burguer404.Application.Services
                         itensPedido.Add(item.BebidaId);
                     if (item.SobremesaId > 0)
                         itensPedido.Add(item.SobremesaId);
-
                 });
+
                 var pedidoRequest = new PedidoRequest()
                 {
-                    ClienteId = 2,
+                    ClienteId = itens.FirstOrDefault()!.ClienteId,
                     ProdutosSelecionados = itensPedido
                 };
 
                 var codigoPedido = await CadastrarPedido(pedidoRequest);
 
-                if (!string.IsNullOrWhiteSpace(codigoPedido.Resultado.FirstOrDefault()))
+                if (!string.IsNullOrWhiteSpace(codigoPedido?.Resultado?.FirstOrDefault()))
                 {
+                    try
+                    {
+                        var qrCodeRequest = new QrCodeRequest
+                        {
+                            description = "Lanchonete Burguer404",
+                            total_amount = Math.Round(itens.Sum(x => x.Valor), 2),
+                            title = $"Confirmação de pagamento do pedido {codigoPedido?.Resultado?.FirstOrDefault()}",
+                            external_reference = codigoPedido.Resultado.FirstOrDefault()!,
+                            items = []
+                        };
 
+                        foreach (var item in itens)
+                        {
+                            var tarefas = new List<Task>();
+
+                            var lancheTask = _produtoRepository.ObterProdutoPorId(item.LancheId);
+                            var acompanhamentoTask = _produtoRepository.ObterProdutoPorId(item.AcompanhamentoId);
+                            var bebidaTask = _produtoRepository.ObterProdutoPorId(item.BebidaId);
+                            var sobremesaTask = _produtoRepository.ObterProdutoPorId(item.SobremesaId);
+
+                            await Task.WhenAll(lancheTask, acompanhamentoTask, bebidaTask, sobremesaTask);
+
+                            var lanche = await lancheTask;
+                            var acompanhamento = await acompanhamentoTask;
+                            var bebida = await bebidaTask;
+                            var sobremesa = await sobremesaTask;
+
+                            var itemProduto = new ItemQrCode() 
+                            {
+                                title = $"Lanche: {lanche?.Nome} - Acompanhamento: {acompanhamento?.Nome} = Bebida: {bebida?.Nome} - Sobremesa: {sobremesa?.Nome}",
+                                description = "Combo solicitado via app no Burguer404",
+                                quantity = 1,
+                                total_amount = Math.Round(itens.Sum(x => x.Valor), 2),
+                                unit_price = Math.Round(itens.Sum(x => x.Valor), 2),
+                                category = "Lanche",
+                                sku_number = "001",
+                                unit_measure = "unit"
+                            };
+
+                            qrCodeRequest.items.Add(itemProduto);
+                        }
+
+                        var url = _configuration["UrlBaseQrCodeMercadoPago"];
+
+                        using var httpClient = new HttpClient();
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configuration["TokenQrCodeMercadoPago"]);
+
+                        var content = new StringContent(JsonConvert.SerializeObject(qrCodeRequest), Encoding.UTF8, "application/json");
+
+                        var responseMercadoPago = await httpClient.PostAsync(url, content);
+
+                        responseMercadoPago.EnsureSuccessStatusCode();
+                        var jsonString = await responseMercadoPago.Content.ReadAsStringAsync();
+                        var qrCode = JsonConvert.DeserializeObject<QrCodeResponse>(jsonString);
+
+                        if (string.IsNullOrWhiteSpace(qrCode?.qr_data) || string.IsNullOrWhiteSpace(qrCode?.qr_data))
+                        {
+                            response.Mensagem = "Ocorreu um erro ao tentar gerar o QR Code, tente realizar o pedido novamente!";
+                            return response;
+                        }
+
+                        response.Sucesso = true;
+                        response.Mensagem = "QR Code gerado com sucesso!";
+                        response.Resultado = [qrCode.qr_data];
+
+                        return response;
+                    }
+                    catch (Exception ex)
+                    {
+                        response.Mensagem = ex.Message;
+                        return response;
+                    }
                 }
-                // faz chamada da api do Mercado Pago
-
-
-                var qrCode = new QrCodeRequest
-                {
-                    Description = "Lanchonete Burguer404",
-                };
-
-                return null;
 
             }
-            return null;
+
+            response.Mensagem = "Selecione ao menos 1 item para realizar o pedido!";
+            return response;
         }
 
     }

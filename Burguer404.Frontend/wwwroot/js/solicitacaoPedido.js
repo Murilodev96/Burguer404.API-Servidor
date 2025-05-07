@@ -109,13 +109,16 @@ function continuarPagamento() {
         const valorTotal = parseFloat(row[5].replace('R$', '').replace(',', '.'));
         const valorUnitario = valorTotal / quantidade;
 
+        var clienteLogadoId = sessionStorage.getItem("clienteLogadoId");
+
         pedidos.push({
             LancheId: lanche,
             AcompanhamentoId: acompanhamento,
             BebidaId: bebida,
             SobremesaId: sobremesa,
             Valor: valorUnitario,
-            Quantidade: quantidade
+            Quantidade: quantidade,
+            ClienteId: clienteLogadoId
         });
     }
 
@@ -133,8 +136,7 @@ function continuarPagamento() {
             success: function (response) {
                 alert("Pedido enviado com sucesso!");
                 console.log("Resposta do servidor:", response);
-
-                // Exemplo: limpar a tabela
+                
                 table.clear().draw();
             },
             error: function (xhr, status, error) {
