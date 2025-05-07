@@ -1,0 +1,31 @@
+﻿@page
+@model Burguer404.Frontend.Pages.Pedidos.QrCodeModel
+@{
+}
+
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <link rel="stylesheet" href="/css/qrcode.css" />
+    
+</head>
+<body>
+    <div class="container">
+        <h2>Pedido Realizado</h2>
+        <p>Escaneie o QR Code abaixo para realizar o pagamento</p>
+        <canvas id="qrcode"></canvas>
+
+        <button onclick="window.location.href='/Login/Login'">
+            Voltar ao Início
+        </button>
+    </div>
+
+    <script>
+       const qrText = "@Model.QRCodeText";
+
+        QRCode.toCanvas(document.getElementById('qrcode'), qrText, { width: 200 }, function (error) {
+            if (error) console.error(error);
+        });
+    </script>
+</body>

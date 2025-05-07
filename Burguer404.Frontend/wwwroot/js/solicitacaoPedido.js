@@ -133,11 +133,11 @@ function continuarPagamento() {
             data: JSON.stringify(pedidos),
             contentType: "application/json",
 
-            success: function (response) {
-                alert("Pedido enviado com sucesso!");
-                console.log("Resposta do servidor:", response);
-                
-                table.clear().draw();
+        success: function (response) {
+                console.log("Resposta do servidor:", response);                
+            table.clear().draw();
+            window.location.href = `/Pedidos/QrCode?qrcode=${encodeURIComponent(response.resultado)}`;
+
             },
             error: function (xhr, status, error) {
                 console.error("Erro ao enviar pedido:", error);
