@@ -11,8 +11,7 @@
     $.ajax({
         url: 'http://localhost:5000/api/Produto/obterCardapio',
         type: 'GET',
-        success: function (response) {
-
+        success: function (response) {            
             if (response.sucesso) {
                 $('select').select2('destroy');
 
@@ -43,19 +42,19 @@
 });
 
 function adicionarItem() {
-    const lancheId = $('#lanche').val() || '-';
+    const lancheId = $('#lanche option:selected').data('id') || 0;
     const lancheNome = $('#lanche option:selected').data('nome') || '-';
     const lancheValor = $('#lanche option:selected').data('preco') || 0;
 
-    const acompanhamentoId = $('#acompanhamento').val() || '-';
+    const acompanhamentoId = $('#acompanhamento option:selected').data('id') || 0;
     const acompanhamentoNome = $('#acompanhamento option:selected').data('nome') || '-';
     const acompanhamentoValor = $('#acompanhamento option:selected').data('preco') || 0;
 
-    const bebidaId = $('#bebida').val() || '-';
+    const bebidaId = $('#bebida option:selected').data('id') || 0;
     const bebidaNome = $('#bebida option:selected').data('nome') || '-';
     const bebidaValor = $('#bebida option:selected').data('preco') || 0;
 
-    const sobremesaId = $('#sobremesa').val() || '-';
+    const sobremesaId = $('#sobremesa option:selected').data('id') || 0;
     const sobremesaNome = $('#sobremesa option:selected').data('nome') || '-';
     const sobremesaValor = $('#sobremesa option:selected').data('preco') || 0;
 
@@ -75,7 +74,12 @@ function adicionarItem() {
                             </div>`;
 
     const table = $('#tabelaPedidos').DataTable();
-    table.row.add([botaoExcluir, lancheNome, acompanhamentoNome, bebidaNome, sobremesaNome, valorCombo]).draw();
+    table.row.add([botaoExcluir,
+        `<span data-lanche-id=${lancheId} style="display:none"></span>${lancheNome}`,
+        `<span data-acompanhamento-id=${acompanhamentoId} style="display:none"></span>${acompanhamentoNome}`,
+        `<span data-bebida-id=${bebidaId} style="display:none"></span>${bebidaNome}`,
+        `<span data-sobremesa-id=${sobremesaId} style="display:none"></span>${sobremesaNome}`,
+        valorCombo]).draw();
 
     $('select').val('').trigger('change');
 }
@@ -85,7 +89,59 @@ function removerLinha(botao) {
     table.row($(botao).parents('tr')).remove().draw();
 }
 function continuarPagamento() {
-    alert("Espera um pouco safado, ainda não implementei o metodo");
+    const table = $('#tabelaPedidos').DataTable();
+    const dadosTabela = table.rows().data();
+    const pedidos = [];
+
+    for (let i = 0; i < dadosTabela.length; i++) {
+        const row = dadosTabela[i];
+
+        const lanche = $(row[1]).filter('span').data('lanche-id');
+        const acompanhamento = $(row[2]).filter('span').data('acompanhamento-id');
+        const bebida = $(row[3]).filter('span').data('bebida-id');
+        const sobremesa = $(row[4]).filter('span').data('sobremesa-id');
+
+        // Recupera a quantidade diretamente do input na célula de ações
+        const quantidadeInput = $(table.row(i).node()).find("input");
+        const quantidade = parseInt(quantidadeInput.val()) || 1;
+
+        // Valor total (já multiplicado pela quantidade), vamos calcular unitário
+        const valorTotal = parseFloat(row[5].replace('R$', '').replace(',', '.'));
+        const valorUnitario = valorTotal / quantidade;
+
+        pedidos.push({
+            LancheId: lanche,
+            AcompanhamentoId: acompanhamento,
+            BebidaId: bebida,
+            SobremesaId: sobremesa,
+            Valor: valorUnitario,
+            Quantidade: quantidade
+        });
+    }
+
+    if (pedidos.length === 0) {
+        alert("Adicione pelo menos um item ao pedido.");
+        return;
+    }
+
+    $.ajax({
+            type: "POST",
+            url: "http://localhost:5000/api/Pedido/pagamento",
+            data: JSON.stringify(pedidos),
+            contentType: "application/json",
+
+            success: function (response) {
+                alert("Pedido enviado com sucesso!");
+                console.log("Resposta do servidor:", response);
+
+                // Exemplo: limpar a tabela
+                table.clear().draw();
+            },
+            error: function (xhr, status, error) {
+                console.error("Erro ao enviar pedido:", error);
+                alert("Ocorreu um erro ao processar o pedido.");
+            }
+        });
 }
 
 function preencherSelect(idSelect, lista) {
@@ -95,6 +151,7 @@ function preencherSelect(idSelect, lista) {
 
     lista.forEach(item => {
         const option = new Option(item.nome, item.nome, false, false);
+        $(option).data('id', item.id);
         $(option).data('nome', item.nome);
         $(option).data('descricao', item.descricao);
         $(option).data('preco', item.preco);

@@ -26,9 +26,9 @@ namespace Burguer404.Application.Services
             _produtoRepository = produtoRepository;
         }
 
-        public async Task<ResponseBase<bool>> CadastrarPedido(PedidoRequest request)
+        public async Task<ResponseBase<string>> CadastrarPedido(PedidoRequest request)
         {
-            var response = new ResponseBase<bool>();
+            var response = new ResponseBase<string>();
 
             if (request.ProdutosSelecionados == null || request.ProdutosSelecionados.Count() <= 0)
             {
@@ -60,7 +60,7 @@ namespace Burguer404.Application.Services
 
             response.Sucesso = true;
             response.Mensagem = "Pedido realizado com sucesso!";
-            response.Resultado = [true];
+            response.Resultado = [entidade.CodigoPedido];
 
             return response;
         }
@@ -173,7 +173,7 @@ namespace Burguer404.Application.Services
             }
 
             pedido.StatusPedidoId = ValidacoesDeStatusDePedido(pedido.StatusPedidoId);
-            
+
             var statusAlterado = await _pedidoRepository.AlterarStatusPedido(pedido);
 
             if (!statusAlterado)
@@ -199,5 +199,49 @@ namespace Burguer404.Application.Services
 
             return statusPedidoId + 1;
         }
+
+        public async Task<ResponseBase<bool>> gerarQrCode(List<PagamentoRequest> itens)
+        {
+            if (itens.Count() > 0)
+            {
+                List<int> itensPedido = new List<int>();
+                Parallel.ForEach(itens, item =>
+                {
+                    if (item.LancheId > 0)
+                        itensPedido.Add(item.LancheId);
+                    if (item.AcompanhamentoId > 0)
+                        itensPedido.Add(item.AcompanhamentoId);
+                    if (item.BebidaId > 0)
+                        itensPedido.Add(item.BebidaId);
+                    if (item.SobremesaId > 0)
+                        itensPedido.Add(item.SobremesaId);
+
+                });
+                var pedidoRequest = new PedidoRequest()
+                {
+                    ClienteId = 2,
+                    ProdutosSelecionados = itensPedido
+                };
+
+                var codigoPedido = await CadastrarPedido(pedidoRequest);
+
+                if (!string.IsNullOrWhiteSpace(codigoPedido.Resultado.FirstOrDefault()))
+                {
+
+                }
+                // faz chamada da api do Mercado Pago
+
+
+                var qrCode = new QrCodeRequest
+                {
+                    Description = "Lanchonete Burguer404",
+                };
+
+                return null;
+
+            }
+            return null;
+        }
+
     }
 }

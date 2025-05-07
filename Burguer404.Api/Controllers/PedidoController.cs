@@ -1,5 +1,6 @@
 ﻿using Burguer404.Application.Arguments.Pedido;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Arguments.Pedido;
 using Burguer404.Domain.Ports.Services.Pedido;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,7 @@ namespace Burguer404.Api.Controllers
         [HttpPost("cadastrar")]
         public async Task<ActionResult> CadastrarPedido(PedidoRequest request)
         {
-            var response = new ResponseBase<bool>();
+            var response = new ResponseBase<string>();
             try
             {
                 response = await _service.CadastrarPedido(request);
@@ -23,6 +24,21 @@ namespace Burguer404.Api.Controllers
             {
                 response.Mensagem = ex.Message;
                 return BadRequest(response);
+            }
+        }
+        [HttpPost("pagamento")]
+        public async Task<JsonResult> ContinuarPagamento(List<PagamentoRequest> request)
+        {
+            var response = new ResponseBase<bool>();
+            try
+            {
+                response = await _service.gerarQrCode(request);
+                return new JsonResult(new { data = response.Resultado });
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                return new JsonResult(new { });
             }
         }
 
