@@ -33,7 +33,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<string>();
             try
             {
-                response = await _service.gerarQrCode(request);
+                response = await _service.GerarQrCode(request);
                 return Ok(response);
             }
             catch (Exception ex)

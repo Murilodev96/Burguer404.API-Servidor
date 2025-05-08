@@ -11,6 +11,6 @@ namespace Burguer404.Domain.Ports.Services.Pedido
         Task<ResponseBase<bool>> CancelarPedido(int pedidoId);
         Task<ResponseBase<PedidoResponse>> VisualizarPedido(string codigo);
         Task<ResponseBase<bool>> AvancarStatusPedido(string codigo);
-        Task<ResponseBase<string>> gerarQrCode(List<PagamentoRequest> request);
+        Task<ResponseBase<string>> GerarQrCode(List<PagamentoRequest> request);
     }
 }

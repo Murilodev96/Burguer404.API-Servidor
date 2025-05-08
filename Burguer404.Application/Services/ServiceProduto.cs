@@ -6,6 +6,9 @@ using Burguer404.Domain.Entities.Produto;
 using Burguer404.Domain.Enums;
 using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Ports.Services.Produto;
+using Burguer404.Domain.Validators;
+using Burguer404.Domain.Validators.Pedido;
+using Burguer404.Domain.Validators.Produto;
 
 namespace Burguer404.Application.Services
 {
@@ -23,10 +26,13 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<ProdutoResponse>> CadastrarProduto(ProdutoRequest request)
         {
             var response = new ResponseBase<ProdutoResponse>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (string.IsNullOrEmpty(request.Nome) && string.IsNullOrEmpty(request.Descricao) || request.Preco <= 0 || request.CategoriaPedidoId <= 0 || request.Imagem == null)
+            validacoes = ValidarProduto.Validar_CadastrarProduto_Request(request);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Todos os campos são obrigatórios para cadastro de um produto!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
@@ -58,19 +64,24 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<ProdutoResponse>> AtualizarProduto(ProdutoRequest request)
         {
             var response = new ResponseBase<ProdutoResponse>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (string.IsNullOrEmpty(request.Nome) && string.IsNullOrEmpty(request.Descricao) || request.Preco <= 0 || request.CategoriaPedidoId <= 0 || request.Imagem == null)
+            validacoes = ValidarProduto.Validar_CadastrarProduto_Request(request);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Todos os campos são obrigatórios para atualização de um produto!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
             var entidade = _mapper.Map<ProdutoRequest, ProdutoEntity>(request);
             entidade = await _produtoRepository.AtualizarCadastro(entidade);
 
-            if (entidade == null)
+            validacoes = ValidarProduto.Validar_ExistenciaProduto(entidade);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Não foi encontrado produto ativo na base de dados!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
@@ -84,17 +95,23 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<bool>> RemoverProduto(int produtoId)
         {
             var response = new ResponseBase<bool>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (produtoId <= 0)
+            validacoes = ValidarProduto.Validar_ProdutoIdValido(produtoId);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Selecione um produto para remover!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
             var produto = await _produtoRepository.ObterProdutoPorId(produtoId);
-            if (produto == null)
+
+            validacoes = ValidarProduto.Validar_ExistenciaProduto(produto);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Não foi encontrado produto atino na base de dados para o id informado!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 

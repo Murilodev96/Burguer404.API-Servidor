@@ -10,6 +10,8 @@ using Burguer404.Domain.Ports.Repositories.Pedido;
 using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Ports.Services.Pedido;
 using Burguer404.Domain.Utils;
+using Burguer404.Domain.Validators;
+using Burguer404.Domain.Validators.Pedido;
 using Microsoft.Extensions.Configuration;
 
 namespace Burguer404.Application.Services
@@ -34,19 +36,28 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<string>> CadastrarPedido(PedidoRequest request)
         {
             var response = new ResponseBase<string>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (request.ProdutosSelecionados == null || request.ProdutosSelecionados.Count() <= 0)
+            validacoes = ValidarPedido.Validar_CadastrarPedido_Request(request);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "É necessário adicionar ao menos 1 produto para realizar um pedido!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
             var entidade = _mapper.Map<PedidoRequest, PedidoEntity>(request);
             entidade = await _pedidoRepository.CriarPedido(entidade);
 
-            if (entidade.Id > 0)
+            validacoes = ValidarPedido.Validar_PedidoIdValido(entidade.Id);
+
+            if (!validacoes.Sucesso)
             {
-                entidade.PedidoProduto = [.. entidade.ProdutosSelecionados
+                response.Mensagem = validacoes.Mensagem;
+                return response;
+            }
+
+            entidade.PedidoProduto = [.. entidade.ProdutosSelecionados
                                                 .GroupBy(produtoId => produtoId)
                                                 .Select(grupo => new PedidoProdutoEntity
                                                 {
@@ -55,13 +66,9 @@ namespace Burguer404.Application.Services
                                                     Quantidade = grupo.Count()
                                                 })];
 
-                await _pedidoRepository.InserirProdutosNoPedido([.. entidade.PedidoProduto]);
-            }
-            else
-            {
-                response.Mensagem = "Não foi possível cadastrar o pedido!";
-                return response;
-            }
+            await _pedidoRepository.InserirProdutosNoPedido([.. entidade.PedidoProduto]);
+
+
 
             response.Sucesso = true;
             response.Mensagem = "Pedido realizado com sucesso!";
@@ -95,10 +102,13 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<bool>> CancelarPedido(int pedidoId)
         {
             var response = new ResponseBase<bool>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (pedidoId <= 0)
+            validacoes = ValidarPedido.Validar_PedidoIdValido(pedidoId);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Informar um pedido válido!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
@@ -120,18 +130,23 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<PedidoResponse>> VisualizarPedido(string codigo)
         {
             var response = new ResponseBase<PedidoResponse>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (string.IsNullOrWhiteSpace(codigo))
+            validacoes = ValidarPedido.Validar_CodigoPedidoValido(codigo);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Informar um pedido válido!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
             var pedido = await _pedidoRepository.ObterPedidoPorCodigoPedido(codigo);
 
-            if (pedido == null)
+            validacoes = ValidarPedido.Validar_ExistenciaPedido(pedido);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Pedido não encontrado!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
@@ -162,28 +177,33 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<bool>> AvancarStatusPedido(string codigo)
         {
             var response = new ResponseBase<bool>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (string.IsNullOrWhiteSpace(codigo))
+            validacoes = ValidarPedido.Validar_CodigoPedidoValido(codigo);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Informar um pedido válido!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
             var pedido = await _pedidoRepository.ObterPedidoPorCodigoPedido(codigo);
 
-            if (pedido == null)
+            validacoes = ValidarPedido.Validar_ExistenciaPedido(pedido);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Pedido não encontrado!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
-            pedido.StatusPedidoId = ValidacoesDeStatusDePedido(pedido.StatusPedidoId);
+            pedido!.StatusPedidoId = ValidarPedido.ValidacoesDeStatusDePedido(pedido.StatusPedidoId);
 
             var statusAlterado = await _pedidoRepository.AlterarStatusPedido(pedido);
 
             if (!statusAlterado)
             {
-                response.Mensagem = "Ocorreu um erro ao tentar avançar o status d o pedido!";
+                response.Mensagem = "Ocorreu um erro ao tentar avançar o status do pedido!";
                 return response;
             }
 
@@ -194,103 +214,99 @@ namespace Burguer404.Application.Services
             return response;
         }
 
-        public int ValidacoesDeStatusDePedido(int statusPedidoId)
-        {
-            if (statusPedidoId == (int)EnumStatusPedido.Finalizado ||
-                statusPedidoId == (int)EnumStatusPedido.Cancelado)
-            {
-                return statusPedidoId;
-            }
-
-            return statusPedidoId + 1;
-        }
-
-        public async Task<ResponseBase<string>> gerarQrCode(List<PagamentoRequest> itens)
+        public async Task<ResponseBase<string>> GerarQrCode(List<PagamentoRequest> itens)
         {
             var response = new ResponseBase<string>();
-            if (itens != null && itens.Count > 0)
+            var validacoes = new ResponseBaseValidacoes();
+
+            validacoes = ValidarPedido.Validar_GerarQrCode_Request(itens);
+
+            if (!validacoes.Sucesso)
             {
-                List<int> itensPedido = new List<int>();
-                Parallel.ForEach(itens, item =>
-                {
-                    if (item.LancheId > 0)
-                        itensPedido.Add(item.LancheId);
-                    if (item.AcompanhamentoId > 0)
-                        itensPedido.Add(item.AcompanhamentoId);
-                    if (item.BebidaId > 0)
-                        itensPedido.Add(item.BebidaId);
-                    if (item.SobremesaId > 0)
-                        itensPedido.Add(item.SobremesaId);
-                });
+                response.Mensagem = validacoes.Mensagem;
+                return response;
+            }
 
-                var pedidoRequest = new PedidoRequest()
-                {
-                    ClienteId = itens.FirstOrDefault()!.ClienteId,
-                    ProdutosSelecionados = itensPedido
-                };
+            List<int> itensPedido = new List<int>();
+            Parallel.ForEach(itens, item =>
+            {
+                if (item.LancheId > 0)
+                    itensPedido.Add(item.LancheId);
+                if (item.AcompanhamentoId > 0)
+                    itensPedido.Add(item.AcompanhamentoId);
+                if (item.BebidaId > 0)
+                    itensPedido.Add(item.BebidaId);
+                if (item.SobremesaId > 0)
+                    itensPedido.Add(item.SobremesaId);
+            });
 
-                var codigoPedido = await CadastrarPedido(pedidoRequest);
+            var pedidoRequest = new PedidoRequest()
+            {
+                ClienteId = itens.FirstOrDefault()!.ClienteId,
+                ProdutosSelecionados = itensPedido
+            };
 
-                if (!string.IsNullOrWhiteSpace(codigoPedido?.Resultado?.FirstOrDefault()))
+            var codigoPedido = await CadastrarPedido(pedidoRequest);
+
+            if (!string.IsNullOrWhiteSpace(codigoPedido?.Resultado?.FirstOrDefault()))
+            {
+                try
                 {
-                    try
+                    var qrCodeRequest = new QrCodeRequest
                     {
-                        var qrCodeRequest = new QrCodeRequest
+                        description = "Lanchonete Burguer404",
+                        total_amount = Math.Round(itens.Sum(x => x.Valor), 2),
+                        title = $"Confirmação de pagamento do pedido {codigoPedido?.Resultado?.FirstOrDefault()}",
+                        external_reference = codigoPedido.Resultado.FirstOrDefault()!,
+                        items = []
+                    };
+
+                    foreach (var item in itens)
+                    {
+                        var tarefas = new List<Task>();
+
+                        var lanche = await _produtoRepository.ObterProdutoPorId(item.LancheId);
+                        var acompanhamento = await _produtoRepository.ObterProdutoPorId(item.AcompanhamentoId);
+                        var bebida = await _produtoRepository.ObterProdutoPorId(item.BebidaId);
+                        var sobremesa = await _produtoRepository.ObterProdutoPorId(item.SobremesaId);
+
+                        var itemProduto = new ItemQrCode()
                         {
-                            description = "Lanchonete Burguer404",
+                            title = $"Lanche: {lanche?.Nome} - Acompanhamento: {acompanhamento?.Nome} = Bebida: {bebida?.Nome} - Sobremesa: {sobremesa?.Nome}",
+                            description = "Combo solicitado via app no Burguer404",
+                            quantity = 1,
                             total_amount = Math.Round(itens.Sum(x => x.Valor), 2),
-                            title = $"Confirmação de pagamento do pedido {codigoPedido?.Resultado?.FirstOrDefault()}",
-                            external_reference = codigoPedido.Resultado.FirstOrDefault()!,
-                            items = []
+                            unit_price = Math.Round(itens.Sum(x => x.Valor), 2),
+                            category = "Lanche",
+                            sku_number = "001",
+                            unit_measure = "unit"
                         };
 
-                        foreach (var item in itens)
-                        {
-                            var tarefas = new List<Task>();
-
-                            var lanche = await _produtoRepository.ObterProdutoPorId(item.LancheId);
-                            var acompanhamento = await _produtoRepository.ObterProdutoPorId(item.AcompanhamentoId);
-                            var bebida = await _produtoRepository.ObterProdutoPorId(item.BebidaId);
-                            var sobremesa = await _produtoRepository.ObterProdutoPorId(item.SobremesaId);
-
-                            var itemProduto = new ItemQrCode() 
-                            {
-                                title = $"Lanche: {lanche?.Nome} - Acompanhamento: {acompanhamento?.Nome} = Bebida: {bebida?.Nome} - Sobremesa: {sobremesa?.Nome}",
-                                description = "Combo solicitado via app no Burguer404",
-                                quantity = 1,
-                                total_amount = Math.Round(itens.Sum(x => x.Valor), 2),
-                                unit_price = Math.Round(itens.Sum(x => x.Valor), 2),
-                                category = "Lanche",
-                                sku_number = "001",
-                                unit_measure = "unit"
-                            };
-
-                            qrCodeRequest.items.Add(itemProduto);
-                        }
-
-                        var (sucesso, qrCode) = await _mercadoPagoRepository.SolicitarQrCodeMercadoPago(qrCodeRequest);
-
-                        if (!sucesso)
-                        {
-                            response.Mensagem = qrCode;
-                            return response;
-                        }
-
-                        response.Sucesso = true;
-                        response.Mensagem = "QR Code gerado com sucesso!";
-                        response.Resultado = [qrCode];
-
-                        return response;
+                        qrCodeRequest.items.Add(itemProduto);
                     }
-                    catch (Exception ex)
+
+                    var (sucesso, qrCode) = await _mercadoPagoRepository.SolicitarQrCodeMercadoPago(qrCodeRequest);
+
+                    if (!sucesso)
                     {
-                        response.Mensagem = ex.Message;
+                        response.Mensagem = qrCode;
                         return response;
                     }
+
+                    response.Sucesso = true;
+                    response.Mensagem = "QR Code gerado com sucesso!";
+                    response.Resultado = [qrCode];
+
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    response.Mensagem = ex.Message;
+                    return response;
                 }
             }
 
-            response.Mensagem = "Selecione ao menos 1 item para realizar o pedido!";
+
             return response;
         }
 

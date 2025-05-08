@@ -4,6 +4,8 @@ using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Domain.Ports.Repositories.Cliente;
 using Burguer404.Domain.Ports.Services.Cliente;
+using Burguer404.Domain.Validators;
+using Burguer404.Domain.Validators.Cliente;
 
 namespace Burguer404.Application.Services
 {
@@ -21,10 +23,13 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<ClienteResponse>> CadastrarCliente(ClienteRequest request)
         {
             var response = new ResponseBase<ClienteResponse>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (string.IsNullOrEmpty(request.Cpf) && string.IsNullOrEmpty(request.Email) && string.IsNullOrEmpty(request.Nome))
+            validacoes = ValidarCliente.Validar_CadastroCliente_Request(request);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Todos os dados são obrigatórios para cadastro!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
@@ -65,18 +70,23 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<ClienteResponse>> LoginCliente(string cpf)
         {
             var response = new ResponseBase<ClienteResponse>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (string.IsNullOrEmpty(cpf) || cpf.Length != 14)
+            validacoes = ValidarCliente.Validar_LoginCliente_Request(cpf);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "Obrigatório informar o CPF completo (informar caracteres especiais)";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
             var cliente = await _clienteRepository.ObterClientePorCpf(cpf);
 
-            if (cliente == null)
+            validacoes = ValidarCliente.Validar_ExistenciaCliente(cliente, cpf);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = $"Nenhum cadastro encontrado para o CPF {cpf}";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
@@ -90,10 +100,13 @@ namespace Burguer404.Application.Services
         public async Task<ResponseBase<bool>> AlterarStatusCliente(int clienteId)
         {
             var response = new ResponseBase<bool>();
+            var validacoes = new ResponseBaseValidacoes();
 
-            if (clienteId <= 0)
+            validacoes = ValidarCliente.Validar_AlterarStatusCliente_Request(clienteId);
+
+            if (!validacoes.Sucesso)
             {
-                response.Mensagem = "É necessário informar um cliente!";
+                response.Mensagem = validacoes.Mensagem;
                 return response;
             }
 
