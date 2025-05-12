@@ -24,7 +24,7 @@ namespace Burguer404.Infrastructure.Data.Maps
             builder.Property(x => x.Preco)
                    .IsRequired();
 
-            builder.Property(x => x.Imagem)
+            builder.Property(x => x.ImagemByte)
                    .HasColumnType("varbinary(max)"); ;
 
             builder.Property(x => x.CategoriaPedidoId)

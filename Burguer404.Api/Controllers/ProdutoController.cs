@@ -11,7 +11,7 @@ namespace Burguer404.Api.Controllers
     public class ProdutoController(IServiceProduto _service) : Controller
     {
         [HttpPost("cadastrar")]
-        public async Task<ActionResult> CadastrarProduto(ProdutoRequest request)
+        public async Task<ActionResult> CadastrarProduto([FromForm] ProdutoRequest request)
         {
             var response = new ResponseBase<ProdutoResponse>();
             try

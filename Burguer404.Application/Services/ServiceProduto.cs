@@ -7,7 +7,6 @@ using Burguer404.Domain.Enums;
 using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Ports.Services.Produto;
 using Burguer404.Domain.Validators;
-using Burguer404.Domain.Validators.Pedido;
 using Burguer404.Domain.Validators.Produto;
 
 namespace Burguer404.Application.Services
@@ -35,6 +34,11 @@ namespace Burguer404.Application.Services
                 response.Mensagem = validacoes.Mensagem;
                 return response;
             }
+            var memoryStream = new MemoryStream();
+
+            await request.Imagem.CopyToAsync(memoryStream);
+
+            request.ImagemByte = memoryStream.ToArray();
 
             var entidade = _mapper.Map<ProdutoRequest, ProdutoEntity>(request);
             entidade = await _produtoRepository.CadastrarProduto(entidade);
@@ -45,7 +49,7 @@ namespace Burguer404.Application.Services
 
             return response;
         }
-
+        
         public async Task<ResponseBase<ProdutoResponse>> ListarProdutos()
         {
             var response = new ResponseBase<ProdutoResponse>();

@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Burguer404.Domain\Burguer404.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

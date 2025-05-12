@@ -114,3 +114,7 @@ function fecharModal() {
 function solicitarPedido() {
     window.location.href = "/Pedidos/Pedidos"
 }
+
+function painelProdutos() {
+    window.location.href = "/Produto/Produto"
+}

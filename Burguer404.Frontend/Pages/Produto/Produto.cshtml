@@ -1,0 +1,254 @@
+﻿@page
+@model Burguer404.Frontend.Pages.Produto.ProdutoModel
+@{
+    ViewData["Title"] = "Cadastro de Produto";
+}
+
+@using Burguer404.Domain.Enums;
+
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]</title>
+
+    <!-- CSS e Scripts -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/pedidos.css" />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/js/cadastrar.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #292727, #c1521d);
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: #e74c3c;
+            margin-bottom: 30px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #e74c3c;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+            button:hover {
+                background-color: #c0392b;
+            }
+
+        .btn-arquivo {
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 13px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+            .btn-arquivo:hover {
+                background-color: #c0392b;
+            }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        table.dataTable thead th {
+            background-color: #e74c3c;
+            color: white;
+            font-weight: bold;
+            padding: 12px 16px;
+            font-size: 13px;
+        }
+
+        table.dataTable tbody td {
+            padding: 14px 16px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 14px;
+            background-color: #fff;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        table.dataTable tbody tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+
+        .tabela-container {
+            margin-top: 40px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $('#tabelaProdutos').DataTable();
+
+            $('#imagem').on('change', function () {
+                const nomeArquivo = $(this).val().split('\\').pop();
+                $('#nome-arquivo').text(nomeArquivo || "Nenhum arquivo escolhido");
+            });
+        });
+
+                document.addEventListener("DOMContentLoaded", function () {
+            const precoInput = document.getElementById("preco");
+
+            precoInput.addEventListener("input", function () {
+                // Remove tudo que não for número
+                let digits = this.value.replace(/\D/g, "");
+
+                if (digits.length === 0) {
+                    this.value = "";
+                    return;
+                }
+
+                // Converte os últimos dois dígitos em centavos
+                let intPart = digits.slice(0, -2) || "0";
+                let decimalPart = digits.slice(-2);
+                let formatted = `${parseInt(intPart)}.${decimalPart}`;
+
+                // Formata com vírgula para o usuário
+                this.value = parseFloat(formatted).toFixed(2).replace(".", ",");
+            });
+
+            // Converte para número com ponto ao enviar (opcional)
+            document.querySelector("form")?.addEventListener("submit", function () {
+                let raw = precoInput.value.replace(",", ".");
+                precoInput.value = parseFloat(raw).toFixed(2); // backend-friendly
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Cadastro de Produto</h2>
+
+        <form onsubmit="cadastrarProduto(event)" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="nome">Nome do Produto</label>
+                <input type="text" id="nome" name="nome" required />
+            </div>
+
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" rows="2" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="preco">Preço (R$)</label>
+                <input type="text" id="preco" name="preco" required />
+            </div>
+
+            <div class="form-group">
+                <label for="categoria">Categoria</label>
+                <select id="CategoriaPedidoId" name="CategoriaPedidoId" required>
+                    <option value="">Selecione...</option>
+                    <option value=@Convert.ToInt32(EnumCategoriaPedido.Lanche)>🍔 Lanche</option>
+                    <option value=@Convert.ToInt32(EnumCategoriaPedido.Acompanhamento)>🍟 Acompanhamento</option>
+                    <option value=@Convert.ToInt32(EnumCategoriaPedido.Bebida)>🥤 Bebida</option>
+                    <option value=@Convert.ToInt32(EnumCategoriaPedido.Sobremesa)>🍨 Sobremesa</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="imagem">Imagem do Produto</label>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <label for="ImagemFormFile" class="btn-arquivo">Escolher imagem</label>
+                    <span id="nome-arquivo">Nenhum arquivo escolhido</span>
+                </div>
+                <input type="file" id="ImagemFormFile" name="imagem" accept="image/*" />
+            </div>
+
+            <button type="submit">
+                <i class="bi bi-plus-circle"></i> Cadastrar Produto
+            </button>
+        </form>
+
+        <div class="tabela-container">
+            <h2>Produtos Cadastrados</h2>
+            <table id="tabelaProdutos" class="display">
+                <thead>
+                    <tr>
+                        <th style="width: 20px;">Ações</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Categoria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados de exemplo -->
+                    <tr>
+                        <td>
+                            <button class="btn-arquivo">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </td>
+                        <td>Cheeseburguer</td>
+                        <td>Pão, carne, queijo</td>
+                        <td>19.90</td>
+                        <td>Lanche</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>

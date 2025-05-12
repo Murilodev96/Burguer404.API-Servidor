@@ -28,6 +28,37 @@
     })
 }
 
+
+function cadastrarProduto(event) {
+    event.preventDefault();
+
+    const form = document.querySelector("form");
+    const formData = new FormData(form);
+
+    // Corrigir o valor do preço (de vírgula para ponto)
+    const precoCorrigido = formData.get("preco").replace(",", ".");
+    formData.set("preco", precoCorrigido);
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:5000/api/Produto/cadastrar",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            if (response.sucesso) {
+                console.log(response.mensagem);
+                alert("Produto cadastrado!");
+                form.reset();
+                $('#nome-arquivo').text("Nenhum arquivo escolhido");
+            }
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+            alert("Erro ao cadastrar produto.");
+        }
+    });
+}
 function mascaraCPF(input) {
     let value = input.value.replace(/\D/g, '');
 
