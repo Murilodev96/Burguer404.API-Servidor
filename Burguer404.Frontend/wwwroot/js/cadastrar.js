@@ -35,9 +35,6 @@ function cadastrarProduto(event) {
     const form = document.querySelector("form");
     const formData = new FormData(form);
 
-    // Corrigir o valor do preço (de vírgula para ponto)
-    const precoCorrigido = formData.get("preco").replace(",", ".");
-    formData.set("preco", precoCorrigido);
 
     $.ajax({
         type: "POST",
