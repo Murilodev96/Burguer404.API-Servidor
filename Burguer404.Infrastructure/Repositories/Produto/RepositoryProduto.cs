@@ -20,6 +20,8 @@ namespace Burguer404.Infrastructure.Data.Repositories.Produto
             await _context.SaveChangesAsync();
             return produto;
         }
+        public async Task<ProdutoEntity?> VisualizarImagem(int produtoId)
+        => await _context.Produtos.Where(x => x.Id == produtoId).FirstOrDefaultAsync();
 
         public async Task<List<ProdutoEntity>> ListarProdutos()
             => await _context.Produtos.ToListAsync();

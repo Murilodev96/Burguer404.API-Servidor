@@ -33,7 +33,7 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _service.ListarProdutos();
-                return Ok(response);
+                return new JsonResult(new { data = response.Resultado });
             }
             catch (Exception ex)
             {
@@ -81,6 +81,22 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _service.ObterCardapio();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("visualizarImagem")]
+        public async Task<ActionResult> VisualizarImagem(int id)
+        {
+            var response = new ResponseBase<string>();
+            try
+            {
+                response = await _service.VisualizarImagem(id);
                 return Ok(response);
             }
             catch (Exception ex)

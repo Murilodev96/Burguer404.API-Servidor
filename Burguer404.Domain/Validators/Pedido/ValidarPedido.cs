@@ -78,7 +78,7 @@ namespace Burguer404.Domain.Validators.Pedido
         {
             var ok = new ResponseBaseValidacoes();
 
-            if (itens != null && itens.Count > 0)
+            if (itens == null | itens.Count <=0)
             {
                 ok.Mensagem = "Selecione ao menos 1 item ao carrinho!";
                 return ok;

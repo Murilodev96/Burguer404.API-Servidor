@@ -155,5 +155,28 @@ namespace Burguer404.Application.Services
 
             return response;
         }
+
+        public async Task<ResponseBase<string>> VisualizarImagem(int produtoId)
+        {
+            var response = new ResponseBase<string>();
+            var validacoes = new ResponseBaseValidacoes();
+            
+            validacoes = ValidarProduto.Validar_VisualizarImagem(produtoId);
+
+            if(!validacoes.Sucesso)
+            {
+                response.Mensagem = validacoes.Mensagem;
+                return response;
+            }
+
+            var produto = await _produtoRepository.VisualizarImagem(produtoId);
+
+            var imagemBase64 = Convert.ToBase64String(produto.ImagemByte);
+
+            response.Sucesso = true;
+            response.Resultado = new List<string> { imagemBase64 };
+
+            return response;
+        }
     }
 }

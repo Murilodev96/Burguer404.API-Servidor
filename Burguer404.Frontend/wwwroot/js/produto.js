@@ -1,11 +1,85 @@
 ﻿$(document).ready(function () {
-    $('#tabelaProdutos').DataTable();
 
-    $('#imagem').on('change', function () {
-        const nomeArquivo = $(this).val().split('\\').pop();
-        $('#nome-arquivo').text(nomeArquivo || "Nenhum arquivo escolhido");
-    });
+    const EnumCategoriaPedido = {
+        1: "Lanche",
+        2: "Acompanhamento",
+        3: "Bebida",
+        4: "Sobremesa"
+    };
+
+    $('#tabelaProdutos').DataTable({
+        ajax: {
+            url: 'http://localhost:5000/api/Produto/listar',
+            dataSrc: 'data'
+        },
+        columns: [
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return `
+                        <button class="btn-arquivo" onclick="buscarImagem(${row.id})">
+                            <i class="bi bi-search"></i>
+                        </button>
+                        `;
+                }
+            },
+            { data: 'nome' },
+            { data: 'descricao' },
+            {
+                data: 'preco',
+                render: function (data) {
+                    return 'R$' + data.toFixed(2).replace('.', ',');
+                }
+            },
+            {
+                data: 'categoriaPedidoId',
+                render: function (data) {
+                    return EnumCategoriaPedido[data] || "Desconhecido";
+                }
+            }
+        ],
+        language: {
+            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+        }
+    });   
 });
+
+function buscarImagem(id) {
+    $.ajax({
+        url: `http://localhost:5000/api/Produto/visualizarImagem?id=${id}`,
+        method: 'GET',
+        success: function (response) {
+            if (response && response.resultado && response.resultado.length > 0) {
+                const imagemBase64 = response.resultado[0];
+                mostrarImagem(imagemBase64);
+            } else {
+                alert("Este produto não possui imagem.");
+            }
+        },
+        error: function () {
+            alert("Erro ao buscar imagem do produto.");
+        }
+    });
+}
+
+function mostrarImagem(base64) {
+    const imagemHtml = `
+        <div class="modal-imagem">
+            <img src="data:image/jpeg;base64,${base64}" alt="Imagem do Produto" style="max-width: 100%; max-height: 500px;" />
+        </div>
+    `;
+
+    $('body').append(`
+        <div id="modalImagem" class="modal-overlay">
+            <div class="modal-content">
+                <button onclick="$('#modalImagem').remove()" class="btn-fechar">X</button>
+                ${imagemHtml}
+            </div>
+        </div>
+    `);
+}
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const precoInput = document.getElementById("preco");

@@ -46,5 +46,18 @@ namespace Burguer404.Domain.Validators.Produto
             ok.Sucesso = true;
             return ok;
         }
+
+        public static ResponseBaseValidacoes Validar_VisualizarImagem(int produtoId)
+        {
+            var ok = new ResponseBaseValidacoes();
+
+            if (produtoId <= 0)
+            {
+                ok.Mensagem = "Id não localizado.";
+                return ok;
+            }
+            ok.Sucesso = true;
+            return ok;
+        }
     }
 }
