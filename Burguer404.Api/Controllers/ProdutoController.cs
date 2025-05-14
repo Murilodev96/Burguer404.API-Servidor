@@ -59,12 +59,12 @@ namespace Burguer404.Api.Controllers
         }
 
         [HttpGet("remover")]
-        public async Task<ActionResult> RemoverProduto(int produtoId)
+        public async Task<ActionResult> RemoverProduto(int id)
         {
             var response = new ResponseBase<bool>();
             try
             {
-                response = await _service.RemoverProduto(produtoId);
+                response = await _service.RemoverProduto(id);
                 return Ok(response);
             }
             catch (Exception ex)

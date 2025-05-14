@@ -17,9 +17,14 @@
                 data: null,
                 render: function (data, type, row) {
                     return `
-                        <button class="btn-arquivo" onclick="buscarImagem(${row.id})">
-                            <i class="bi bi-search"></i>
-                        </button>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="btn-arquivo" onclick="buscarImagem(${row.id})">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <button class="btn-excluir" onclick="excluirProduto(${row.id})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
                         `;
                 }
             },
@@ -62,6 +67,22 @@ function buscarImagem(id) {
     });
 }
 
+function excluirProduto(id) {
+    if (confirm("Tem certeza que deseja excluir este produto?")) {
+        $.ajax({
+            url: `http://localhost:5000/api/Produto/remover/?id=${id}`,
+            method: 'GET',
+            success: function (response) {
+                alert("Produto excluído com sucesso!");
+                $('#tabelaProdutos').DataTable().ajax.reload();
+            },
+            error: function () {
+                alert("Erro ao excluir o produto.");
+            }
+        });
+    }
+}
+
 function mostrarImagem(base64) {
     const imagemHtml = `
         <div class="modal-imagem">
@@ -85,26 +106,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const precoInput = document.getElementById("preco");
 
     precoInput.addEventListener("input", function () {
-        // Remove tudo que não for número
-        let digits = this.value.replace(/\D/g, "");
+        let valor = this.value;
 
-        if (digits.length === 0) {
-            this.value = "";
-            return;
+        // Remove tudo exceto números e vírgula
+        valor = valor.replace(/[^\d,]/g, "");
+
+        // Permitir apenas uma vírgula
+        let partes = valor.split(",");
+        if (partes.length > 2) {
+            valor = partes[0] + "," + partes[1];
         }
 
-        // Converte os últimos dois dígitos em centavos
-        let intPart = digits.slice(0, -2) || "0";
-        let decimalPart = digits.slice(-2);
-        let formatted = `${parseInt(intPart)}.${decimalPart}`;
+        // Se houver mais de 2 dígitos após a vírgula, corta
+        if (partes[1]?.length > 2) {
+            valor = partes[0] + "," + partes[1].slice(0, 2);
+        }
 
-        // Formata com vírgula para o usuário
-        this.value = parseFloat(formatted).toFixed(2).replace(".", ",");
+        this.value = valor;
     });
 
-    // Converte para número com ponto ao enviar (opcional)
-    document.querySelector("form")?.addEventListener("submit", function () {
-        let raw = precoInput.value.replace(",", ".");
-        precoInput.value = parseFloat(raw).toFixed(2); // backend-friendly
+    precoInput.addEventListener("blur", function () {
+        let valor = this.value;
+
+        // Completa com zeros se necessário
+        if (valor.includes(",")) {
+            let partes = valor.split(",");
+            partes[1] = (partes[1] + "00").slice(0, 2);
+            this.value = partes[0] + "," + partes[1];
+        } else if (valor !== "") {
+            this.value = valor + ",00";
+        }
     });
 });
