@@ -10,6 +10,6 @@ namespace Burguer404.Domain.Ports.Repositories.Produto
         Task<ProdutoEntity?> AtualizarCadastro(ProdutoEntity produto);
         Task<ProdutoEntity?> ObterProdutoPorId(int produtoId);
         Task RemoverProduto(ProdutoEntity produto);
-        Task<ProdutoEntity> VisualizarImagem(int produtoId);
+        Task<ProdutoEntity?> VisualizarImagem(int produtoId);
     }
 }

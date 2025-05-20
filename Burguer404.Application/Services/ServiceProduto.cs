@@ -174,7 +174,7 @@ namespace Burguer404.Application.Services
             var imagemBase64 = Convert.ToBase64String(produto.ImagemByte);
 
             response.Sucesso = true;
-            response.Resultado = new List<string> { imagemBase64 };
+            response.Resultado = [imagemBase64];
 
             return response;
         }

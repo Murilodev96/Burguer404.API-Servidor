@@ -27,5 +27,10 @@
         QRCode.toCanvas(document.getElementById('qrcode'), qrText, { width: 200 }, function (error) {
             if (error) console.error(error);
         });
+
+        alert('Pagamento aprovado com sucesso!');
+        setTimeout(function () {
+             window.location.href = "/Login/Login";
+        }, 1000);
     </script>
 </body>

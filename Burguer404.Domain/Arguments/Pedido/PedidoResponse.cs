@@ -11,5 +11,6 @@ namespace Burguer404.Application.Arguments.Pedido
         public string NomeCliente { get; set; }
         public string DataFormatada { get; set; }
         public List<PedidoProdutoResponse> ProdutosSelecionados { get; set; }
+        public DateTime DataPedido { get; set; }
     }
 }

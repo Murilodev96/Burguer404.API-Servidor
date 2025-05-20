@@ -6,7 +6,7 @@ namespace Burguer404.Domain.Ports.Repositories.Pedido
     {
         Task<PedidoEntity> CriarPedido(PedidoEntity pedido);
         Task InserirProdutosNoPedido(List<PedidoProdutoEntity> pedidoProdutos);
-        Task<List<PedidoEntity>> ListarPedidos();
+        Task<List<PedidoEntity>> ListarPedidos(int clienteLogadoId);
         Task<bool> CancelarPedido(int pedidoId);
         Task<PedidoEntity?> ObterPedidoPorCodigoPedido(string codigo);
         Task<bool> AlterarStatusPedido(PedidoEntity pedido);

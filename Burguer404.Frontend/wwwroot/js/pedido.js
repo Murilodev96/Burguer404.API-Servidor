@@ -1,32 +1,54 @@
 ﻿$(document).ready(function () {
 
-        $('#tabelaPedidos').DataTable({
-            ajax: {
-                type: "GET",
-                url: 'http://localhost:5000/api/Pedido/listar',
-                dataSrc: 'data'
+    var clienteLogadoId = sessionStorage.getItem("clienteLogadoId");
+    var perfilClienteId = sessionStorage.getItem("perfilClienteId");
+    var nomeClienteLogado = sessionStorage.getItem("nomeClienteLogado");
+
+    $('#lblNomeUsuarioLogadoId').text(nomeClienteLogado);
+
+    if (perfilClienteId != 1) {
+        $('#btnPaginaProdutos').css({
+            'display': 'none'
+        });
+    }
+
+    $('#tabelaPedidos').DataTable({
+        ajax: {
+            type: "GET",
+            url: 'http://localhost:5000/api/Pedido/listar',
+            data: { clienteLogadoId: clienteLogadoId },
+        },
+        columns: [
+            { data: 'codigoPedido' },
+            { data: 'nomeCliente' },
+            { data: 'dataFormatada' },
+            {
+                data: 'dataPedido',
+                visible: false
             },
-            columns: [
-                { data: 'codigoPedido' },
-                { data: 'nomeCliente' },
-                { data: 'dataFormatada' },
-                { data: 'statusPedidoDescricao' },
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return `<button class="btn-visualizar" onclick="VisualizarPedido('${row.codigoPedido}')">
-                                    🔍
-                                </button>
-                                <button class="btn-visualizar" onclick="AvancarStatus('${row.codigoPedido}')">
-                                    🍔➡️
-                                </button>`;
+            { data: 'statusPedidoDescricao' },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    var botoes = `<button class="btn-visualizar" onclick="VisualizarPedido('${row.codigoPedido}')">
+                                     🔍
+                                  </button>`;
+
+                    if (perfilClienteId == 1) {
+                        botoes += `<button class="btn-visualizar" onclick="AvancarStatus('${row.codigoPedido}')">
+                                       🍔➡️
+                                   </button>`;
                     }
+
+                    return botoes;
                 }
-            ],
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
-            }    
-        });    
+            }
+        ],
+        order: [[3, 'desc']],
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
+        }    
+    });    
 });
 
 function VisualizarPedido(codigo) {

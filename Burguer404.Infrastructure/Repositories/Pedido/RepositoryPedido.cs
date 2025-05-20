@@ -39,12 +39,33 @@ namespace Burguer404.Infrastructure.Data.Repositories.Pedido
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<PedidoEntity>> ListarPedidos()
-            => await _context.Pedidos.Include(p => p.StatusPedido)
-                                     .Include(p => p.Cliente)
-                                     .Include(p => p.PedidoProduto)
-                                     .ToListAsync();
+        public async Task<List<PedidoEntity>> ListarPedidos(int clienteLogadoId)
+        {
+            var pedidos = new List<PedidoEntity>();
+            var cliente = await _context.Clientes.Where(x => x.Id == clienteLogadoId).FirstOrDefaultAsync();
 
+            if (cliente == null)
+                return pedidos;
+
+            if (cliente.PerfilClienteId == (int)EnumPerfilCliente.Admin)
+            {
+                pedidos = await _context.Pedidos.Include(p => p.StatusPedido)
+                                                .Include(p => p.Cliente)
+                                                .Include(p => p.PedidoProduto)
+                                                .ToListAsync();
+            }
+            else 
+            {
+                pedidos = await _context.Pedidos.Where(x => x.ClienteId == cliente.Id)
+                                                .Include(p => p.StatusPedido)
+                                                .Include(p => p.Cliente)
+                                                .Include(p => p.PedidoProduto)
+                                                .ToListAsync();
+            
+            }
+
+            return pedidos;
+        }
         public async Task<bool> CancelarPedido(int pedidoId)
         {
             var pedido = await _context.Pedidos.FindAsync(pedidoId);

@@ -7,7 +7,7 @@ namespace Burguer404.Domain.Ports.Services.Pedido
     public interface IServicePedido
     {
         Task<ResponseBase<string>> CadastrarPedido(PedidoRequest request);
-        Task<ResponseBase<PedidoResponse>> ListarPedidos();
+        Task<ResponseBase<PedidoResponse>> ListarPedidos(int clienteLogadoId);
         Task<ResponseBase<bool>> CancelarPedido(int pedidoId);
         Task<ResponseBase<PedidoResponse>> VisualizarPedido(string codigo);
         Task<ResponseBase<bool>> AvancarStatusPedido(string codigo);

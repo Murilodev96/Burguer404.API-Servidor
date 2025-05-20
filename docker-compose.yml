@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Burguer404@2025
+    ports:
+      - "1433:1433"
+    networks:
+      - burguer-net
+    restart: always
+
+  burguer404.api:
+    image: ${DOCKER_REGISTRY-}burguer404api
+    build:
+      context: .
+      dockerfile: Burguer404.Api/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Burguer404;User Id=sa;Password=Burguer404@2025;TrustServerCertificate=True
+    networks:
+      - burguer-net
+
+  burguer404.frontend:
+    image: ${DOCKER_REGISTRY-}burguer404frontend
+    build:
+      context: .
+      dockerfile: Burguer404.Frontend/Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - burguer-net
+
+networks:
+  burguer-net:
+    driver: bridge

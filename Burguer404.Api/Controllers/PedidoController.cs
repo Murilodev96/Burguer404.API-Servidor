@@ -44,12 +44,12 @@ namespace Burguer404.Api.Controllers
         }
 
         [HttpGet("listar")]
-        public async Task<JsonResult> ListarPedidos()
+        public async Task<JsonResult> ListarPedidos(int clienteLogadoId)
         {
             var response = new ResponseBase<PedidoResponse>();
             try
             {
-                response = await _service.ListarPedidos();
+                response = await _service.ListarPedidos(clienteLogadoId);
                 return new JsonResult(new { data = response.Resultado });
             }
             catch (Exception ex)

@@ -18,8 +18,10 @@
         contentType: "application/json",
 
         sucess: function (response) {
-            if (reponse.Sucesso) {
-                console.log(response.Mensagem);
+            debugger;
+            alert(response.mensagem);
+            if (reponse.sucesso) {
+                window.location.href = "/Login/Login"
             }
         },
         error: function (response) {

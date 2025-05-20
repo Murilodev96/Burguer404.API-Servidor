@@ -30,7 +30,6 @@ namespace Burguer404.Infrastructure.Data.Repositories.Cliente
         public async Task<bool> ValidarCadastroCliente(string cpf, string email)
         {
             var cliente = await _context.Clientes.Where(x => x.Cpf == cpf &&
-                                                        x.Email.ToUpper() == email.ToUpper() &&
                                                         x.Status == true)
                                                  .FirstOrDefaultAsync();
 

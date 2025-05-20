@@ -77,11 +77,11 @@ namespace Burguer404.Application.Services
             return response;
         }
 
-        public async Task<ResponseBase<PedidoResponse>> ListarPedidos()
+        public async Task<ResponseBase<PedidoResponse>> ListarPedidos(int clienteLogadoId)
         {
             var response = new ResponseBase<PedidoResponse>();
 
-            var pedidos = await _pedidoRepository.ListarPedidos();
+            var pedidos = await _pedidoRepository.ListarPedidos(clienteLogadoId);
 
             var pedidosResponse = new List<PedidoResponse>();
             Parallel.ForEach(pedidos, pedido =>
@@ -94,7 +94,7 @@ namespace Burguer404.Application.Services
 
             response.Sucesso = true;
             response.Mensagem = "Pedidos listados com sucesso!";
-            response.Resultado = pedidosResponse;
+            response.Resultado = pedidosResponse.OrderByDescending(x => x.Id);
 
             return response;
         }

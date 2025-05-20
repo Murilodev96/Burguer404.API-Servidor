@@ -1,4 +1,6 @@
 using Burguer404.Configurations.DependecyInjections;
+using Burguer404.Infrastructure.Data.ContextDb;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,5 +43,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseOutputCache();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<Context>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();
