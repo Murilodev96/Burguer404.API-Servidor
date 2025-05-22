@@ -33,13 +33,13 @@ namespace Burguer404.Domain.Validators.Produto
             return ok;
         }
 
-        public static ResponseBaseValidacoes Validar_ProdutoIdValido(int produtoId)
+        public static ResponseBaseValidacoes Validar_IdValido(int produtoId)
         {
             var ok = new ResponseBaseValidacoes();
 
             if (produtoId <= 0)
             {
-                ok.Mensagem = "Selecione um produto para remover!";
+                ok.Mensagem = "Não foi encontrado valor na request!";
                 return ok;
             }
 

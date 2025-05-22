@@ -13,5 +13,6 @@ namespace Burguer404.Domain.Ports.Services.Produto
         Task<ResponseBase<bool>> RemoverProduto(int produtoId);
         Task<ResponseBase<CardapioResponse>> ObterCardapio();
         Task<ResponseBase<string>> VisualizarImagem(int produtoId);
+        Task<ResponseBase<ProdutoResponse>> ObterProdutosPorCategoria(int categoriaId);
     }
 }

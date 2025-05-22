@@ -41,5 +41,9 @@ namespace Burguer404.Infrastructure.Data.Repositories.Produto
             _context.Produtos.Remove(produto);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<ProdutoEntity>?> ObterProdutosPorCategoriaId(int categoriaId)
+            => await _context.Produtos.Where(x => x.CategoriaPedidoId == categoriaId).ToListAsync();
+
     }
 }

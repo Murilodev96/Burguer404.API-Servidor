@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Burguer404.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class CriandoBancoDeDados : Migration
+    public partial class SubindoBancoComDadosPadrao : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace Burguer404.Infrastructure.Data.Migrations
             migrationBuilder.EnsureSchema(
                 name: "dbo");
 
-            migrationBuilder.CreateSequence<int>(
+            migrationBuilder.CreateSequence(
                 name: "CodPedidoSequence",
                 schema: "dbo");
 
@@ -34,19 +34,16 @@ namespace Burguer404.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Clientes",
+                name: "PerfilCliente",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(130)", maxLength: 130, nullable: false),
-                    Cpf = table.Column<string>(type: "nchar(14)", fixedLength: true, maxLength: 14, nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
+                    Descricao = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clientes", x => x.Id);
+                    table.PrimaryKey("PK_PerfilCliente", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,8 +68,8 @@ namespace Burguer404.Infrastructure.Data.Migrations
                     Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Preco = table.Column<double>(type: "float", nullable: false),
-                    Imagem = table.Column<byte[]>(type: "varbinary(255)", maxLength: 255, nullable: false),
                     CategoriaPedidoId = table.Column<int>(type: "int", nullable: false),
+                    ImagemByte = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -82,6 +79,29 @@ namespace Burguer404.Infrastructure.Data.Migrations
                         name: "FK_Produtos_CategoriaPedido_CategoriaPedidoId",
                         column: x => x.CategoriaPedidoId,
                         principalTable: "CategoriaPedido",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Clientes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(130)", maxLength: 130, nullable: false),
+                    Cpf = table.Column<string>(type: "nchar(14)", fixedLength: true, maxLength: 14, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    PerfilClienteId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clientes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Clientes_PerfilCliente_PerfilClienteId",
+                        column: x => x.PerfilClienteId,
+                        principalTable: "PerfilCliente",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -153,6 +173,15 @@ namespace Burguer404.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "PerfilCliente",
+                columns: new[] { "Id", "Descricao" },
+                values: new object[,]
+                {
+                    { 1, "admin" },
+                    { 2, "usuario" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "StatusPedido",
                 columns: new[] { "Id", "Descricao" },
                 values: new object[,]
@@ -164,11 +193,51 @@ namespace Burguer404.Infrastructure.Data.Migrations
                     { 5, "Cancelado" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Clientes",
+                columns: new[] { "Id", "Cpf", "Email", "Nome", "PerfilClienteId", "Status" },
+                values: new object[,]
+                {
+                    { 1, "111.111.111-11", "admin@admin.com", "admin", 1, true },
+                    { 2, "123.456.789-10", "usuario@usuario.com", "usuario", 2, true }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Produtos",
+                columns: new[] { "Id", "CategoriaPedidoId", "Descricao", "ImagemByte", "Nome", "Preco", "Status" },
+                values: new object[,]
+                {
+                    { 1, 1, "adicional de bacon", null, "X-Bacon", 31.989999999999998, true },
+                    { 2, 3, "Zero açucar", null, "Coca-Cola", 7.0, true },
+                    { 3, 2, "300g", null, "Batata frita", 15.0, true },
+                    { 4, 4, "Morango", null, "Sorvete", 9.0, true },
+                    { 5, 1, "saladinha da boa", null, "X-Salada", 24.989999999999998, true },
+                    { 6, 3, "concorrente", null, "Pepsi", 7.0, true },
+                    { 7, 2, "300g", null, "Onion rings", 20.0, true },
+                    { 8, 4, "Chocolate com morango", null, "Bolo de pote", 14.0, true },
+                    { 9, 1, "tudo do bom e do melhor", null, "X-Tudo", 40.0, true },
+                    { 10, 3, "suquinho", null, "Suco de maracuja", 10.0, true },
+                    { 11, 2, "400g", null, "Batata + Onion rings P", 27.5, true },
+                    { 12, 4, "Melhor de todos", null, "Pudim", 99.0, true },
+                    { 13, 1, "fitness", null, "X-Frango", 22.989999999999998, true },
+                    { 14, 1, "pouca gordura graças a Deus", null, "X-Calabresa", 26.989999999999998, true },
+                    { 15, 1, "suculência ao máximo", null, "X-Picanha", 36.990000000000002, true },
+                    { 16, 3, "suquinho 2", null, "Suco de limão", 7.0, true },
+                    { 17, 3, "água de torneira", null, "H2O", 5.0, true },
+                    { 18, 2, "700g", null, "Batata + Onion rings M", 33.0, true },
+                    { 19, 2, "1Kg", null, "Batata + Onion rings G", 41.0, true }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Clientes_Cpf",
                 table: "Clientes",
                 column: "Cpf",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clientes_PerfilClienteId",
+                table: "Clientes",
+                column: "PerfilClienteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PedidoProduto_PedidoId",
@@ -216,6 +285,9 @@ namespace Burguer404.Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CategoriaPedido");
+
+            migrationBuilder.DropTable(
+                name: "PerfilCliente");
 
             migrationBuilder.DropSequence(
                 name: "CodPedidoSequence",

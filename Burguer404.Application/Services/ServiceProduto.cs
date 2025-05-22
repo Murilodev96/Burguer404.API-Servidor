@@ -101,7 +101,7 @@ namespace Burguer404.Application.Services
             var response = new ResponseBase<bool>();
             var validacoes = new ResponseBaseValidacoes();
 
-            validacoes = ValidarProduto.Validar_ProdutoIdValido(produtoId);
+            validacoes = ValidarProduto.Validar_IdValido(produtoId);
 
             if (!validacoes.Sucesso)
             {
@@ -175,6 +175,37 @@ namespace Burguer404.Application.Services
 
             response.Sucesso = true;
             response.Resultado = [imagemBase64];
+
+            return response;
+        }
+
+        public async Task<ResponseBase<ProdutoResponse>> ObterProdutosPorCategoria(int categoriaId)
+        {
+            var response = new ResponseBase<ProdutoResponse>();
+
+            var validacoes = new ResponseBaseValidacoes();
+
+            validacoes = ValidarProduto.Validar_IdValido(categoriaId);
+
+            if (!validacoes.Sucesso)
+            {
+                response.Mensagem = validacoes.Mensagem;
+                return response;
+            }
+
+            var itens = await _produtoRepository.ObterProdutosPorCategoriaId(categoriaId);
+
+            var produtos = new List<ProdutoResponse>();
+
+            Parallel.ForEach(itens, item => 
+            {
+                var produto = _mapper.Map<ProdutoEntity, ProdutoResponse>(item);
+                produtos.Add(produto);
+            });
+
+            response.Sucesso = true;
+            response.Mensagem = "Produtos listados com sucesso!";
+            response.Resultado = produtos;
 
             return response;
         }

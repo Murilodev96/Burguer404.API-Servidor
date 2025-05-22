@@ -39,6 +39,9 @@ namespace Burguer404.Infrastructure.Data.Maps
                     .OnDelete(DeleteBehavior.Restrict);  
 
             builder.HasIndex(x => x.Cpf).IsUnique();
+
+            builder.HasData(new ClienteEntity { Id = 1, Cpf = "111.111.111-11", Email = "admin@admin.com", Nome = "admin", Status = true, PerfilClienteId = 1 },
+                            new ClienteEntity { Id = 2, Cpf = "123.456.789-10", Email = "usuario@usuario.com", Nome = "usuario", Status = true, PerfilClienteId = 2 });
         }
     }
 }

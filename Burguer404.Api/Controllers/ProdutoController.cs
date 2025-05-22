@@ -105,5 +105,21 @@ namespace Burguer404.Api.Controllers
                 return BadRequest(response);
             }
         }
+
+        [HttpGet("obterProdutosPorCategoria")]
+        public async Task<ActionResult> ObterProdutosPorCategoria(int categoriaId)
+        {
+            var response = new ResponseBase<ProdutoResponse>();
+            try
+            {
+                response = await _service.ObterProdutosPorCategoria(categoriaId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                return BadRequest(response);
+            }
+        }
     }
 }

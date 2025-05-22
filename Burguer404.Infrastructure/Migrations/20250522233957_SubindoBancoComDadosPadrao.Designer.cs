@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Burguer404.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250512225659_Alterando-coluna-imagem")]
-    partial class Alterandocolunaimagem
+    [Migration("20250522233957_SubindoBancoComDadosPadrao")]
+    partial class SubindoBancoComDadosPadrao
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,6 +150,26 @@ namespace Burguer404.Infrastructure.Data.Migrations
                     b.HasIndex("PerfilClienteId");
 
                     b.ToTable("Clientes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cpf = "111.111.111-11",
+                            Email = "admin@admin.com",
+                            Nome = "admin",
+                            PerfilClienteId = 1,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cpf = "123.456.789-10",
+                            Email = "usuario@usuario.com",
+                            Nome = "usuario",
+                            PerfilClienteId = 2,
+                            Status = true
+                        });
                 });
 
             modelBuilder.Entity("Burguer404.Domain.Entities.Cliente.PerfilClienteEntity", b =>
@@ -274,6 +294,179 @@ namespace Burguer404.Infrastructure.Data.Migrations
                     b.HasIndex("CategoriaPedidoId");
 
                     b.ToTable("Produtos", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoriaPedidoId = 1,
+                            Descricao = "adicional de bacon",
+                            Nome = "X-Bacon",
+                            Preco = 31.989999999999998,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoriaPedidoId = 3,
+                            Descricao = "Zero açucar",
+                            Nome = "Coca-Cola",
+                            Preco = 7.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoriaPedidoId = 2,
+                            Descricao = "300g",
+                            Nome = "Batata frita",
+                            Preco = 15.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoriaPedidoId = 4,
+                            Descricao = "Morango",
+                            Nome = "Sorvete",
+                            Preco = 9.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoriaPedidoId = 1,
+                            Descricao = "saladinha da boa",
+                            Nome = "X-Salada",
+                            Preco = 24.989999999999998,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoriaPedidoId = 3,
+                            Descricao = "concorrente",
+                            Nome = "Pepsi",
+                            Preco = 7.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoriaPedidoId = 2,
+                            Descricao = "300g",
+                            Nome = "Onion rings",
+                            Preco = 20.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoriaPedidoId = 4,
+                            Descricao = "Chocolate com morango",
+                            Nome = "Bolo de pote",
+                            Preco = 14.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoriaPedidoId = 1,
+                            Descricao = "tudo do bom e do melhor",
+                            Nome = "X-Tudo",
+                            Preco = 40.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoriaPedidoId = 3,
+                            Descricao = "suquinho",
+                            Nome = "Suco de maracuja",
+                            Preco = 10.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CategoriaPedidoId = 2,
+                            Descricao = "400g",
+                            Nome = "Batata + Onion rings P",
+                            Preco = 27.5,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoriaPedidoId = 4,
+                            Descricao = "Melhor de todos",
+                            Nome = "Pudim",
+                            Preco = 99.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CategoriaPedidoId = 1,
+                            Descricao = "fitness",
+                            Nome = "X-Frango",
+                            Preco = 22.989999999999998,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CategoriaPedidoId = 1,
+                            Descricao = "pouca gordura graças a Deus",
+                            Nome = "X-Calabresa",
+                            Preco = 26.989999999999998,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CategoriaPedidoId = 1,
+                            Descricao = "suculência ao máximo",
+                            Nome = "X-Picanha",
+                            Preco = 36.990000000000002,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CategoriaPedidoId = 3,
+                            Descricao = "suquinho 2",
+                            Nome = "Suco de limão",
+                            Preco = 7.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CategoriaPedidoId = 3,
+                            Descricao = "água de torneira",
+                            Nome = "H2O",
+                            Preco = 5.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CategoriaPedidoId = 2,
+                            Descricao = "700g",
+                            Nome = "Batata + Onion rings M",
+                            Preco = 33.0,
+                            Status = true
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CategoriaPedidoId = 2,
+                            Descricao = "1Kg",
+                            Nome = "Batata + Onion rings G",
+                            Preco = 41.0,
+                            Status = true
+                        });
                 });
 
             modelBuilder.Entity("Burguer404.Domain.Entities.Cliente.ClienteEntity", b =>
