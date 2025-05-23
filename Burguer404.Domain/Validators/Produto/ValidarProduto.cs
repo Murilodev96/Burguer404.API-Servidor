@@ -9,7 +9,7 @@ namespace Burguer404.Domain.Validators.Produto
         {
             var ok = new ResponseBaseValidacoes();
 
-            if (string.IsNullOrEmpty(request.Nome) && string.IsNullOrEmpty(request.Descricao) || request.Preco <= 0 || request.CategoriaPedidoId <= 0 || request.Imagem == null)
+            if (string.IsNullOrEmpty(request.Nome) && string.IsNullOrEmpty(request.Descricao) || request.Preco <= 0 || request.CategoriaProdutoId <= 0 || request.Imagem == null)
             {
                 ok.Mensagem = "Todos os campos são obrigatórios para cadastro de um produto!";
                 return ok;

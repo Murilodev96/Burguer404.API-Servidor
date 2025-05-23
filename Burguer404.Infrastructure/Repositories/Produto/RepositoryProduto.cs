@@ -43,7 +43,7 @@ namespace Burguer404.Infrastructure.Data.Repositories.Produto
         }
 
         public async Task<List<ProdutoEntity>?> ObterProdutosPorCategoriaId(int categoriaId)
-            => await _context.Produtos.Where(x => x.CategoriaPedidoId == categoriaId).ToListAsync();
+            => await _context.Produtos.Where(x => x.CategoriaProdutoId == categoriaId).ToListAsync();
 
     }
 }

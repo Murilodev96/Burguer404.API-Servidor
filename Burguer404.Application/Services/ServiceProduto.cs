@@ -143,10 +143,10 @@ namespace Burguer404.Application.Services
             }
 
             var cardapio = new CardapioResponse() {
-                Lanches = [.. itensCardapio.Where(x => x.CategoriaPedidoId == (int)EnumCategoriaPedido.Lanche)],
-                Acompanhamentos = [.. itensCardapio.Where(x => x.CategoriaPedidoId == (int)EnumCategoriaPedido.Acompanhamento)],
-                Bebidas = [.. itensCardapio.Where(x => x.CategoriaPedidoId == (int)EnumCategoriaPedido.Bebida)],
-                Sobremesas = [.. itensCardapio.Where(x => x.CategoriaPedidoId == (int)EnumCategoriaPedido.Sobremesa)],
+                Lanches = [.. itensCardapio.Where(x => x.CategoriaProdutoId == (int)EnumCategoriaPedido.Lanche)],
+                Acompanhamentos = [.. itensCardapio.Where(x => x.CategoriaProdutoId == (int)EnumCategoriaPedido.Acompanhamento)],
+                Bebidas = [.. itensCardapio.Where(x => x.CategoriaProdutoId == (int)EnumCategoriaPedido.Bebida)],
+                Sobremesas = [.. itensCardapio.Where(x => x.CategoriaProdutoId == (int)EnumCategoriaPedido.Sobremesa)],
             };
 
             response.Sucesso = true;

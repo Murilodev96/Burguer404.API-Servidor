@@ -8,7 +8,7 @@ namespace Burguer404.Application.Arguments.Produto
         public string Descricao { get; set; }
         public double Preco { get; set; }
         public byte[] Imagem { get; set; }
-        public int CategoriaPedidoId { get; set; }
+        public int CategoriaProdutoId { get; set; }
         public bool Status { get; set; }
     }
 }

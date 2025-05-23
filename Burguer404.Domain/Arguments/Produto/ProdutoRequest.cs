@@ -9,7 +9,7 @@ namespace Burguer404.Application.Arguments.Produto
         public string Descricao { get; set; }
         public double Preco { get; set; }
         public IFormFile Imagem { get; set; }
-        public int CategoriaPedidoId { get; set; }
+        public int CategoriaProdutoId { get; set; }
         public bool? Status { get; set; }
         public byte[]? ImagemByte { get; set; }
     }

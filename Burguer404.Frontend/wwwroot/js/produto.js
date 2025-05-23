@@ -37,7 +37,7 @@
                 }
             },
             {
-                data: 'categoriaPedidoId',
+                data: 'categoriaProdutoId',
                 render: function (data) {
                     return EnumCategoriaPedido[data] || "Desconhecido";
                 }
