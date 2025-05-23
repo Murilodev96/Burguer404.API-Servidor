@@ -140,3 +140,8 @@ function solicitarPedido() {
 function painelProdutos() {
     window.location.href = "/Produto/Produto"
 }
+
+function DesconectarSessao() {
+    sessionStorage.clear();
+    window.location.href = "http://localhost:5001"
+}
