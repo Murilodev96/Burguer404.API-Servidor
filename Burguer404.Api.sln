@@ -31,6 +31,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Burguer404.Api.Tests", "Burguer404.Api.Tests\Burguer404.Api.Tests.csproj", "{B6A4C113-0343-2FAA-019D-DFCB96A6FF99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Burguer404.Application.Tests", "..\Burguer404.Application.Tests\Burguer404.Application.Tests.csproj", "{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{B6A4C113-0343-2FAA-019D-DFCB96A6FF99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6A4C113-0343-2FAA-019D-DFCB96A6FF99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6A4C113-0343-2FAA-019D-DFCB96A6FF99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{27DC002C-553A-49E3-BCE1-F1E326F937F1} = {B3DEEADF-0A2B-4058-969F-394CC680CB66}
 		{E7C94B49-8176-4F05-B1F3-4E90126BEE91} = {9DBB01F4-B261-44EA-A177-A37CDC7703E2}
 		{B6A4C113-0343-2FAA-019D-DFCB96A6FF99} = {64E63C80-3AFB-4D98-82D5-951888520D31}
+		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C} = {B3DEEADF-0A2B-4058-969F-394CC680CB66}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14AA9200-AD9D-4763-8AD2-A072CB6174D7}
