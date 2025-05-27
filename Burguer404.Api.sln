@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Burguer404.Api.Tests", "Bur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Burguer404.Application.Tests", "..\Burguer404.Application.Tests\Burguer404.Application.Tests.csproj", "{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Burguer404.Application.Tests", "Burguer404.Application.Tests\Burguer404.Application.Tests.csproj", "{7AB8E0A0-818A-DDF2-7462-8527665B338F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AB8E0A0-818A-DDF2-7462-8527665B338F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AB8E0A0-818A-DDF2-7462-8527665B338F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AB8E0A0-818A-DDF2-7462-8527665B338F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AB8E0A0-818A-DDF2-7462-8527665B338F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{E7C94B49-8176-4F05-B1F3-4E90126BEE91} = {9DBB01F4-B261-44EA-A177-A37CDC7703E2}
 		{B6A4C113-0343-2FAA-019D-DFCB96A6FF99} = {64E63C80-3AFB-4D98-82D5-951888520D31}
 		{6686E4E9-ED10-4A4C-AA2A-1A623C839D0C} = {B3DEEADF-0A2B-4058-969F-394CC680CB66}
+		{7AB8E0A0-818A-DDF2-7462-8527665B338F} = {B3DEEADF-0A2B-4058-969F-394CC680CB66}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14AA9200-AD9D-4763-8AD2-A072CB6174D7}
