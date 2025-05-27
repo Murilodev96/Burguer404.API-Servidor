@@ -6,7 +6,7 @@ using Burguer404.Domain.Ports.Services.Pedido;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace Burguer.Api.Tests.Controllers
+namespace Burguer404.Api.Tests.Controllers
 {
     public class PedidoControllerTests
     {
