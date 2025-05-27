@@ -29,6 +29,10 @@ namespace Burguer404.Infrastructure.Data.ContextDb
             modelBuilder.HasSequence<long>("CodPedidoSequence", schema: "dbo")
                         .StartsAt(1)
                         .IncrementsBy(1);
+
+            modelBuilder.HasSequence<long>("CodAnonimoSequence", schema: "dbo")
+                        .StartsAt(1)
+                        .IncrementsBy(1);
         }
 
     }

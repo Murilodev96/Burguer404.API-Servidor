@@ -9,5 +9,6 @@ namespace Burguer404.Domain.Ports.Repositories.Cliente
         Task<ClienteEntity?> ObterClientePorCpf(string cpf);
         Task<bool> ValidarCadastroCliente(string cpf, string email);
         Task<bool> AlterarStatusCliente(int clienteId);
+        Task<ClienteEntity> CadastrarClienteAnonimo();
     }
 }

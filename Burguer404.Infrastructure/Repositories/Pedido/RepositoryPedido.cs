@@ -100,6 +100,15 @@ namespace Burguer404.Infrastructure.Data.Repositories.Pedido
             pedido!.StatusPedidoId = pedido.StatusPedidoId;
             _context.Pedidos.Update(pedido);
             await _context.SaveChangesAsync();
+
+            if (pedido.StatusPedidoId == (int)EnumStatusPedido.Finalizado || pedido.StatusPedidoId == (int)EnumStatusPedido.Cancelado)
+            {
+                var clienteAnonimo = await _context.Clientes.FindAsync(pedido.ClienteId);
+                clienteAnonimo!.Status = false;
+                _context.Clientes.Update(clienteAnonimo);
+                await _context.SaveChangesAsync();
+            }
+
             return true;
         }
     }

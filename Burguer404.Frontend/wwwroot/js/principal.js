@@ -31,6 +31,34 @@
     });
 }
 
+function LoginAnonimo() {
+    $.ajax({
+        url: 'http://localhost:5000/api/Cliente/autenticar/anonimo',
+        type: 'GET',
+        success: function (response) {
+
+            if (response.sucesso) {
+                sessionStorage.setItem("clienteLogadoId", response.resultado[0].id);
+                sessionStorage.setItem("perfilClienteId", response.resultado[0].perfilClienteId);
+                sessionStorage.setItem("nomeClienteLogado", response.resultado[0].nome);
+                sessionStorage.setItem("emailClienteLogado", response.resultado[0].email);
+                window.location.href = "/Login/Login"
+            }
+            else {
+                $('#msgErroAutenticacao').text(response.mensagem)
+                    .css({
+                        'color': 'red',
+                        'font-size': '12px'
+                    });
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro ao tentar realizar login:", error);
+            alert("Erro ao tentar realizar login.");
+        }
+    });
+}
+
 function Cadastrar() {
     window.location.href = "/Cadastrar/Cadastrar"
 }

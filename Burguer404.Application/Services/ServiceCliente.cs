@@ -122,5 +122,18 @@ namespace Burguer404.Application.Services
 
             return response;
         }
+
+        public async Task<ResponseBase<ClienteResponse>> LoginClienteAnonimo()
+        {
+            var response = new ResponseBase<ClienteResponse>();
+
+            var clienteAnonimo = await _clienteRepository.CadastrarClienteAnonimo();
+
+            response.Resultado = [_mapper.Map<ClienteEntity, ClienteResponse>(clienteAnonimo)];
+            response.Sucesso = true;
+            response.Mensagem = "Cliente cadastrado com sucesso!";
+
+            return response;
+        }
     }
 }

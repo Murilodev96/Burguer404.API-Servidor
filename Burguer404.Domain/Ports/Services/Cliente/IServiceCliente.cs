@@ -8,6 +8,7 @@ namespace Burguer404.Domain.Ports.Services.Cliente
         Task<ResponseBase<ClienteResponse>> CadastrarCliente(ClienteRequest request);
         Task<ResponseBase<ClienteResponse>> ListarClientes();
         Task<ResponseBase<ClienteResponse>> LoginCliente(string cpf);
+        Task<ResponseBase<ClienteResponse>> LoginClienteAnonimo();
         Task<ResponseBase<bool>> AlterarStatusCliente(int clienteId);
     }
 }

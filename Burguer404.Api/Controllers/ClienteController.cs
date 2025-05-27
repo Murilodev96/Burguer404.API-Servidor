@@ -57,6 +57,22 @@ namespace Burguer404.Api.Controllers
             }
         }
 
+        [HttpGet("autenticar/anonimo")]
+        public async Task<ActionResult> LoginClienteAnonimo()
+        {
+            var response = new ResponseBase<ClienteResponse>();
+            try
+            {
+                response = await _service.LoginClienteAnonimo();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = ex.Message;
+                return BadRequest(response);
+            }
+        }
+
         [HttpGet("alterar/status")]
         public async Task<ActionResult> AlterarStatusCliente(int clienteId)
         {
