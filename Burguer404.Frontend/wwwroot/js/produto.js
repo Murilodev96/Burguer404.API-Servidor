@@ -138,3 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+function VoltarParaPedidos() {
+    window.location.href = "/Login/Login";
+}

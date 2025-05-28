@@ -59,9 +59,9 @@ button {
     transition: background 0.3s;
 }
 
-    button:hover {
-        background-color: #c0392b;
-    }
+button:hover {
+    background-color: #c0392b;
+}
 
 .btn-arquivo {
     background-color: #e74c3c;
@@ -77,9 +77,9 @@ button {
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-    .btn-arquivo:hover {
-        background-color: #c0392b;
-    }
+.btn-arquivo:hover {
+    background-color: #c0392b;
+}
 
 input[type="file"] {
     display: none;

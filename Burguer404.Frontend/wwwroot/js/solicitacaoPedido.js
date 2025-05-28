@@ -223,3 +223,7 @@ function alterarQuantidade(botao, delta) {
 
     $(rowElement).find('td').eq(5).text(`R$ ${novoValorTotal}`);
 }
+
+function VoltarParaPedidos() {
+    window.location.href = "/Login/Login";
+}
