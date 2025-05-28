@@ -1,6 +1,8 @@
 ﻿using Burguer404.Domain.Entities.Base;
 using Burguer404.Domain.Entities.ClassesEnums;
 using Burguer404.Domain.Entities.Pedido;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Burguer404.Domain.Entities.Produto
 {
@@ -14,5 +16,7 @@ namespace Burguer404.Domain.Entities.Produto
         public virtual CategoriaPedidoEntity CategoriaProduto { get; set; }
         public ICollection<PedidoProdutoEntity> PedidoProduto { get; set; } = [];
         public bool Status { get; set; } = true;
+        [NotMapped]
+        public string ImagemBase64 { get; set; }
     }
 }

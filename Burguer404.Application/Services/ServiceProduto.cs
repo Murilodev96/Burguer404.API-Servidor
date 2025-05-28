@@ -54,9 +54,15 @@ namespace Burguer404.Application.Services
         {
             var response = new ResponseBase<ProdutoResponse>();
             var produtos = await _produtoRepository.ListarProdutos();
-
+                        
             var produtosResponse = new List<ProdutoResponse>();
-            Parallel.ForEach(produtos, cliente => { produtosResponse.Add(_mapper.Map<ProdutoEntity, ProdutoResponse>(cliente)); });
+
+            Parallel.ForEach(produtos, produto => 
+            {
+                produto.ImagemBase64 = "data:image/png;base64," + Convert.ToBase64String(produto.ImagemByte ?? []);
+                produtosResponse.Add(_mapper.Map<ProdutoEntity, ProdutoResponse>(produto)); 
+            });
+
 
             response.Resultado = produtosResponse;
             response.Sucesso = true;

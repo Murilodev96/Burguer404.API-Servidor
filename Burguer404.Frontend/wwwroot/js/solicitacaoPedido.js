@@ -157,7 +157,7 @@ function preencherSelect(idSelect, lista) {
         $(option).data('nome', item.nome);
         $(option).data('descricao', item.descricao);
         $(option).data('preco', item.preco);
-        $(option).data('imagem', item.imagem);
+        $(option).data('imagem', item.imagemBase64);
         select.append(option);
     });
 

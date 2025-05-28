@@ -17,11 +17,13 @@
         data: JSON.stringify(request),
         contentType: "application/json",
 
-        sucess: function (response) {
-            debugger;
-            alert(response.mensagem);
-            if (reponse.sucesso) {
-                window.location.href = "/Login/Login"
+        success: function (response) {
+            if (response.sucesso) {
+                alert(response.mensagem);
+                window.location.href = "/"
+            }
+            else {
+                alert(response.mensagem)
             }
         },
         error: function (response) {
@@ -50,6 +52,10 @@ function cadastrarProduto(event) {
                 alert("Produto cadastrado!");
                 form.reset();
                 $('#nome-arquivo').text("Nenhum arquivo escolhido");
+            }
+            else
+            {
+                alert("Erro Ao Cadastrar Produto.");
             }
         },
         error: function (xhr) {
