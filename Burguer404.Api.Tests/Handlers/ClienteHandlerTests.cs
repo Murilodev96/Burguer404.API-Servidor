@@ -7,12 +7,12 @@ using Moq;
 
 namespace Burguer404.Api.Tests.Controllers
 {
-    public class ClienteControllerTests
+    public class ClienteHandlerTests
     {
         private readonly Mock<IServiceCliente> _serviceMock;
         private readonly ClienteController _controller;
 
-        public ClienteControllerTests()
+        public ClienteHandlerTests()
         {
             _serviceMock = new Mock<IServiceCliente>();
             _controller = new ClienteController(_serviceMock.Object);

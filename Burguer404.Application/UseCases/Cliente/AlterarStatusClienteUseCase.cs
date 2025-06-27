@@ -1,4 +1,5 @@
-﻿using Burguer404.Domain.Arguments.Base;
+﻿using Burguer404.Application.Gateways;
+using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Ports.Repositories.Cliente;
 using Burguer404.Domain.Validators.Cliente;
 
@@ -6,14 +7,19 @@ namespace Burguer404.Application.UseCases.Cliente
 {
     public sealed class AlterarStatusClienteUseCase
     {
-        private readonly IRepositoryCliente _clienteRepository;
+        private readonly ClienteGateway _clienteGateway;
 
-        public AlterarStatusClienteUseCase(IRepositoryCliente clienteRepository)
+        public AlterarStatusClienteUseCase(ClienteGateway clienteGateway)
         {
-            _clienteRepository = clienteRepository;
+            _clienteGateway = clienteGateway;
         }
 
-        public async Task<ResponseBase<bool>> ExecuteAsync(int clienteId)
+        public static AlterarStatusClienteUseCase Create(ClienteGateway clienteGateway)
+        {
+            return new AlterarStatusClienteUseCase(clienteGateway);
+        }
+
+        public async Task<(bool, string)> ExecuteAsync(int clienteId)
         {
             var response = new ResponseBase<bool>();
             var validacoes = ValidarCliente.Validar_AlterarStatusCliente_Request(clienteId);
@@ -21,20 +27,20 @@ namespace Burguer404.Application.UseCases.Cliente
             if (!validacoes.Sucesso)
             {
                 response.Mensagem = validacoes.Mensagem;
-                return response;
+                return (validacoes.Sucesso, validacoes.Mensagem);
             }
 
-            var clienteAlterado = await _clienteRepository.AlterarStatusCliente(clienteId);
+            var clienteAlterado = await _clienteGateway.AlterarStatusClienteAsync(clienteId);
             if (!clienteAlterado)
             {
                 response.Mensagem = "Cliente informado não encontrado!";
-                return response;
+                return (validacoes.Sucesso, validacoes.Mensagem);
             }
 
             response.Resultado = [clienteAlterado];
             response.Sucesso = true;
             response.Mensagem = "Status do cliente alterado com sucesso!";
-            return response;
+            return (validacoes.Sucesso, validacoes.Mensagem);
         }
     }
 }

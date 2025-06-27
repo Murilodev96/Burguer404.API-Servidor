@@ -8,7 +8,7 @@ namespace Burguer404.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProdutoController(IServiceProduto _service) : Controller
+    public class ProdutoHandler(IServiceProduto _service) : Controller
     {
         [HttpPost("cadastrar")]
         public async Task<ActionResult> CadastrarProduto([FromForm] ProdutoRequest request)

@@ -3,7 +3,7 @@ using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Ports.Repositories.Pedido;
 
-namespace Burguer404.Domain.UseCases.Pedido
+namespace Burguer404.Application.UseCases.Pedido
 {
     public sealed class ListarPedidosUseCase
     {

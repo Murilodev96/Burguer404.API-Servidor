@@ -1,6 +1,6 @@
 ﻿using Burguer404.Domain.Ports.Repositories.Produto;
 
-namespace Burguer404.Domain.UseCases.Produto
+namespace Burguer404.Application.UseCases.Produto
 {
     public sealed class VisualizarImagemProdutoUseCase
     {

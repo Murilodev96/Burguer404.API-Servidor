@@ -8,15 +8,15 @@ using Moq;
 
 namespace Burguer404.Api.Tests.Controllers
 {
-    public class PedidoControllerTests
+    public class PedidoHandlerTests
     {
         private readonly Mock<IServicePedido> _serviceMock;
-        private readonly PedidoController _controller;
+        private readonly PedidoHandler _controller;
 
-        public PedidoControllerTests()
+        public PedidoHandlerTests()
         {
             _serviceMock = new Mock<IServicePedido>();
-            _controller = new PedidoController(_serviceMock.Object);
+            _controller = new PedidoHandler(_serviceMock.Object);
         }
 
         [Fact]

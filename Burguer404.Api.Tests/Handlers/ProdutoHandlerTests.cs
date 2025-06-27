@@ -9,15 +9,15 @@ using Moq;
 
 namespace Burguer404.Api.Tests.Controllers
 {
-    public class ProdutoControllerTests
+    public class ProdutoHandlerTests
     {
         private readonly Mock<IServiceProduto> _serviceMock;
-        private readonly ProdutoController _controller;
+        private readonly ProdutoHandler _controller;
 
-        public ProdutoControllerTests()
+        public ProdutoHandlerTests()
         {
             _serviceMock = new Mock<IServiceProduto>();
-            _controller = new ProdutoController(_serviceMock.Object);
+            _controller = new ProdutoHandler(_serviceMock.Object);
         }
 
         [Fact]

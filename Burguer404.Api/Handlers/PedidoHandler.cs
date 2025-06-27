@@ -8,7 +8,7 @@ namespace Burguer404.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PedidoController(IServicePedido _service) : Controller
+    public class PedidoHandler(IServicePedido _service) : Controller
     {
 
         [HttpPost("cadastrar")]

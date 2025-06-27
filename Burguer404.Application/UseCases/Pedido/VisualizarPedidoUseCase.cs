@@ -8,7 +8,7 @@ using Burguer404.Domain.Ports.Repositories.Pedido;
 using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Validators.Pedido;
 
-namespace Burguer404.Domain.UseCases.Pedido
+namespace Burguer404.Application.UseCases.Pedido
 {
     public sealed class VisualizarPedidoUseCase
     {
