@@ -9,7 +9,7 @@
     $('select').html('<option>Carregando...</option>');
 
     $.ajax({
-        url: 'http://localhost:5000/api/Produto/obterCardapio',
+        url: 'http://localhost:5000/api/ProdutoHandler/obterCardapio',
         type: 'GET',
         success: function (response) {            
             if (response.sucesso) {
@@ -129,7 +129,7 @@ function continuarPagamento() {
 
     $.ajax({
             type: "POST",
-            url: "http://localhost:5000/api/Pedido/pagamento",
+            url: "http://localhost:5000/api/PedidoHandler/pagamento",
             data: JSON.stringify(pedidos),
             contentType: "application/json",
 

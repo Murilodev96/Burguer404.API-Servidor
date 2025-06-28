@@ -15,7 +15,7 @@
     $('#tabelaPedidos').DataTable({
         ajax: {
             type: "GET",
-            url: 'http://localhost:5000/api/Pedido/listar',
+            url: 'http://localhost:5000/api/PedidoHandler/listar',
             data: { clienteLogadoId: clienteLogadoId },
         },
         columns: [
@@ -53,7 +53,7 @@
 
 function VisualizarPedido(codigo) {
     $.ajax({
-        url: 'http://localhost:5000/api/Pedido/visualizar', 
+        url: 'http://localhost:5000/api/PedidoHandler/visualizar', 
         type: 'GET', 
         data: { codigo: codigo },
         success: function (response) {
@@ -108,7 +108,7 @@ function VisualizarPedido(codigo) {
 
 function AvancarStatus(codigo) {
     $.ajax({
-        url: 'http://localhost:5000/api/Pedido/avancarStatusPedido',
+        url: 'http://localhost:5000/api/PedidoHandler/avancarStatusPedido',
         type: 'GET',
         data: { codigo: codigo },
         success: function (response) {

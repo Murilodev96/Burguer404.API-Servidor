@@ -13,7 +13,7 @@
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:5000/api/Cliente/cadastrar",
+        url: "http://localhost:5000/api/ClienteHandler/cadastrar",
         data: JSON.stringify(request),
         contentType: "application/json",
 
@@ -42,7 +42,7 @@ function cadastrarProduto(event) {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:5000/api/Produto/cadastrar",
+        url: "http://localhost:5000/api/ProdutoHandler/cadastrar",
         data: formData,
         contentType: false,
         processData: false,

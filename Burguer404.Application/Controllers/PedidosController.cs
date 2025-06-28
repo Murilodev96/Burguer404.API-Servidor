@@ -15,10 +15,11 @@ namespace Burguer404.Application.Controllers
         private IRepositoryProduto _produtoRepository;
         private IRepositoryMercadoPago _mercadoPago;
 
-        public PedidosController(IRepositoryPedido repository, IRepositoryProduto produtoRepository)
+        public PedidosController(IRepositoryPedido repository, IRepositoryProduto produtoRepository, IRepositoryMercadoPago mercadoPago)
         {
             _repository = repository;
             _produtoRepository = produtoRepository;
+            _mercadoPago = mercadoPago;
         }
 
         public async Task<ResponseBase<string>> CadastrarPedido(PedidoRequest request) 

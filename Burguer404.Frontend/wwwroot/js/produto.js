@@ -9,7 +9,7 @@
 
     $('#tabelaProdutos').DataTable({
         ajax: {
-            url: 'http://localhost:5000/api/Produto/listar',
+            url: 'http://localhost:5000/api/ProdutoHandler/listar',
             dataSrc: 'data'
         },
         columns: [
@@ -51,7 +51,7 @@
 
 function buscarImagem(id) {
     $.ajax({
-        url: `http://localhost:5000/api/Produto/visualizarImagem?id=${id}`,
+        url: `http://localhost:5000/api/ProdutoHandler/visualizarImagem?id=${id}`,
         method: 'GET',
         success: function (response) {
             if (response && response.resultado && response.resultado.length > 0) {
@@ -70,7 +70,7 @@ function buscarImagem(id) {
 function excluirProduto(id) {
     if (confirm("Tem certeza que deseja excluir este produto?")) {
         $.ajax({
-            url: `http://localhost:5000/api/Produto/remover/?id=${id}`,
+            url: `http://localhost:5000/api/ProdutoHandler/remover/?id=${id}`,
             method: 'GET',
             success: function (response) {
                 alert("Produto excluído com sucesso!");

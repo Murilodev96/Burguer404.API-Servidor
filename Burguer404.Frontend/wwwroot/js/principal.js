@@ -3,7 +3,7 @@
     $('#msgErroAutenticacao').text('');
 
     $.ajax({
-        url: 'http://localhost:5000/api/Cliente/autenticar/cliente',
+        url: 'http://localhost:5000/api/ClienteHandler/autenticar/cliente',
         type: 'GET',
         data: { cpf: cpf },
         success: function (response) {
@@ -33,7 +33,7 @@
 
 function LoginAnonimo() {
     $.ajax({
-        url: 'http://localhost:5000/api/Cliente/autenticar/anonimo',
+        url: 'http://localhost:5000/api/ClienteHandler/autenticar/anonimo',
         type: 'GET',
         success: function (response) {
 
