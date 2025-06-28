@@ -4,7 +4,6 @@ using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Pedido;
 using Burguer404.Domain.Ports.Repositories.Pedido;
 using Burguer404.Domain.Ports.Repositories.Produto;
-using Burguer404.Domain.Ports.Services.Pedido;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Burguer404.Api.Controllers

@@ -1,11 +1,10 @@
 ﻿using Burguer404.Application.Arguments.Cliente;
 using Burguer404.Application.Gateways;
 using Burguer404.Domain.Entities.Cliente;
-using Burguer404.Domain.Ports.Repositories.Cliente;
 
 namespace Burguer404.Application.UseCases.Cliente
 {
-    public  class CadastrarClienteUseCase
+    public class CadastrarClienteUseCase
     {
         private readonly ClienteGateway _clienteGateway;
 

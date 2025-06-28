@@ -1,9 +1,7 @@
 ﻿using Burguer404.Application.Arguments.Pedido;
-using Burguer404.Application.Arguments.Produto;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Pedido;
 using Burguer404.Domain.Entities.Pedido;
-using Burguer404.Domain.Entities.Produto;
 
 namespace Burguer404.Application.Presenters
 {

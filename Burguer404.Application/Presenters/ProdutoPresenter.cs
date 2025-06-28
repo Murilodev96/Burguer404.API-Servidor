@@ -1,5 +1,4 @@
-﻿using Burguer404.Application.Arguments.Cliente;
-using Burguer404.Application.Arguments.Produto;
+﻿using Burguer404.Application.Arguments.Produto;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Produto;
 using Burguer404.Domain.Entities.Produto;

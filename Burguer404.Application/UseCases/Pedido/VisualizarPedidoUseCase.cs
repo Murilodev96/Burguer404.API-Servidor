@@ -4,7 +4,7 @@ using Burguer404.Domain.Entities.Produto;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
-    public  class VisualizarPedidoUseCase
+    public class VisualizarPedidoUseCase
     {
         private readonly PedidosGateway _pedidoGateway;
         private readonly ProdutoGateway _produtoGateway;

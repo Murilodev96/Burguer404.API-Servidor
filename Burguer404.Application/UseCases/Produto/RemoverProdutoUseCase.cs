@@ -1,11 +1,9 @@
-﻿using Burguer404.Application.Arguments.Produto;
-using Burguer404.Application.Gateways;
+﻿using Burguer404.Application.Gateways;
 using Burguer404.Domain.Entities.Produto;
-using Burguer404.Domain.Ports.Repositories.Produto;
 
 namespace Burguer404.Application.UseCases.Produto
 {
-    public  class RemoverProdutoUseCase
+    public class RemoverProdutoUseCase
     {
         private readonly ProdutoGateway _produtoGateway;
 

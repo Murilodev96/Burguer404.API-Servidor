@@ -4,7 +4,7 @@ using Burguer404.Domain.Validators.Pedido;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
-    public  class AvancarStatusPedidoUseCase
+    public class AvancarStatusPedidoUseCase
     {
         private readonly PedidosGateway _pedidoGateway;
 

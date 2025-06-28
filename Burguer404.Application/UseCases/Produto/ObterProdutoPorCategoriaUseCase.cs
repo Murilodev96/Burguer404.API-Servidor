@@ -1,10 +1,9 @@
 ﻿using Burguer404.Application.Gateways;
 using Burguer404.Domain.Entities.Produto;
-using Burguer404.Domain.Ports.Repositories.Produto;
 
 namespace Burguer404.Application.UseCases.Produto
 {
-    public  class ObterProdutosPorCategoriaUseCase
+    public class ObterProdutosPorCategoriaUseCase
     {
         private readonly ProdutoGateway _produtoGateway;
 

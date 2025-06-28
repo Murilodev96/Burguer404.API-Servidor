@@ -4,7 +4,7 @@ using Burguer404.Domain.Entities.Produto;
 
 namespace Burguer404.Application.UseCases.Produto
 {
-    public  class AtualizarProdutoUseCase
+    public class AtualizarProdutoUseCase
     {
         private readonly ProdutoGateway _produtoGateway;
 

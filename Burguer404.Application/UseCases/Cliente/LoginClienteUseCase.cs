@@ -4,7 +4,7 @@ using Burguer404.Domain.Validators.Cliente;
 
 namespace Burguer404.Application.UseCases.Cliente
 {
-    public  class LoginClienteUseCase
+    public class LoginClienteUseCase
     {
         private ClienteGateway _clienteGateway;
 

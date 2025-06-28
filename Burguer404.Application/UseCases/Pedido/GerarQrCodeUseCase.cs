@@ -6,7 +6,7 @@ using Burguer404.Domain.Validators.Pedido;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
-    public  class GerarQrCodeUseCase
+    public class GerarQrCodeUseCase
     {
 
         private readonly PedidosGateway _pedidoGateway;

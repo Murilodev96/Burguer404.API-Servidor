@@ -3,7 +3,7 @@ using Burguer404.Domain.Entities.Produto;
 
 namespace Burguer404.Application.UseCases.Produto
 {
-    public  class ListarProdutosUseCase
+    public class ListarProdutosUseCase
     {
         private readonly ProdutoGateway _produtoGateway;
 
