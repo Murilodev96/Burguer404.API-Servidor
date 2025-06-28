@@ -43,7 +43,8 @@ namespace Burguer404.Application.Presenters
                     Preco = produto.Preco,
                     ImagemByte = produto.ImagemByte ?? [],
                     ImagemBase64 = produto.ImagemBase64,
-                    Status = produto.Status
+                    Status = produto.Status,
+                    CategoriaProdutoId = produto.CategoriaProdutoId
                 };
 
                 listaProdutoMap.Add(produtoMap);

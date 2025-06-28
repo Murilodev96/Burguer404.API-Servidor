@@ -13,17 +13,11 @@ namespace Burguer404.Api.Controllers
     [Route("api/[controller]")]
     public class PedidoHandler : Controller
     {
-        private IRepositoryPedido _repositoryPedido;
-        private IRepositoryProduto _repositoryProduto;
-        private IRepositoryMercadoPago _mercadoPago;
         private PedidosController _pedidoController;
 
-        public PedidoHandler(IRepositoryPedido repositoryPedido, PedidosController pedidoController, IRepositoryProduto repositoryProduto, IRepositoryMercadoPago mercadoPago)
+        public PedidoHandler(IRepositoryPedido repositoryPedido, IRepositoryProduto repositoryProduto, IRepositoryMercadoPago mercadoPago)
         {
-            _repositoryPedido = repositoryPedido;
-            _repositoryProduto = repositoryProduto;
-            _mercadoPago = mercadoPago;
-            _pedidoController = new PedidosController(_repositoryPedido, _repositoryProduto, _mercadoPago);
+            _pedidoController = new PedidosController(repositoryPedido, repositoryProduto, mercadoPago);
         }
 
         [HttpPost("cadastrar")]

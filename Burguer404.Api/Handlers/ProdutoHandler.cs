@@ -11,13 +11,11 @@ namespace Burguer404.Api.Controllers
     [Route("api/[controller]")]
     public class ProdutoHandler : Controller
     {
-        private IRepositoryProduto _repositoryProduto;
         private ProdutoController _controller;
 
-        public ProdutoHandler(IRepositoryProduto repositoryProduto, ProdutoController controller)
+        public ProdutoHandler(IRepositoryProduto repositoryProduto)
         {
-            _repositoryProduto = repositoryProduto;
-            _controller = new ProdutoController(_repositoryProduto);
+            _controller = new ProdutoController(repositoryProduto);
         }
 
         [HttpPost("cadastrar")]
