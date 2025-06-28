@@ -1,18 +1,23 @@
-﻿using Burguer404.Domain.Ports.Repositories.Pedido;
+﻿using Burguer404.Application.Gateways;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
     public sealed class CancelarPedidoUseCase
     {
-        private readonly IRepositoryPedido _pedidoRepository;
+        private readonly PedidosGateway _pedidoGateway;
 
-        public CancelarPedidoUseCase(IRepositoryPedido pedidoRepository)
+        public CancelarPedidoUseCase(PedidosGateway pedidoGateway)
         {
-            _pedidoRepository = pedidoRepository;
+            _pedidoGateway = pedidoGateway;
+        }
+
+        public static CancelarPedidoUseCase Create(PedidosGateway pedidoGateway)
+        {
+            return new CancelarPedidoUseCase(pedidoGateway);
         }
 
         public async Task<bool> ExecuteAsync(int pedidoId) =>
-            await _pedidoRepository.CancelarPedido(pedidoId);
+            await _pedidoGateway.CancelarPedidoAsync(pedidoId);
 
     }
 }

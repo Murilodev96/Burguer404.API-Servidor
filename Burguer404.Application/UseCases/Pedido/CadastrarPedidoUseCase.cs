@@ -1,27 +1,36 @@
 ﻿using Burguer404.Application.Arguments.Pedido;
-using Burguer404.Domain.Arguments.Base;
+using Burguer404.Application.Gateways;
 using Burguer404.Domain.Entities.Pedido;
-using Burguer404.Domain.Ports.Repositories.Pedido;
-using Burguer404.Domain.Validators.Pedido;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
     public sealed class CadastrarPedidoUseCase
     {
-        private readonly IRepositoryPedido _pedidoRepository;
+        private readonly PedidosGateway _pedidoGateway;
 
-        public CadastrarPedidoUseCase(IRepositoryPedido pedidoRepository)
+        public CadastrarPedidoUseCase(PedidosGateway pedidoGateway)
         {
-            _pedidoRepository = pedidoRepository;
+            _pedidoGateway = pedidoGateway;
         }
 
-        public async Task<string> ExecuteAsync(PedidoEntity request)
+        public static CadastrarPedidoUseCase Create(PedidosGateway produtoGateway)
         {
+            return new CadastrarPedidoUseCase(produtoGateway);
+        }
 
-            var pedido = await _pedidoRepository.CriarPedido(request);
+        public async Task<string> ExecuteAsync(PedidoRequest request)
+        {
+            var pedido = PedidoEntity.MapPedido(request);
 
+            if (!(pedido is PedidoEntity))
+                return string.Empty;
 
-            pedido.PedidoProduto = [.. pedido.ProdutosSelecionados
+            pedido = await _pedidoGateway.CriarPedidoAsync(pedido);
+
+            if (pedido?.Id <= 0)
+                return string.Empty;
+
+            pedido!.PedidoProduto = [.. pedido.ProdutosSelecionados
                                             .GroupBy(id => id)
                                             .Select(g => new PedidoProdutoEntity
                                             {
@@ -30,7 +39,7 @@ namespace Burguer404.Application.UseCases.Pedido
                                                 Quantidade = g.Count()
                                             })];
 
-            await _pedidoRepository.InserirProdutosNoPedido([.. pedido.PedidoProduto]);
+            await _pedidoGateway.InserirProdutosNoPedidoAsync([.. pedido.PedidoProduto]);
            
             return "Pedido realizado com sucesso!";
         }

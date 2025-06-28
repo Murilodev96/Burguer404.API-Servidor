@@ -1,31 +1,64 @@
-﻿using Burguer404.Application.Arguments.Pedido;
-using Burguer404.Application.Arguments.Produto;
-using Burguer404.Domain.Arguments.Base;
-using Burguer404.Domain.Arguments.Pedido;
+﻿using Burguer404.Application.Gateways;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Entities.Produto;
-using Burguer404.Domain.Ports.Repositories.Pedido;
-using Burguer404.Domain.Ports.Repositories.Produto;
-using Burguer404.Domain.Validators.Pedido;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
     public sealed class VisualizarPedidoUseCase
     {
-        private readonly IRepositoryPedido _pedidoRepository;
-        private readonly IRepositoryProduto _produtoRepository;
+        private readonly PedidosGateway _pedidoGateway;
+        private readonly ProdutoGateway _produtoGateway;
 
-        public VisualizarPedidoUseCase(IRepositoryPedido pedidoRepository,
-                                       IRepositoryProduto produtoRepository)
+        public VisualizarPedidoUseCase(PedidosGateway pedidoGateway, ProdutoGateway produtoGateway)
         {
-            _pedidoRepository = pedidoRepository;
-            _produtoRepository = produtoRepository;
+            _pedidoGateway = pedidoGateway;
+            _produtoGateway = produtoGateway;
         }
 
-        public async Task<PedidoEntity> ExecuteAsync(string codigo) =>
-            await _pedidoRepository.ObterPedidoPorCodigoPedido(codigo);
+        public static VisualizarPedidoUseCase Create(PedidosGateway pedidoGateway, ProdutoGateway produtoGateway)
+        {
+            return new VisualizarPedidoUseCase(pedidoGateway, produtoGateway);
+        }
 
-        public async Task<ProdutoEntity> ObterProdutosPedido(int idProduto) =>
-            await _produtoRepository.ObterProdutoPorId(idProduto);
+        public async Task<(PedidoEntity?, List<PedidoProdutoEntity>?)> ExecuteAsync(string codigo)
+        {
+            if (string.IsNullOrWhiteSpace(codigo))
+                return (null, null);
+
+            var pedido =  await _pedidoGateway.ObterPedidoPorCodigoPedidoAsync(codigo);
+
+            if(!(pedido is PedidoEntity))
+                return (null, null);
+
+            var listaPedidoProdutos = new List<PedidoProdutoEntity>();
+
+            foreach (var item in pedido.PedidoProduto)
+            {
+                var produto = await _produtoGateway.ObterProdutoPorIdAsync(item.ProdutoId);
+
+                var pedProd = new PedidoProdutoEntity()
+                {
+                    PedidoId = item.PedidoId,
+                    ProdutoId = item.ProdutoId,
+                    Quantidade = item.Quantidade,
+                    Produto = new ProdutoEntity() 
+                    {
+                        CategoriaProdutoId = produto.CategoriaProdutoId,
+                        CategoriaProduto = produto.CategoriaProduto,
+                        Descricao = produto.Descricao,
+                        Id = item.Id,
+                        ImagemBase64 = produto.ImagemBase64,
+                        ImagemByte = produto.ImagemByte,
+                        Nome = produto.Nome,
+                        Preco = produto.Preco,
+                        Status = produto.Status,
+                    }
+                };
+
+                listaPedidoProdutos.Add(pedProd);
+            }
+
+            return (pedido, listaPedidoProdutos);
+        }
     }
 }
