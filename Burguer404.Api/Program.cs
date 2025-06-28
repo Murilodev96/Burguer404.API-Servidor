@@ -8,7 +8,6 @@ builder.Services.AddJsonSerializerConfiguration();
 builder.Services.AddAuthenticationConfiguration(builder.Configuration);
 builder.Services.AddRepositoriesConfiguration(builder.Configuration);
 builder.Services.AddAutoMapperConfiguration();
-builder.Services.AddServicesConfiguration();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddOutputCacheConfiguration();
 builder.Services.AddHealthChecksConfiguration();

@@ -1,11 +1,10 @@
 ﻿using Burguer404.Application.Gateways;
 using Burguer404.Domain.Arguments.Base;
-using Burguer404.Domain.Ports.Repositories.Cliente;
 using Burguer404.Domain.Validators.Cliente;
 
 namespace Burguer404.Application.UseCases.Cliente
 {
-    public sealed class AlterarStatusClienteUseCase
+    public class AlterarStatusClienteUseCase
     {
         private readonly ClienteGateway _clienteGateway;
 

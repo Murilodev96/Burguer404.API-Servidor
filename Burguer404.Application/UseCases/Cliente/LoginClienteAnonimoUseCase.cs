@@ -4,7 +4,7 @@ using Burguer404.Domain.Ports.Repositories.Cliente;
 
 namespace Burguer404.Application.UseCases.Cliente
 {
-    public sealed class LoginClienteAnonimoUseCase
+    public  class LoginClienteAnonimoUseCase
     {
         private readonly ClienteGateway _clienteGateway;
 

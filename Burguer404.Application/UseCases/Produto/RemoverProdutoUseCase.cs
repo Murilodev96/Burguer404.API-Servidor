@@ -5,7 +5,7 @@ using Burguer404.Domain.Ports.Repositories.Produto;
 
 namespace Burguer404.Application.UseCases.Produto
 {
-    public sealed class RemoverProdutoUseCase
+    public  class RemoverProdutoUseCase
     {
         private readonly ProdutoGateway _produtoGateway;
 

@@ -5,7 +5,7 @@ using Burguer404.Domain.Ports.Repositories.Cliente;
 
 namespace Burguer404.Application.UseCases.Cliente
 {
-    public sealed class CadastrarClienteUseCase
+    public  class CadastrarClienteUseCase
     {
         private readonly ClienteGateway _clienteGateway;
 

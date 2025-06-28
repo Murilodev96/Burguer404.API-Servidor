@@ -1,5 +1,7 @@
 ﻿using Burguer404.Application.Arguments.Cliente;
+using Burguer404.Application.Controllers;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Ports.Repositories.Cliente;
 using Burguer404.Domain.Ports.Services.Cliente;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,15 +9,24 @@ namespace Burguer404.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ClienteController(IServiceCliente _service) : Controller
+    public class ClienteHandler : Controller
     {
+        private IRepositoryCliente _clienteRepository;
+        private ClienteController _clienteController;
+
+        public ClienteHandler(IRepositoryCliente clienteRepository)
+        {
+            _clienteRepository = clienteRepository;
+            _clienteController = new ClienteController(_clienteRepository);
+        }
+
         [HttpPost("cadastrar")]
         public async Task<ActionResult> CadastrarCliente(ClienteRequest request)
         {
             var response = new ResponseBase<ClienteResponse>();
             try
             {
-                response = await _service.CadastrarCliente(request);
+                response = await _clienteController.CadastrarCliente(request);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -31,7 +42,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<ClienteResponse>();
             try
             {
-                response = await _service.ListarClientes();
+                response = await _clienteController.ListarClientes();
                 return Ok(response);
             }
             catch (Exception ex)
@@ -47,7 +58,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<ClienteResponse>();
             try
             {
-                response = await _service.LoginCliente(cpf);
+                response = await _clienteController.LoginCliente(cpf);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -63,7 +74,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<ClienteResponse>();
             try
             {
-                response = await _service.LoginClienteAnonimo();
+                response = await _clienteController.LoginClienteAnonimo();
                 return Ok(response);
             }
             catch (Exception ex)
@@ -79,7 +90,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<bool>();
             try
             {
-                response = await _service.AlterarStatusCliente(clienteId);
+                response = await _clienteController.AlterarStatusCliente(clienteId);
                 return Ok(response);
             }
             catch (Exception ex)

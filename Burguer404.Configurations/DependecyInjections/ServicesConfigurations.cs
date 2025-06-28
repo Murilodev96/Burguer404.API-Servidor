@@ -1,8 +1,4 @@
-﻿using Burguer404.Application.Services;
-using Burguer404.Configurations.MapperConfig;
-using Burguer404.Domain.Ports.Services.Cliente;
-using Burguer404.Domain.Ports.Services.Pedido;
-using Burguer404.Domain.Ports.Services.Produto;
+﻿using Burguer404.Configurations.MapperConfig;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,14 +8,6 @@ namespace Burguer404.Configurations.DependecyInjections
 {
     public static class ServicesConfigurations
     {
-        public static IServiceCollection AddServicesConfiguration(this IServiceCollection services)
-        {
-            services.AddScoped<IServiceCliente, ServiceCliente>();
-            services.AddScoped<IServicePedido, ServicePedido>();
-            services.AddScoped<IServiceProduto, ServiceProduto>();
-
-            return services;
-        }
         public static IServiceCollection AddJsonSerializerConfiguration(this IServiceCollection services)
         {
             services.AddControllers().AddJsonOptions(options =>

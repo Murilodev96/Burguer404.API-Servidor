@@ -4,7 +4,7 @@ using Burguer404.Domain.Entities.Pedido;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
-    public sealed class CadastrarPedidoUseCase
+    public class CadastrarPedidoUseCase
     {
         private readonly PedidosGateway _pedidoGateway;
 

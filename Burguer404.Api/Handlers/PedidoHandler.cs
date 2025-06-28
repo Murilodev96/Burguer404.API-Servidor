@@ -1,6 +1,9 @@
 ﻿using Burguer404.Application.Arguments.Pedido;
+using Burguer404.Application.Controllers;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Pedido;
+using Burguer404.Domain.Ports.Repositories.Pedido;
+using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Ports.Services.Pedido;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +11,18 @@ namespace Burguer404.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PedidoHandler(IServicePedido _service) : Controller
+    public class PedidoHandler : Controller
     {
+        private IRepositoryPedido _repositoryPedido;
+        private IRepositoryProduto _repositoryProduto;
+        private PedidosController _pedidoController;
+
+        public PedidoHandler(IRepositoryPedido repositoryPedido, PedidosController pedidoController, IRepositoryProduto repositoryProduto)
+        {
+            _repositoryPedido = repositoryPedido;
+            _repositoryProduto = repositoryProduto;
+            _pedidoController = new PedidosController(_repositoryPedido, _repositoryProduto);
+        }
 
         [HttpPost("cadastrar")]
         public async Task<ActionResult> CadastrarPedido(PedidoRequest request)
@@ -17,7 +30,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<string>();
             try
             {
-                response = await _service.CadastrarPedido(request);
+                response = await _pedidoController.CadastrarPedido(request);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -33,7 +46,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<string>();
             try
             {
-                response = await _service.GerarQrCode(request);
+                response = await _pedidoController.GerarQrCode(request);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -49,7 +62,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<PedidoResponse>();
             try
             {
-                response = await _service.ListarPedidos(clienteLogadoId);
+                response = await _pedidoController.ListarPedidos(clienteLogadoId);
                 return new JsonResult(new { data = response.Resultado });
             }
             catch (Exception ex)
@@ -65,7 +78,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<bool>();
             try
             {
-                response = await _service.CancelarPedido(pedidoId);
+                response = await _pedidoController.CancelarPedido(pedidoId);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -81,7 +94,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<PedidoResponse>();
             try
             {
-                response = await _service.VisualizarPedido(codigo);
+                response = await _pedidoController.VisualizarPedido(codigo);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -97,7 +110,7 @@ namespace Burguer404.Api.Controllers
             var response = new ResponseBase<bool>();
             try
             {
-                response = await _service.AvancarStatusPedido(codigo);
+                response = await _pedidoController.AvancarStatusPedido(codigo);
                 return Ok(response);
             }
             catch (Exception ex)

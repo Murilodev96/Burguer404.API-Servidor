@@ -2,7 +2,7 @@
 
 namespace Burguer404.Application.UseCases.Pedido
 {
-    public sealed class CancelarPedidoUseCase
+    public  class CancelarPedidoUseCase
     {
         private readonly PedidosGateway _pedidoGateway;
 
