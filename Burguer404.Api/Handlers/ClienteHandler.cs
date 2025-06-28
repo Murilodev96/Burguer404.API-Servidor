@@ -10,13 +10,11 @@ namespace Burguer404.Api.Controllers
     [Route("api/[controller]")]
     public class ClienteHandler : Controller
     {
-        private IRepositoryCliente _clienteRepository;
         private ClienteController _clienteController;
 
         public ClienteHandler(IRepositoryCliente clienteRepository)
         {
-            _clienteRepository = clienteRepository;
-            _clienteController = new ClienteController(_clienteRepository);
+            _clienteController = new ClienteController(clienteRepository);
         }
 
         [HttpPost("cadastrar")]
