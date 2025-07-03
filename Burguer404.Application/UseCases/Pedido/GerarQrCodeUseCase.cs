@@ -50,11 +50,24 @@ namespace Burguer404.Application.UseCases.Pedido
             };
 
             var pedido = PedidoEntity.MapPedido(pedidoRequest);
-
+            
             if (!(pedido is PedidoEntity))
                 return null;
 
             var codigoPedido = await _pedidoGateway.CriarPedidoAsync(pedido);
+
+            pedido.PedidoProduto = [.. pedido.ProdutosSelecionados
+                                                .GroupBy(produtoId => produtoId)
+                                                .Select(grupo => new PedidoProdutoEntity
+                                                {
+                                                    PedidoId = pedido.Id,
+                                                    ProdutoId = grupo.Key,
+                                                    Quantidade = grupo.Count()
+                                                })];
+            
+            await _pedidoGateway.InserirProdutosNoPedidoAsync([.. pedido.PedidoProduto]);
+            
+
             try
             {
                 var total = Math.Round(itens.Sum(x => x.Valor), 2);
@@ -80,8 +93,8 @@ namespace Burguer404.Application.UseCases.Pedido
                         title = $"Lanche: {lanche?.Nome} - Acompanhamento: {acompanhamento?.Nome} - Bebida: {bebida?.Nome} - Sobremesa: {sobremesa?.Nome}",
                         description = "Combo solicitado via app no Burguer404",
                         quantity = 1,
-                        total_amount = total,
-                        unit_price = total,
+                        total_amount = item.Valor,
+                        unit_price = item.Valor,
                         category = "Lanche",
                         sku_number = "001",
                         unit_measure = "unit"

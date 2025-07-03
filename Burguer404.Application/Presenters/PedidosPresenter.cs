@@ -42,6 +42,7 @@ namespace Burguer404.Application.Presenters
                 DataPedido = pedido.DataPedido,
                 NomeCliente = pedido.Cliente.Nome,
                 StatusPedidoDescricao = pedido.StatusPedido.Descricao,
+                ProdutosSelecionados = new List<PedidoProdutoResponse>()
             };
 
             foreach (var item in pedidoProduto)
