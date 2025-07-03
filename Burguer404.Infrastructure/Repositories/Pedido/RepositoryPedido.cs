@@ -56,7 +56,8 @@ namespace Burguer404.Infrastructure.Data.Repositories.Pedido
             }
             else 
             {
-                pedidos = await _context.Pedidos.Where(x => x.ClienteId == cliente.Id)
+                pedidos = await _context.Pedidos.Where(x => x.ClienteId == cliente.Id && 
+                                                            x.StatusPedidoId != (int)EnumStatusPedido.Finalizado)
                                                 .Include(p => p.StatusPedido)
                                                 .Include(p => p.Cliente)
                                                 .Include(p => p.PedidoProduto)
