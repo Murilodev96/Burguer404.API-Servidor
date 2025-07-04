@@ -6,10 +6,9 @@ using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Domain.Entities.Pedido;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Burguer404.Application.Arguments.Cliente;
 using Burguer404.Domain.Arguments.Base;
-using Microsoft.AspNetCore.Http;
 using Burguer404.Domain.Entities.Produto;
+using Microsoft.Extensions.Configuration;
 
 
 namespace Burguer404.Api.Tests.Controllers
@@ -20,13 +19,15 @@ namespace Burguer404.Api.Tests.Controllers
         private readonly Mock<IRepositoryProduto> _produtoRepoMock;
         private readonly Mock<IRepositoryMercadoPago> _mercadoPagoRepoMock;
         private readonly PedidoHandler _handler;
+        private readonly Mock<IConfiguration> _config;
 
         public PedidoHandlerTests()
         {
             _pedidoRepoMock = new Mock<IRepositoryPedido>();
             _produtoRepoMock = new Mock<IRepositoryProduto>();
             _mercadoPagoRepoMock = new Mock<IRepositoryMercadoPago>();
-            _handler = new PedidoHandler(_pedidoRepoMock.Object, _produtoRepoMock.Object, _mercadoPagoRepoMock.Object);
+            _config = new Mock<IConfiguration>();
+            _handler = new PedidoHandler(_pedidoRepoMock.Object, _produtoRepoMock.Object, _config.Object);
         }
 
         [Fact]
