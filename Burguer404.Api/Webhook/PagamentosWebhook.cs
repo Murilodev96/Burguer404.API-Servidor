@@ -12,23 +12,23 @@ namespace Burguer404.Api.Webhook
     {
         private readonly WebhookController _webhookController;
 
-        public PagamentosWebhook(IRepositoryPedido repositorio, IConfiguration config, HttpClient clienteHttp)
+        public PagamentosWebhook(IRepositoryPedido repositorio, IConfiguration config)
         {
-            _webhookController = new WebhookController(repositorio, config, clienteHttp);
+            _webhookController = new WebhookController(repositorio, config);
         }
 
         [HttpPost("notificacao")]
         public async Task<IActionResult> ReceberWebhook(
             [FromBody] NotificacaoWebhook notificacao,
-            [FromHeader(Name = "x-assinatura")] string assinatura,
-            [FromHeader(Name = "x-request-id")] string requestId)
+            [FromHeader(Name = "X-Signature")] string assinatura,
+            [FromHeader(Name = "X-Request-Id")] string requestId)
         {
             if (string.IsNullOrEmpty(assinatura) || string.IsNullOrEmpty(requestId))
             {
                 return BadRequest("Headers de assinatura não fornecidos");
             }
 
-            if (!_webhookController.ValidarAssinaturaWebhook(assinatura, requestId, notificacao.Data.Id))
+            if (!_webhookController.ValidarAssinaturaWebhook(assinatura, requestId, notificacao.Resource))
             {
                 return Unauthorized("Assinatura do webhook inválida");
             }

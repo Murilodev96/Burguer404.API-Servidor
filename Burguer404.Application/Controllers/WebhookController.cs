@@ -12,13 +12,11 @@ namespace Burguer404.Application.Controllers
     {
         private IRepositoryPedido _repository;
         private IConfiguration _config;
-        private readonly HttpClient _clienteHttp;
 
-        public WebhookController(IRepositoryPedido repository, IConfiguration config, HttpClient clienteHttp)
+        public WebhookController(IRepositoryPedido repository, IConfiguration config)
         {
             _repository = repository;
             _config = config;
-            _clienteHttp = clienteHttp;
         }
 
         public async Task ConsultarPagamento(NotificacaoWebhook notificacao)
@@ -26,7 +24,7 @@ namespace Burguer404.Application.Controllers
             var useCase = ValidarNotificacaoUseCase.Create();
             await useCase.ExecuteAsync(notificacao);
 
-            var consultarPagamentoCompleto = ConsultarPagamentoCompletoMercadoPago.Create(_clienteHttp, _config);
+            var consultarPagamentoCompleto = ConsultarPagamentoCompletoMercadoPago.Create(_config);
             var (codigoPedido, status) = await consultarPagamentoCompleto.ConsultarPagamentoMercadoPago(notificacao);
 
             var pedidoGateway = new PedidosGateway(_repository);

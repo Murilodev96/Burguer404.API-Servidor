@@ -4,35 +4,12 @@ namespace Burguer404.Domain.Arguments.Webhook
 {
     public class NotificacaoWebhook
     {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
+        [JsonPropertyName("resource")]
+        public string Resource { get; set; }
 
-        [JsonPropertyName("live_mode")]
-        public bool LiveMode { get; set; }
+        [JsonPropertyName("topic")]
+        public string Topic { get; set; }
 
-        [JsonPropertyName("type")]
-        public string Type { get; set; }
-
-        [JsonPropertyName("date_created")]
-        public DateTime DateCreated { get; set; }
-
-        [JsonPropertyName("user_id")]
-        public int UserId { get; set; }
-
-        [JsonPropertyName("api_version")]
-        public string ApiVersion { get; set; }
-
-        [JsonPropertyName("action")]
-        public string Action { get; set; }
-
-        [JsonPropertyName("data")]
-        public Data Data { get; set; }
-    }
-
-    public class Data
-    {
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
-    }
-
+        
+    }  
 }
