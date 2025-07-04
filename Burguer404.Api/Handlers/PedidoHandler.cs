@@ -14,9 +14,9 @@ namespace Burguer404.Api.Controllers
     {
         private PedidosController _pedidoController;
 
-        public PedidoHandler(IRepositoryPedido repositoryPedido, IRepositoryProduto repositoryProduto, IRepositoryMercadoPago mercadoPago)
+        public PedidoHandler(IRepositoryPedido repositoryPedido, IRepositoryProduto repositoryProduto, IConfiguration config)
         {
-            _pedidoController = new PedidosController(repositoryPedido, repositoryProduto, mercadoPago);
+            _pedidoController = new PedidosController(repositoryPedido, repositoryProduto, config);
         }
 
         [HttpPost("cadastrar")]

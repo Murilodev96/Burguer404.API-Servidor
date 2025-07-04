@@ -23,7 +23,8 @@ namespace Burguer404.Infrastructure.Data.Maps
                 new StatusPedidoEntity { Id = 2, Descricao = "Em preparação" },
                 new StatusPedidoEntity { Id = 3, Descricao = "Pronto" },
                 new StatusPedidoEntity { Id = 4, Descricao = "Finalizado" },
-                new StatusPedidoEntity { Id = 5, Descricao = "Cancelado" }
+                new StatusPedidoEntity { Id = 5, Descricao = "Cancelado" },
+                new StatusPedidoEntity { Id = 6, Descricao = "Aguardando pagamento" }
             );
         }
     }

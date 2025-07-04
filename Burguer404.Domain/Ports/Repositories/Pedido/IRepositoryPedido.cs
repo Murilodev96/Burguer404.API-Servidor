@@ -9,6 +9,7 @@ namespace Burguer404.Domain.Ports.Repositories.Pedido
         Task<List<PedidoEntity>> ListarPedidos(int clienteLogadoId);
         Task<bool> CancelarPedido(int pedidoId);
         Task<PedidoEntity?> ObterPedidoPorCodigoPedido(string codigo);
+        Task<PedidoEntity?> AtualizarPedido(PedidoEntity pedido);
         Task<bool> AlterarStatusPedido(PedidoEntity pedido);
     }
 }

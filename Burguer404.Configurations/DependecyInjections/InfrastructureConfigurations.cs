@@ -31,7 +31,6 @@ namespace Burguer404.Configurations.DependecyInjections
             services.AddScoped<IRepositoryCliente, RepositoryCliente>();
             services.AddScoped<IRepositoryPedido, RepositoryPedido>();
             services.AddScoped<IRepositoryProduto, RepositoryProduto>();
-            services.AddScoped<IRepositoryMercadoPago, SolicitarPagamentoMercadoPago>();
 
             return services;
         }

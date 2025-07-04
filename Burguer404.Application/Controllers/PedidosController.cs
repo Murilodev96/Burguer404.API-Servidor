@@ -6,6 +6,8 @@ using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Pedido;
 using Burguer404.Domain.Ports.Repositories.Pedido;
 using Burguer404.Domain.Ports.Repositories.Produto;
+using Burguer404.Infrastructure.Pagamentos.Operacoes;
+using Microsoft.Extensions.Configuration;
 
 namespace Burguer404.Application.Controllers
 {
@@ -13,13 +15,13 @@ namespace Burguer404.Application.Controllers
     {
         private IRepositoryPedido _repository;
         private IRepositoryProduto _produtoRepository;
-        private IRepositoryMercadoPago _mercadoPago;
+        private IConfiguration _config;
 
-        public PedidosController(IRepositoryPedido repository, IRepositoryProduto produtoRepository, IRepositoryMercadoPago mercadoPago)
+        public PedidosController(IRepositoryPedido repository, IRepositoryProduto produtoRepository, IConfiguration config)
         {
             _repository = repository;
             _produtoRepository = produtoRepository;
-            _mercadoPago = mercadoPago;
+            _config = config;
         }
 
         public async Task<ResponseBase<string>> CadastrarPedido(PedidoRequest request) 
@@ -99,7 +101,8 @@ namespace Burguer404.Application.Controllers
             if (!(qrCodeRequest is QrCodeRequest))
                 return new ResponseBase<string>() { Sucesso = false, Mensagem = "Ocorreu um erro com os dados do pedido", Resultado = [] };
 
-            var (sucesso, qrCode) = await _mercadoPago.SolicitarQrCodeMercadoPago(qrCodeRequest);
+            var mercadoPago = SolicitarPagamentoMercadoPago.Create(_config);
+            var (sucesso, qrCode) = await mercadoPago.SolicitarQrCodeMercadoPago(qrCodeRequest);
 
             if (!sucesso)
                 return new ResponseBase<string>() { Sucesso = false, Mensagem = "Ocorreu um erro ao tentar gerar o QrCode com o mercado pago", Resultado = [] };

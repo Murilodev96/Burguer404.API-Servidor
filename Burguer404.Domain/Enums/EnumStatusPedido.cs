@@ -23,6 +23,10 @@ namespace Burguer404.Domain.Enums
 
         [EnumMember]
         [Display(Name = "Cancelado")]
-        Cancelado = 5
+        Cancelado = 5,
+
+        [EnumMember]
+        [Display(Name = "Aguardando pagamento")]
+        AguardandoPagamento = 6,
     }
 }

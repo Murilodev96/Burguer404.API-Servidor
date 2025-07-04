@@ -7,13 +7,18 @@ using System.Text;
 
 namespace Burguer404.Infrastructure.Pagamentos.Operacoes
 {
-    public class SolicitarPagamentoMercadoPago : IRepositoryMercadoPago
+    public class SolicitarPagamentoMercadoPago
     {
         private readonly IConfiguration _configuration;
 
         public SolicitarPagamentoMercadoPago(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+
+        public static SolicitarPagamentoMercadoPago Create(IConfiguration configuration) 
+        {
+            return new SolicitarPagamentoMercadoPago(configuration);
         }
 
         public async Task<(bool, string)> SolicitarQrCodeMercadoPago(QrCodeRequest qrCodeRequest)
