@@ -29,7 +29,7 @@ namespace Burguer404.Api.Controllers
             catch (Exception ex)
             {
                 response.Mensagem = ex.Message;
-                return BadRequest(response);
+                return BadRequest(response); 
             }
         }
 
