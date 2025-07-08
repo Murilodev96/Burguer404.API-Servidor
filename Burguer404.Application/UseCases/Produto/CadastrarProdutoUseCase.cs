@@ -1,6 +1,7 @@
 ﻿using Burguer404.Application.Arguments.Produto;
 using Burguer404.Application.Gateways;
 using Burguer404.Domain.Entities.Produto;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Burguer404.Application.UseCases.Produto
 {
@@ -26,6 +27,15 @@ namespace Burguer404.Application.UseCases.Produto
                 return null;
 
             return await _produtoGateway.CadastrarProdutoAsync(produto);
+        }
+
+        public async Task<byte[]?> ConverterMemoryStream(ProdutoRequest request)
+        {
+            var memoryStream = new MemoryStream();
+
+            await request.Imagem.CopyToAsync(memoryStream);
+
+            return memoryStream.ToArray();
         }
 
     }
