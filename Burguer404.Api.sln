@@ -29,6 +29,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Burguer404.Api.Tests", "Bur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Burguer404.Application.Tests", "Burguer404.Application.Tests\Burguer404.Application.Tests.csproj", "{7AB8E0A0-818A-DDF2-7462-8527665B338F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{F43827F3-62D8-4AF9-BCED-C94F4A4D7E78}"
+	ProjectSection(SolutionItems) = preProject
+		backend-deployment.yaml = backend-deployment.yaml
+		backend-service.yaml = backend-service.yaml
+		db-deployment.yaml = db-deployment.yaml
+		db-service.yaml = db-service.yaml
+		frontend-deployment.yaml = frontend-deployment.yaml
+		frontend-service.yaml = frontend-service.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
