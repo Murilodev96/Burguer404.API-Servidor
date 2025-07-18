@@ -27,7 +27,6 @@ namespace Burguer404.Application.UseCases.Webhook
             {
                 "approved" => (int)EnumStatusPedido.EmPreparacao,
                 "rejected" or "cancelled" => (int)EnumStatusPedido.Cancelado,
-                "pending" or "in_process" => (int)EnumStatusPedido.AguardandoPagamento,
                 _ => pedido.StatusPedidoId
             };
 

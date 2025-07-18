@@ -17,12 +17,12 @@ namespace Burguer404.Application.UseCases.Webhook
 
         public async Task ExecuteAsync(NotificacaoWebhook notificacao)
         {
-            if (notificacao == null || string.IsNullOrEmpty(notificacao.Topic))
+            if (notificacao == null || string.IsNullOrEmpty(notificacao.type))
             {
                 throw new ArgumentException("Payload do webhook inválido");
             }
 
-            if (notificacao.Topic.ToLower() != "payment")
+            if (notificacao.type.ToLower() != "payment")
             {
                 throw new ArgumentException("Evento não processado - Tipo diferente de pagamento");
             }            
