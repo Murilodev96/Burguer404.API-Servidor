@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddJsonSerializerConfiguration();
 builder.Services.AddAuthenticationConfiguration(builder.Configuration);
 builder.Services.AddRepositoriesConfiguration(builder.Configuration);
+builder.Services.AddGatewayConfiguration();
 builder.Services.AddAutoMapperConfiguration();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddOutputCacheConfiguration();

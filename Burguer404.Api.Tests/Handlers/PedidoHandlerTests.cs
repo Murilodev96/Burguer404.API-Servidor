@@ -19,45 +19,19 @@ namespace Burguer404.Api.Tests.Handlers
 {
     public class PedidoHandlerTests
     {
-
         private readonly PedidoHandler _handler;
-        private readonly PedidosController _pedidoController;
         private readonly Mock<IConfiguration> _config;
 
         private readonly Mock<IPedidosGateway> _pedidosGatewayMock;
         private readonly Mock<IProdutoGateway> _produtoGatewayMock;
-        private readonly CadastrarPedidoUseCase _cadastrarPedidoUseCase;
-        private readonly ListarPedidoUseCase _listarPedidoUseCase;
-        private readonly VisualizarPedidoUseCase _visualizarPedidoUseCase;
-        private readonly AvancarStatusPedidoUseCase _avancarStatusPedidoUseCase;
-        private readonly CancelarPedidoUseCase _cancelarPedidoUseCase;
-        private readonly GerarQrCodeUseCase _gerarQrCodeUseCase;
-        private readonly Mock<IRepositoryPedido> _pedidoRepoMock;
 
         public PedidoHandlerTests()
         {
 
             _config = new Mock<IConfiguration>();
-            _pedidoRepoMock = new Mock<IRepositoryPedido>();
             _pedidosGatewayMock = new Mock<IPedidosGateway>();
             _produtoGatewayMock = new Mock<IProdutoGateway>();
-            _cadastrarPedidoUseCase = new CadastrarPedidoUseCase(_pedidosGatewayMock.Object);
-            _listarPedidoUseCase = new ListarPedidoUseCase(_pedidosGatewayMock.Object);
-            _visualizarPedidoUseCase = new VisualizarPedidoUseCase(_pedidosGatewayMock.Object, _produtoGatewayMock.Object);
-            _avancarStatusPedidoUseCase = new AvancarStatusPedidoUseCase(_pedidosGatewayMock.Object);
-            _cancelarPedidoUseCase = new CancelarPedidoUseCase(_pedidosGatewayMock.Object);
-            _gerarQrCodeUseCase = new GerarQrCodeUseCase(_pedidosGatewayMock.Object, _produtoGatewayMock.Object);
-
-            _pedidoController = new PedidosController(
-                _cadastrarPedidoUseCase,
-                _listarPedidoUseCase,
-                _visualizarPedidoUseCase,
-                _avancarStatusPedidoUseCase,
-                _cancelarPedidoUseCase,
-                _gerarQrCodeUseCase,
-                _config.Object);
-
-            _handler = new PedidoHandler(_pedidoController);
+            _handler = new PedidoHandler(_pedidosGatewayMock.Object, _config.Object, _produtoGatewayMock.Object);
         }
 
         [Fact]
@@ -143,8 +117,8 @@ namespace Burguer404.Api.Tests.Handlers
         public async Task VisualizarPedido_DeveRetornarOk()
         {
             var codigo = "ABC123";
-            var cliente = new Burguer404.Domain.Entities.Cliente.ClienteEntity { Id = 1, Nome = "Cliente Teste" };
-            var statusPedido = new Burguer404.Domain.Entities.ClassesEnums.StatusPedidoEntity { Id = 1, Descricao = "Em andamento" };
+            var cliente = new Domain.Entities.Cliente.ClienteEntity { Id = 1, Nome = "Cliente Teste" };
+            var statusPedido = new Domain.Entities.ClassesEnums.StatusPedidoEntity { Id = 1, Descricao = "Em andamento" };
             var pedidoProduto = new PedidoProdutoEntity { ProdutoId = 1, PedidoId = 1, Quantidade = 1 };
             var pedido = new PedidoEntity {
                 CodigoPedido = codigo,

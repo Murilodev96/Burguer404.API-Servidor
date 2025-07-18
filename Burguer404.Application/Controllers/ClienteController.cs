@@ -1,26 +1,23 @@
 using Burguer404.Application.Arguments.Cliente;
-using Burguer404.Application.Gateways;
 using Burguer404.Application.Ports.Gateways;
 using Burguer404.Application.Presenters;
 using Burguer404.Application.UseCases.Cliente;
 using Burguer404.Domain.Arguments.Base;
-using Burguer404.Domain.Ports.Repositories.Cliente;
 
 namespace Burguer404.Application.Controllers
 {
     public class ClienteController
     {
-        private IRepositoryCliente _repository;
+        private IClienteGateway _gateway;
 
-        public ClienteController(IRepositoryCliente repository)
+        public ClienteController(IClienteGateway gateway)
         {
-            _repository = repository;
+            _gateway = gateway;
         }
 
         public async Task<ResponseBase<ClienteResponse>> LoginCliente(string cpf) 
         {
-            IClienteGateway clienteGateway = new ClienteGateway(_repository);
-            var useCase = LoginClienteUseCase.Create(clienteGateway);
+            var useCase = LoginClienteUseCase.Create(_gateway);
 
             var cliente = await useCase.ExecuteAsync(cpf);
 
@@ -34,8 +31,7 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<ClienteResponse>> CadastrarCliente(ClienteRequest request) 
         {
-            IClienteGateway clienteGateway = new ClienteGateway(_repository);
-            var useCase = CadastrarClienteUseCase.Create(clienteGateway);
+            var useCase = CadastrarClienteUseCase.Create(_gateway);
 
             var cliente = await useCase.ExecuteAsync(request);
 
@@ -49,8 +45,7 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<ClienteResponse>> ListarClientes() 
         {
-            IClienteGateway clienteGateway = new ClienteGateway(_repository);
-            var useCase = ListarClientesUseCase.Create(clienteGateway);
+            var useCase = ListarClientesUseCase.Create(_gateway);
 
             var clientes = await useCase.ExecuteAsync();
 
@@ -59,8 +54,7 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<bool>> AlterarStatusCliente(int clienteId) 
         {
-            IClienteGateway clienteGateway = new ClienteGateway(_repository);
-            var useCase = AlterarStatusClienteUseCase.Create(clienteGateway);
+            var useCase = AlterarStatusClienteUseCase.Create(_gateway);
 
             var (sucesso, mensagem) = await useCase.ExecuteAsync(clienteId);
 
@@ -69,8 +63,7 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<ClienteResponse>> LoginClienteAnonimo() 
         {
-            IClienteGateway clienteGateway = new ClienteGateway(_repository);
-            var useCase = LoginClienteAnonimoUseCase.Create(clienteGateway);
+            var useCase = LoginClienteAnonimoUseCase.Create(_gateway);
 
             var cliente = await useCase.ExecuteAsync();
 

@@ -1,27 +1,25 @@
 using Burguer404.Application.Arguments.Produto;
-using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Application.Presenters;
 using Burguer404.Application.UseCases.Produto;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Produto;
 using Burguer404.Domain.Entities.Produto;
-using Burguer404.Domain.Ports.Repositories.Produto;
 
 namespace Burguer404.Application.Controllers
 {
     public class ProdutoController
     {
-        private IRepositoryProduto _repository;
+        private IProdutoGateway _gateway;
 
-        public ProdutoController(IRepositoryProduto repository)
+        public ProdutoController(IProdutoGateway gateway)
         {
-            _repository = repository;
+            _gateway = gateway;
         }
 
         public async Task<ResponseBase<ProdutoResponse>> CadastrarProduto(ProdutoRequest request)
         {
-            var produtoGateway = new ProdutoGateway(_repository);
-            var useCase = CadastrarProdutoUseCase.Create(produtoGateway);
+            var useCase = CadastrarProdutoUseCase.Create(_gateway);
             request.ImagemByte = await useCase.ConverterMemoryStream(request);
             var response = await useCase.ExecuteAsync(request);
             return response;
@@ -29,8 +27,7 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<ProdutoResponse>> ListarProdutos()
         {
-            var produtoGateway = new ProdutoGateway(_repository);
-            var useCase = ListarProdutosUseCase.Create(produtoGateway);
+            var useCase = ListarProdutosUseCase.Create(_gateway);
 
             var response = await useCase.ExecuteAsync();
             var produtos = response.Resultado;
@@ -60,18 +57,14 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<ProdutoResponse>> AtualizarProduto(ProdutoRequest request)
         {
-            var produtoGateway = new ProdutoGateway(_repository);
-            var useCase = AtualizarProdutoUseCase.Create(produtoGateway);
-
+            var useCase = AtualizarProdutoUseCase.Create(_gateway);
             var response = await useCase.ExecuteAsync(request);
             return response;
         }
 
         public async Task<ResponseBase<bool>> RemoverProduto(int produtoId)
         {
-            var produtoGateway = new ProdutoGateway(_repository);
-            var useCase = RemoverProdutoUseCase.Create(produtoGateway);
-
+            var useCase = RemoverProdutoUseCase.Create(_gateway);
             var response = await useCase.ExecuteAsync(produtoId);
             return response;
         }
@@ -90,18 +83,14 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<string>> VisualizarImagem(int produtoId)
         {
-            var produtoGateway = new ProdutoGateway(_repository);
-            var useCase = VisualizarImagemProdutoUseCase.Create(produtoGateway);
-
+            var useCase = VisualizarImagemProdutoUseCase.Create(_gateway);
             var response = await useCase.ExecuteAsync(produtoId);
             return response;
         }
 
         public async Task<ResponseBase<ProdutoResponse>> ObterProdutosPorCategoria(int categoriaId)
         {
-            var produtoGateway = new ProdutoGateway(_repository);
-            var useCase = ObterProdutosPorCategoriaUseCase.Create(produtoGateway);
-
+            var useCase = ObterProdutosPorCategoriaUseCase.Create(_gateway);
             var response = await useCase.ExecuteAsync(categoriaId);
             return response;
         }

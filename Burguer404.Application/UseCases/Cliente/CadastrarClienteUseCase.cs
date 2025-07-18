@@ -1,6 +1,5 @@
 using Burguer404.Application.Arguments.Cliente;
 using Burguer404.Application.Ports.Gateways;
-using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Domain.Validators.Cliente;
 
@@ -28,6 +27,8 @@ namespace Burguer404.Application.UseCases.Cliente
             {
                 return null;
             }
+
+            var clienteExiste = await _clienteGateway.ValidarCadastroClienteAsync(request.Cpf, request.Email);
 
             var cliente = new ClienteEntity();
 

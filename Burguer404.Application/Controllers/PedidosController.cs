@@ -1,12 +1,9 @@
 using Burguer404.Application.Arguments.Pedido;
 using Burguer404.Application.Ports.Gateways;
-using Burguer404.Application.UseCases.Pedido;
 using Burguer404.Application.Presenters;
 using Burguer404.Application.UseCases.Pedido;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Pedido;
-using Burguer404.Domain.Ports.Repositories.Pedido;
-using Burguer404.Domain.Ports.Repositories.Produto;
 using Burguer404.Infrastructure.Pagamentos.Operacoes;
 using Microsoft.Extensions.Configuration;
 
@@ -14,42 +11,29 @@ namespace Burguer404.Application.Controllers
 {
     public class PedidosController
     {
-        private readonly CadastrarPedidoUseCase _cadastrarPedidoUseCase;
-        private readonly ListarPedidoUseCase _listarPedidoUseCase;
-        private readonly VisualizarPedidoUseCase _visualizarPedidoUseCase;
-        private readonly AvancarStatusPedidoUseCase _avancarStatusPedidoUseCase;
-        private readonly CancelarPedidoUseCase _cancelarPedidoUseCase;
-        private readonly GerarQrCodeUseCase _gerarQrCodeUseCase;
+        private readonly IPedidosGateway _gateway;
         private readonly IConfiguration _config;
+        private readonly IProdutoGateway _prodGateway;
 
-        public PedidosController(
-            CadastrarPedidoUseCase cadastrarPedidoUseCase,
-            ListarPedidoUseCase listarPedidoUseCase,
-            VisualizarPedidoUseCase visualizarPedidoUseCase,
-            AvancarStatusPedidoUseCase avancarStatusPedidoUseCase,
-            CancelarPedidoUseCase cancelarPedidoUseCase,
-            GerarQrCodeUseCase gerarQrCodeUseCase,
-            IConfiguration config)
+        public PedidosController(IPedidosGateway gateway, IConfiguration config, IProdutoGateway prodGateway)
         {
-            _cadastrarPedidoUseCase = cadastrarPedidoUseCase;
-            _listarPedidoUseCase = listarPedidoUseCase;
-            _visualizarPedidoUseCase = visualizarPedidoUseCase;
-            _avancarStatusPedidoUseCase = avancarStatusPedidoUseCase;
-            _cancelarPedidoUseCase = cancelarPedidoUseCase;
-            _gerarQrCodeUseCase = gerarQrCodeUseCase;
+            _gateway = gateway;
             _config = config;
+            _prodGateway = prodGateway;
         }
 
         public async Task<ResponseBase<string>> CadastrarPedido(PedidoRequest request) 
         {
-            var pedidoCadastrado = await _cadastrarPedidoUseCase.ExecuteAsync(request);
+            var useCase = new CadastrarPedidoUseCase(_gateway);
+            var pedidoCadastrado = await useCase.ExecuteAsync(request);
 
             return new ResponseBase<string>() { Sucesso = pedidoCadastrado != string.Empty, Mensagem = pedidoCadastrado, Resultado = [pedidoCadastrado] };
         }
 
         public async Task<ResponseBase<PedidoResponse>> ListarPedidos(int clienteLogadoId) 
         {
-            var pedidos = await _listarPedidoUseCase.ExecuteAsync(clienteLogadoId);
+            var useCase = new ListarPedidoUseCase(_gateway);
+            var pedidos = await useCase.ExecuteAsync(clienteLogadoId);
         
             if(pedidos == null)
                 return new ResponseBase<PedidoResponse>() { Sucesso = false, Mensagem = "Não foi encontrado produtos para este cliente", Resultado = [] };
@@ -59,7 +43,8 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<PedidoResponse>> VisualizarPedido(string codigo) 
         {
-            var (pedido, pedidoProdutos) = await _visualizarPedidoUseCase.ExecuteAsync(codigo);
+            var useCase = new VisualizarPedidoUseCase(_gateway, _prodGateway);
+            var (pedido, pedidoProdutos) = await useCase.ExecuteAsync(codigo);
 
             if (pedido == null)
             {
@@ -71,14 +56,16 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<bool>> AvancarStatusPedido(string codigo) 
         {
-            var (sucesso, mensagem) = await _avancarStatusPedidoUseCase.ExecuteAsync(codigo);
+            var useCase = new AvancarStatusPedidoUseCase(_gateway);
+            var (sucesso, mensagem) = await useCase.ExecuteAsync(codigo);
 
             return new ResponseBase<bool>() { Sucesso = sucesso, Mensagem = mensagem, Resultado = [sucesso] };
         }
 
         public async Task<ResponseBase<bool>> CancelarPedido(int pedidoId) 
         {
-            var sucesso = await _cancelarPedidoUseCase.ExecuteAsync(pedidoId);
+            var useCase = new CancelarPedidoUseCase(_gateway);
+            var sucesso = await useCase.ExecuteAsync(pedidoId);
 
             if (!sucesso)
             {
@@ -90,7 +77,8 @@ namespace Burguer404.Application.Controllers
 
         public async Task<ResponseBase<string>> GerarQrCode(List<PagamentoRequest> itens) 
         {
-            var qrCodeRequest = await _gerarQrCodeUseCase.ExecuteAsync(itens);
+            var useCase = new GerarQrCodeUseCase(_gateway, _prodGateway);
+            var qrCodeRequest = await useCase.ExecuteAsync(itens);
 
             if (!(qrCodeRequest is QrCodeRequest))
                 return new ResponseBase<string>() { Sucesso = false, Mensagem = "Ocorreu um erro com os dados do pedido", Resultado = [] };

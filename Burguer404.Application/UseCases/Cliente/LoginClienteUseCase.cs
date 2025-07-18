@@ -1,4 +1,3 @@
-using Burguer404.Application.Gateways;
 using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Domain.Validators.Cliente;

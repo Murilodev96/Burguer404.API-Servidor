@@ -1,5 +1,6 @@
 ﻿using Burguer404.Application.Arguments.Cliente;
 using Burguer404.Application.Controllers;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Ports.Repositories.Cliente;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,9 @@ namespace Burguer404.Api.Controllers
     {
         private ClienteController _clienteController;
 
-        public ClienteHandler(IRepositoryCliente clienteRepository)
+        public ClienteHandler(IClienteGateway clienteGateway)
         {
-            _clienteController = new ClienteController(clienteRepository);
+            _clienteController = new ClienteController(clienteGateway);
         }
 
         [HttpPost("cadastrar")]

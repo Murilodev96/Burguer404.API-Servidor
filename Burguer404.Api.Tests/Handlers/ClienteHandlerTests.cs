@@ -6,26 +6,27 @@ using Moq;
 using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Application.Controllers;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Application.Ports.Gateways;
 
 namespace Burguer404.Api.Tests.Controllers
 {
     public class ClienteHandlerTests
     {
-        private readonly Mock<IRepositoryCliente> _repositoryMock;
+        private readonly Mock<IClienteGateway> _gatewayMock;
         private readonly ClienteHandler _handler;
 
         public ClienteHandlerTests()
         {
-            _repositoryMock = new Mock<IRepositoryCliente>();
-            _handler = new ClienteHandler(_repositoryMock.Object);
+            _gatewayMock = new Mock<IClienteGateway>();
+            _handler = new ClienteHandler(_gatewayMock.Object);
         }
 
         [Fact]
         public async Task CadastrarCliente_DeveRetornarOk()
         {
             var request = new ClienteRequest { Nome = "Teste", Email = "teste@teste.com", Cpf = "12345678900" };
-            _repositoryMock.Setup(r => r.ValidarCadastroCliente(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
-            _repositoryMock.Setup(r => r.CadastrarCliente(It.IsAny<ClienteEntity>())).ReturnsAsync(new ClienteEntity());
+            _gatewayMock.Setup(r => r.ValidarCadastroClienteAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            _gatewayMock.Setup(r => r.CadastrarClienteAsync(It.IsAny<ClienteEntity>())).ReturnsAsync(new ClienteEntity());
 
             var result = await _handler.CadastrarCliente(request);
 
@@ -36,7 +37,7 @@ namespace Burguer404.Api.Tests.Controllers
         public async Task CadastrarCliente_DeveRetornarBadRequest_EmCasoDeErro()
         {
             var request = new ClienteRequest { Nome = "", Email = "", Cpf = "" };
-            _repositoryMock.Setup(r => r.ValidarCadastroCliente(It.IsAny<string>(), It.IsAny<string>()))
+            _gatewayMock.Setup(r => r.ValidarCadastroClienteAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .ThrowsAsync(new Exception("Erro ao cadastrar"));
 
             var result = await _handler.CadastrarCliente(request);
@@ -50,7 +51,7 @@ namespace Burguer404.Api.Tests.Controllers
         [Fact]
         public async Task ListarClientes_DeveRetornarOk()
         {
-            _repositoryMock.Setup(r => r.ListarClientes()).ReturnsAsync(new List<ClienteEntity>());
+            _gatewayMock.Setup(r => r.ListarClientesAsync()).ReturnsAsync(new List<ClienteEntity>());
 
             var result = await _handler.ListarClientes();
 
@@ -60,7 +61,7 @@ namespace Burguer404.Api.Tests.Controllers
         [Fact]
         public async Task ListarClientes_DeveRetornarBadRequest_EmCasoDeErro()
         {
-            _repositoryMock.Setup(r => r.ListarClientes()).ThrowsAsync(new Exception("Erro ao listar"));
+            _gatewayMock.Setup(r => r.ListarClientesAsync()).ThrowsAsync(new Exception("Erro ao listar"));
 
             var result = await _handler.ListarClientes();
 
@@ -71,7 +72,7 @@ namespace Burguer404.Api.Tests.Controllers
         public async Task LoginCliente_DeveRetornarOk()
         {
             var cpf = "12345678900";
-            _repositoryMock.Setup(r => r.ObterClientePorCpf(cpf)).ReturnsAsync(new ClienteEntity());
+            _gatewayMock.Setup(r => r.ObterClientePorCpfAsync(cpf)).ReturnsAsync(new ClienteEntity());
 
             var result = await _handler.LoginCliente(cpf);
 
@@ -82,7 +83,7 @@ namespace Burguer404.Api.Tests.Controllers
         public async Task LoginCliente_DeveRetornarBadRequest_EmCasoDeErro()
         {
             var cpf = "12345678900";
-            _repositoryMock.Setup(r => r.ObterClientePorCpf(cpf))
+            _gatewayMock.Setup(r => r.ObterClientePorCpfAsync(cpf))
                 .ThrowsAsync(new Exception("Erro ao autenticar"));
 
             var result = await _handler.LoginCliente(cpf);
@@ -97,7 +98,7 @@ namespace Burguer404.Api.Tests.Controllers
         [Fact]
         public async Task LoginClienteAnonimo_DeveRetornarOk()
         {
-            _repositoryMock.Setup(r => r.CadastrarClienteAnonimo()).ReturnsAsync(new ClienteEntity());
+            _gatewayMock.Setup(r => r.CadastrarClienteAnonimoAsync()).ReturnsAsync(new ClienteEntity());
 
             var result = await _handler.LoginClienteAnonimo();
 
@@ -107,7 +108,7 @@ namespace Burguer404.Api.Tests.Controllers
         [Fact]
         public async Task LoginClienteAnonimo_DeveRetornarBadRequest_EmCasoDeErro()
         {
-            _repositoryMock.Setup(r => r.CadastrarClienteAnonimo()).ThrowsAsync(new Exception("Erro ao autenticar"));
+            _gatewayMock.Setup(r => r.CadastrarClienteAnonimoAsync()).ThrowsAsync(new Exception("Erro ao autenticar"));
 
             var result = await _handler.LoginClienteAnonimo();
 
@@ -118,7 +119,7 @@ namespace Burguer404.Api.Tests.Controllers
         public async Task AlterarStatusCliente_DeveRetornarOk()
         {
             var clienteId = 1;
-            _repositoryMock.Setup(r => r.AlterarStatusCliente(clienteId)).ReturnsAsync(true);
+            _gatewayMock.Setup(r => r.AlterarStatusClienteAsync(clienteId)).ReturnsAsync(true);
 
             var result = await _handler.AlterarStatusCliente(clienteId);
 
@@ -129,7 +130,7 @@ namespace Burguer404.Api.Tests.Controllers
         public async Task AlterarStatusCliente_DeveRetornarBadRequest_EmCasoDeErro()
         {
             var clienteId = 1;
-            _repositoryMock.Setup(r => r.AlterarStatusCliente(clienteId)).ThrowsAsync(new Exception("Erro ao alterar status"));
+            _gatewayMock.Setup(r => r.AlterarStatusClienteAsync(clienteId)).ThrowsAsync(new Exception("Erro ao alterar status"));
 
             var result = await _handler.AlterarStatusCliente(clienteId);
 

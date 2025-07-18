@@ -1,7 +1,6 @@
-using Burguer404.Application.Gateways;
 using Burguer404.Application.Ports.Gateways;
-using Burguer404.Domain.Entities.Produto;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Entities.Produto;
 
 namespace Burguer404.Application.UseCases.Produto
 {
@@ -22,10 +21,10 @@ namespace Burguer404.Application.UseCases.Produto
 
         public async Task<ResponseBase<string>> ExecuteAsync(int produtoId)
         {
-            var response = new Burguer404.Domain.Arguments.Base.ResponseBase<string>();
+            var response = new ResponseBase<string>();
             try
             {
-                var produto = await _produtoGateway.ObterProdutoPorIdAsync(produtoId);
+                var produto = await _produtoGateway.VisualizarImagemAsync(produtoId);
 
                 if (!(produto is ProdutoEntity) || produto.ImagemByte == null || produto.ImagemByte.Length == 0)
                 {

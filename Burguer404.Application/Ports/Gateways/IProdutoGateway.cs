@@ -10,5 +10,6 @@ namespace Burguer404.Application.Ports.Gateways
         Task<ProdutoEntity?> ObterProdutoPorIdAsync(int produtoId);
         Task RemoverProdutoAsync(ProdutoEntity produto);
         Task<List<ProdutoEntity>?> ObterProdutosPorCategoriaIdAsync(int categoriaId);
+        Task<ProdutoEntity?> VisualizarImagemAsync(int produtoId);
     }
 }

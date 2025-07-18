@@ -1,7 +1,5 @@
 using Burguer404.Application.Arguments.Produto;
-using Burguer404.Application.Gateways;
 using Burguer404.Application.Ports.Gateways;
-using Burguer404.Domain.Entities.Produto;
 using Burguer404.Domain.Arguments.Base;
 
 namespace Burguer404.Application.UseCases.Produto

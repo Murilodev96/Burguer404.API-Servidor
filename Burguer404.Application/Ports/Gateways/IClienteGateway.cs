@@ -9,5 +9,6 @@ namespace Burguer404.Application.Ports.Gateways
         Task<List<ClienteEntity>> ListarClientesAsync();
         Task<bool> AlterarStatusClienteAsync(int clienteId);
         Task<ClienteEntity> CadastrarClienteAnonimoAsync();
+        Task<bool> ValidarCadastroClienteAsync(string cpf, string email);
     }
 }

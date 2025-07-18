@@ -1,10 +1,9 @@
 using Burguer404.Api.Controllers;
 using Burguer404.Application.Arguments.Produto;
 using Burguer404.Application.Controllers;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Arguments.Base;
-using Burguer404.Domain.Arguments.Produto;
 using Burguer404.Domain.Entities.Produto;
-using Burguer404.Domain.Ports.Repositories.Produto;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -12,15 +11,15 @@ namespace Burguer404.Api.Tests.Handlers
 {
     public class ProdutoHandlerTests
     {
-        private readonly Mock<IRepositoryProduto> _produtoRepoMock;
+        private readonly Mock<IProdutoGateway> _produtoGatewayMock;
         private readonly Mock<ProdutoController> _produtoControllerMock;
         private readonly ProdutoHandler _handler;
 
         public ProdutoHandlerTests()
         {
-            _produtoRepoMock = new Mock<IRepositoryProduto>();
-            _produtoControllerMock = new Mock<ProdutoController>(_produtoRepoMock.Object);
-            _handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock = new Mock<IProdutoGateway>();
+            _produtoControllerMock = new Mock<ProdutoController>(_produtoGatewayMock.Object);
+            _handler = new ProdutoHandler(_produtoGatewayMock.Object);
         }
 
         [Fact]
@@ -46,8 +45,8 @@ namespace Burguer404.Api.Tests.Handlers
             var response = new ResponseBase<ProdutoResponse>() { Sucesso = true, Resultado = new List<ProdutoResponse> { produtoResponse } };
             // Não é possível mockar métodos não-virtuais do controller
             // _produtoControllerMock.Setup(s => s.CadastrarProduto(It.IsAny<ProdutoRequest>())).ReturnsAsync(response);
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.CadastrarProduto(request);
             Assert.IsType<OkObjectResult>(result);
         }
@@ -58,8 +57,8 @@ namespace Burguer404.Api.Tests.Handlers
             var request = new ProdutoRequest();
             // Não é possível mockar métodos não-virtuais do controller
             // _produtoControllerMock.Setup(s => s.CadastrarProduto(request)).ThrowsAsync(new Exception("Erro ao cadastrar"));
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             // Simule erro no repositório se necessário
             var result = await handler.CadastrarProduto(request);
             Assert.IsType<BadRequestObjectResult>(result);
@@ -69,9 +68,9 @@ namespace Burguer404.Api.Tests.Handlers
         public async Task ListarProdutos_DeveRetornarJsonResult()
         {
             var produtoEntity = new ProdutoEntity { Id = 1, Nome = "Produto Teste", Descricao = "Descricao Teste", Preco = 10.0, CategoriaProdutoId = 1 };
-            _produtoRepoMock.Setup(r => r.ListarProdutos()).ReturnsAsync(new List<ProdutoEntity> { produtoEntity });
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ListarProdutosAsync()).ReturnsAsync(new List<ProdutoEntity> { produtoEntity });
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.ListarProdutos();
             Assert.IsType<JsonResult>(result);
         }
@@ -79,9 +78,9 @@ namespace Burguer404.Api.Tests.Handlers
         [Fact]
         public async Task ListarProdutos_DeveRetornarBadRequest_EmCasoDeErro()
         {
-            _produtoRepoMock.Setup(r => r.ListarProdutos()).ThrowsAsync(new Exception("Erro ao listar"));
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ListarProdutosAsync()).ThrowsAsync(new Exception("Erro ao listar"));
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.ListarProdutos();
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -104,9 +103,9 @@ namespace Burguer404.Api.Tests.Handlers
                 Preco = request.Preco,
                 CategoriaProdutoId = request.CategoriaProdutoId
             };
-            _produtoRepoMock.Setup(r => r.AtualizarCadastro(It.IsAny<ProdutoEntity>())).ReturnsAsync(produtoEntity);
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.AtualizarProdutoAsync(It.IsAny<ProdutoEntity>())).ReturnsAsync(produtoEntity);
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.AtualizarProduto(request);
             Assert.IsType<OkObjectResult>(result);
         }
@@ -123,8 +122,8 @@ namespace Burguer404.Api.Tests.Handlers
             };
             // Não é possível mockar métodos não-virtuais do controller
             // _produtoControllerMock.Setup(s => s.AtualizarProduto(request)).ThrowsAsync(new Exception("Erro ao atualizar"));
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             // Simule erro no repositório se necessário
             var result = await handler.AtualizarProduto(request);
             Assert.IsType<BadRequestObjectResult>(result);
@@ -135,10 +134,10 @@ namespace Burguer404.Api.Tests.Handlers
         {
             int id = 1;
             var produto = new ProdutoEntity { Id = id };
-            _produtoRepoMock.Setup(r => r.ObterProdutoPorId(id)).ReturnsAsync(produto);
-            _produtoRepoMock.Setup(r => r.RemoverProduto(produto)).Returns(Task.CompletedTask);
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ObterProdutoPorIdAsync(id)).ReturnsAsync(produto);
+            _produtoGatewayMock.Setup(r => r.RemoverProdutoAsync(produto)).Returns(Task.CompletedTask);
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.RemoverProduto(id);
             Assert.IsType<OkObjectResult>(result);
         }
@@ -148,16 +147,16 @@ namespace Burguer404.Api.Tests.Handlers
         {
             int id = 1;
             // Case 1: Produto não encontrado
-            _produtoRepoMock.Setup(r => r.ObterProdutoPorId(id)).ReturnsAsync((ProdutoEntity)null);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ObterProdutoPorIdAsync(id)).ReturnsAsync((ProdutoEntity)null);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.RemoverProduto(id);
             Assert.IsType<BadRequestObjectResult>(result);
 
             // Case 2: Exception thrown during removal
             var produto = new ProdutoEntity { Id = id };
-            _produtoRepoMock.Setup(r => r.ObterProdutoPorId(id)).ReturnsAsync(produto);
-            _produtoRepoMock.Setup(r => r.RemoverProduto(produto)).ThrowsAsync(new Exception("Erro ao remover"));
-            handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ObterProdutoPorIdAsync(id)).ReturnsAsync(produto);
+            _produtoGatewayMock.Setup(r => r.RemoverProdutoAsync(produto)).ThrowsAsync(new Exception("Erro ao remover"));
+            handler = new ProdutoHandler(_produtoGatewayMock.Object);
             result = await handler.RemoverProduto(id);
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -172,9 +171,9 @@ namespace Burguer404.Api.Tests.Handlers
                 new ProdutoEntity { Id = 3, Nome = "Bebida Teste", Preco = 7.0, CategoriaProdutoId = 3 },
                 new ProdutoEntity { Id = 4, Nome = "Sobremesa Teste", Preco = 8.0, CategoriaProdutoId = 4 }
             };
-            _produtoRepoMock.Setup(r => r.ListarProdutos()).ReturnsAsync(produtos);
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ListarProdutosAsync()).ReturnsAsync(produtos);
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.ObterCardapio();
             Assert.IsType<OkObjectResult>(result);
         }
@@ -182,9 +181,9 @@ namespace Burguer404.Api.Tests.Handlers
         [Fact]
         public async Task ObterCardapio_DeveRetornarBadRequest_EmCasoDeErro()
         {
-            _produtoRepoMock.Setup(r => r.ListarProdutos()).ThrowsAsync(new Exception("Erro ao obter cardápio"));
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ListarProdutosAsync()).ThrowsAsync(new Exception("Erro ao obter cardápio"));
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.ObterCardapio();
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -194,9 +193,9 @@ namespace Burguer404.Api.Tests.Handlers
         {
             int id = 1;
             var produto = new ProdutoEntity { Id = id, ImagemByte = new byte[] { 1, 2, 3 } };
-            _produtoRepoMock.Setup(r => r.ObterProdutoPorId(id)).ReturnsAsync(produto);
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ObterProdutoPorIdAsync(id)).ReturnsAsync(produto);
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.VisualizarImagem(id);
             Assert.IsType<OkObjectResult>(result);
         }
@@ -206,14 +205,14 @@ namespace Burguer404.Api.Tests.Handlers
         {
             int id = 1;
             // Case 1: Produto não encontrado (repository returns null)
-            _produtoRepoMock.Setup(r => r.VisualizarImagem(id)).ReturnsAsync((ProdutoEntity)null);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.VisualizarImagemAsync(id)).ReturnsAsync((ProdutoEntity)null);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.VisualizarImagem(id);
             Assert.IsType<BadRequestObjectResult>(result);
 
             // Case 2: Exception thrown during repository call
-            _produtoRepoMock.Setup(r => r.VisualizarImagem(id)).ThrowsAsync(new Exception("Erro ao visualizar imagem"));
-            handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.VisualizarImagemAsync(id)).ThrowsAsync(new Exception("Erro ao visualizar imagem"));
+            handler = new ProdutoHandler(_produtoGatewayMock.Object);
             result = await handler.VisualizarImagem(id);
             Assert.IsType<BadRequestObjectResult>(result);
         }
@@ -223,9 +222,9 @@ namespace Burguer404.Api.Tests.Handlers
         {
             int categoriaId = 1;
             var produtos = new List<ProdutoEntity> { new ProdutoEntity { Id = 1, Nome = "Produto Teste", CategoriaProdutoId = categoriaId } };
-            _produtoRepoMock.Setup(r => r.ObterProdutosPorCategoriaId(categoriaId)).ReturnsAsync(produtos);
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ObterProdutosPorCategoriaIdAsync(categoriaId)).ReturnsAsync(produtos);
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.ObterProdutosPorCategoria(categoriaId);
             Assert.IsType<OkObjectResult>(result);
         }
@@ -234,9 +233,9 @@ namespace Burguer404.Api.Tests.Handlers
         public async Task ObterProdutosPorCategoria_DeveRetornarBadRequest_EmCasoDeErro()
         {
             int categoriaId = 1;
-            _produtoRepoMock.Setup(r => r.ObterProdutosPorCategoriaId(categoriaId)).ThrowsAsync(new Exception("Erro ao obter produtos por categoria"));
-            var controller = new ProdutoController(_produtoRepoMock.Object);
-            var handler = new ProdutoHandler(_produtoRepoMock.Object);
+            _produtoGatewayMock.Setup(r => r.ObterProdutosPorCategoriaIdAsync(categoriaId)).ThrowsAsync(new Exception("Erro ao obter produtos por categoria"));
+            var controller = new ProdutoController(_produtoGatewayMock.Object);
+            var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.ObterProdutosPorCategoria(categoriaId);
             Assert.IsType<BadRequestObjectResult>(result);
         }

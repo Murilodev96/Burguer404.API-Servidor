@@ -1,4 +1,3 @@
-using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Domain.Ports.Repositories.Cliente;
@@ -8,7 +7,7 @@ namespace Burguer404.Application.Gateways
     public class ClienteGateway : IClienteGateway
     {
         private IRepositoryCliente _repository;
-
+        
         public ClienteGateway(IRepositoryCliente repository)
         {
             _repository = repository;
@@ -28,5 +27,10 @@ namespace Burguer404.Application.Gateways
 
         public async Task<ClienteEntity> CadastrarClienteAnonimoAsync()
             => await _repository.CadastrarClienteAnonimo();
+
+        public async Task<bool> ValidarCadastroClienteAsync(string cpf, string email)
+            => await _repository.ValidarCadastroCliente(cpf, email);
+
+
     }
 }

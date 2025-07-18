@@ -1,5 +1,6 @@
 using Burguer404.Application.Arguments.Produto;
 using Burguer404.Application.Controllers;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Produto;
 using Burguer404.Domain.Ports.Repositories.Produto;
@@ -13,9 +14,9 @@ namespace Burguer404.Api.Controllers
     {
         private ProdutoController _controller;
 
-        public ProdutoHandler(IRepositoryProduto repositoryProduto)
+        public ProdutoHandler(IProdutoGateway gateway)
         {
-            _controller = new ProdutoController(repositoryProduto);
+            _controller = new ProdutoController(gateway);
         }
 
         [HttpPost("cadastrar")]

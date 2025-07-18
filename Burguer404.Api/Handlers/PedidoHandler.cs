@@ -1,8 +1,6 @@
 using Burguer404.Application.Arguments.Pedido;
 using Burguer404.Application.Controllers;
-using Burguer404.Domain.Arguments.Base;
-using Burguer404.Domain.Arguments.Pedido;
-using Burguer404.Application.Controllers;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Pedido;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +13,9 @@ namespace Burguer404.Api.Controllers
     {
         private readonly PedidosController _pedidoController;
 
-        public PedidoHandler(PedidosController pedidoController)
+        public PedidoHandler(IPedidosGateway gateway, IConfiguration config, IProdutoGateway prodGateway)
         {
-            _pedidoController = pedidoController;
+            _pedidoController = new PedidosController(gateway, config, prodGateway);
         }
 
         [HttpPost("cadastrar")]

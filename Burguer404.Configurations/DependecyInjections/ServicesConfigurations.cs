@@ -1,4 +1,6 @@
-﻿using Burguer404.Configurations.MapperConfig;
+﻿using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
+using Burguer404.Configurations.MapperConfig;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,16 @@ namespace Burguer404.Configurations.DependecyInjections
 
             return services;
         }
+        public static IServiceCollection AddGatewayConfiguration(this IServiceCollection services)
+        {
+            services.AddScoped<IClienteGateway, ClienteGateway>();
+            services.AddScoped<IPedidosGateway, PedidosGateway>();
+            services.AddScoped<IProdutoGateway, ProdutoGateway>();
+
+            return services;
+        }
+
+
         public static IServiceCollection AddAuthenticationConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             return services;

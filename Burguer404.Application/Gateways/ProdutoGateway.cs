@@ -33,5 +33,7 @@ namespace Burguer404.Application.Gateways
         public async Task<List<ProdutoEntity>?> ObterProdutosPorCategoriaIdAsync(int categoriaId)
             => await _repository.ObterProdutosPorCategoriaId(categoriaId);
 
+        public async Task<ProdutoEntity?> VisualizarImagemAsync(int produtoId)
+            => await _repository.ObterProdutoPorId(produtoId);
     }
 }
