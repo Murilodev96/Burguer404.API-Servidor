@@ -1,0 +1,192 @@
+{
+  "info": {
+    "name": "Burguer404 API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Cliente - Cadastrar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "url": {"raw": "{{baseUrl}}/api/cliente/cadastrar", "host": ["{{baseUrl}}"], "path": ["api","cliente","cadastrar"]},
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao@email.com\",\n  \"cpf\": \"12345678900\",\n  \"status\": true\n}"
+        }
+      }
+    },
+    {
+      "name": "Cliente - Listar",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/cliente/listar", "host": ["{{baseUrl}}"], "path": ["api","cliente","listar"]}
+      }
+    },
+    {
+      "name": "Cliente - Login",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/cliente/autenticar/cliente?cpf=12345678900", "host": ["{{baseUrl}}"], "path": ["api","cliente","autenticar","cliente"], "query": [{"key": "cpf", "value": "12345678900"}]}
+      }
+    },
+    {
+      "name": "Cliente - Login Anônimo",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/cliente/autenticar/anonimo", "host": ["{{baseUrl}}"], "path": ["api","cliente","autenticar","anonimo"]}
+      }
+    },
+    {
+      "name": "Cliente - Alterar Status",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/cliente/alterar/status?clienteId=1", "host": ["{{baseUrl}}"], "path": ["api","cliente","alterar","status"], "query": [{"key": "clienteId", "value": "1"}]}
+      }
+    },
+    {
+      "name": "Pedido - Cadastrar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "url": {"raw": "{{baseUrl}}/api/pedido/cadastrar", "host": ["{{baseUrl}}"], "path": ["api","pedido","cadastrar"]},
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigoPedido\": \"PED123\",\n  \"statusPedidoId\": 1,\n  \"clienteId\": 1,\n  \"dataPedido\": \"2023-01-01T12:00:00\",\n  \"produtosSelecionados\": [1,2,3]\n}"
+        }
+      }
+    },
+    {
+      "name": "Pedido - Pagamento",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "url": {"raw": "{{baseUrl}}/api/pedido/pagamento", "host": ["{{baseUrl}}"], "path": ["api","pedido","pagamento"]},
+        "body": {
+          "mode": "raw",
+          "raw": "[{\n  \"acompanhamentoId\": 1,\n  \"bebidaId\": 2,\n  \"lancheId\": 3,\n  \"quantidade\": 1,\n  \"sobremesaId\": 4,\n  \"valor\": 29.99,\n  \"clienteId\": 1\n}]"
+        }
+      }
+    },
+    {
+      "name": "Pedido - Listar",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/pedido/listar?clienteLogadoId=1", "host": ["{{baseUrl}}"], "path": ["api","pedido","listar"], "query": [{"key": "clienteLogadoId", "value": "1"}]}
+      }
+    },
+    {
+      "name": "Pedido - Cancelar",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/pedido/cancelar?pedidoId=1", "host": ["{{baseUrl}}"], "path": ["api","pedido","cancelar"], "query": [{"key": "pedidoId", "value": "1"}]}
+      }
+    },
+    {
+      "name": "Pedido - Visualizar",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/pedido/visualizar?codigo=PED123", "host": ["{{baseUrl}}"], "path": ["api","pedido","visualizar"], "query": [{"key": "codigo", "value": "PED123"}]}
+      }
+    },
+    {
+      "name": "Pedido - Avançar Status",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/pedido/avancarStatusPedido?codigo=PED123", "host": ["{{baseUrl}}"], "path": ["api","pedido","avancarStatusPedido"], "query": [{"key": "codigo", "value": "PED123"}]}
+      }
+    },
+    {
+      "name": "Produto - Cadastrar",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "multipart/form-data"}
+        ],
+        "url": {"raw": "{{baseUrl}}/api/produto/cadastrar", "host": ["{{baseUrl}}"], "path": ["api","produto","cadastrar"]},
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {"key": "nome", "value": "Hamburguer Artesanal", "type": "text"},
+            {"key": "descricao", "value": "Hamburguer com queijo e bacon", "type": "text"},
+            {"key": "preco", "value": "25.50", "type": "text"},
+            {"key": "imagem", "src": "imagem.jpg", "type": "file"},
+            {"key": "categoriaProdutoId", "value": "1", "type": "text"},
+            {"key": "status", "value": "true", "type": "text"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "Produto - Listar",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/produto/listar", "host": ["{{baseUrl}}"], "path": ["api","produto","listar"]}
+      }
+    },
+    {
+      "name": "Produto - Atualizar",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "url": {"raw": "{{baseUrl}}/api/produto/atualizar", "host": ["{{baseUrl}}"], "path": ["api","produto","atualizar"]},
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Hamburguer Artesanal\",\n  \"descricao\": \"Hamburguer com queijo e bacon\",\n  \"preco\": 25.50,\n  \"categoriaProdutoId\": 1,\n  \"status\": true\n}"
+        }
+      }
+    },
+    {
+      "name": "Produto - Remover",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/produto/remover?id=1", "host": ["{{baseUrl}}"], "path": ["api","produto","remover"], "query": [{"key": "id", "value": "1"}]}
+      }
+    },
+    {
+      "name": "Produto - Obter Cardápio",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/produto/obterCardapio", "host": ["{{baseUrl}}"], "path": ["api","produto","obterCardapio"]}
+      }
+    },
+    {
+      "name": "Produto - Visualizar Imagem",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/produto/visualizarImagem?id=1", "host": ["{{baseUrl}}"], "path": ["api","produto","visualizarImagem"], "query": [{"key": "id", "value": "1"}]}
+      }
+    },
+    {
+      "name": "Produto - Obter Produtos Por Categoria",
+      "request": {
+        "method": "GET",
+        "url": {"raw": "{{baseUrl}}/api/produto/obterProdutosPorCategoria?categoriaId=1", "host": ["{{baseUrl}}"], "path": ["api","produto","obterProdutosPorCategoria"], "query": [{"key": "categoriaId", "value": "1"}]}
+      }
+    },
+    {
+      "name": "Webhook - Pagamento Notificação",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Content-Type", "value": "application/json"},
+          {"key": "X-Signature", "value": "exemplo-assinatura"},
+          {"key": "X-Request-Id", "value": "exemplo-request-id"}
+        ],
+        "url": {"raw": "{{baseUrl}}/api/pagamentoswebhook/notificacao", "host": ["{{baseUrl}}"], "path": ["api","pagamentoswebhook","notificacao"]},
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"resource\": \"pagamento/123\",\n  \"topic\": \"payment\"\n}"
+        }
+      }
+    }
+  ]
+}

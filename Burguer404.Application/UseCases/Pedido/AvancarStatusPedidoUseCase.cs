@@ -1,4 +1,5 @@
-﻿using Burguer404.Application.Gateways;
+using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Validators.Pedido;
 
@@ -6,11 +7,11 @@ namespace Burguer404.Application.UseCases.Pedido
 {
     public class AvancarStatusPedidoUseCase
     {
-        private readonly PedidosGateway _pedidoGateway;
+        private readonly IPedidosGateway _pedidosGateway;
 
-        public AvancarStatusPedidoUseCase(PedidosGateway pedidoGateway)
+        public AvancarStatusPedidoUseCase(IPedidosGateway pedidosGateway)
         {
-            _pedidoGateway = pedidoGateway;
+            _pedidosGateway = pedidosGateway;
         }
 
         public static AvancarStatusPedidoUseCase Create(PedidosGateway produtoGateway)
@@ -20,14 +21,14 @@ namespace Burguer404.Application.UseCases.Pedido
 
         public async Task<(bool, string)> ExecuteAsync(string codigo)
         {
-            var pedido = await _pedidoGateway.ObterPedidoPorCodigoPedidoAsync(codigo);
+            var pedido = await _pedidosGateway.ObterPedidoPorCodigoPedidoAsync(codigo);
 
             if (!(pedido is PedidoEntity))
                 return (false, "Pedido não encontrado!");
 
             pedido!.StatusPedidoId = ValidarPedido.ValidacoesDeStatusDePedido(pedido.StatusPedidoId);
 
-            var pedidoAlterado = await _pedidoGateway.AlterarStatusPedidoAsync(pedido);
+            var pedidoAlterado = await _pedidosGateway.AlterarStatusPedidoAsync(pedido);
 
             if (!pedidoAlterado)
                 return (pedidoAlterado, "Ocorreu um erro durante a tentativa de alteração de status do pedido!");

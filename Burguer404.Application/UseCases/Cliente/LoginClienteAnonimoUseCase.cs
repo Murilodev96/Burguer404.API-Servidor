@@ -1,24 +1,25 @@
-﻿using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Entities.Cliente;
 
 namespace Burguer404.Application.UseCases.Cliente
 {
     public class LoginClienteAnonimoUseCase
     {
-        private readonly ClienteGateway _clienteGateway;
+        private readonly IClienteGateway _clienteGateway;
 
-        public LoginClienteAnonimoUseCase(ClienteGateway clienteGateway)
+        public LoginClienteAnonimoUseCase(IClienteGateway clienteGateway)
         {
             _clienteGateway = clienteGateway;
         }
 
-        public static LoginClienteAnonimoUseCase Create(ClienteGateway clienteGateway)
+        public static LoginClienteAnonimoUseCase Create(IClienteGateway clienteGateway)
         {
             return new LoginClienteAnonimoUseCase(clienteGateway);
         }
 
-        public async Task<ClienteEntity> ExecuteAsync() =>
-            await _clienteGateway.CadastrarClienteAnonimoAsync();
-        
+        public async Task<ClienteEntity> ExecuteAsync()
+        {
+            return await _clienteGateway.CadastrarClienteAnonimoAsync();
+        }
     }
 }

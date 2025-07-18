@@ -18,10 +18,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Burguer404.Application\Burguer404.Application.csproj" />
-    <ProjectReference Include="..\Burguer404.Domain\Burguer404.Domain.csproj" />
-  </ItemGroup>
+
 
   <ItemGroup>
     <Using Include="Xunit" />

@@ -1,9 +1,11 @@
-﻿using Burguer404.Domain.Entities.Cliente;
+using Burguer404.Domain.Entities.Cliente;
+using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Domain.Ports.Repositories.Cliente;
 
 namespace Burguer404.Application.Gateways
 {
-    public class ClienteGateway
+    public class ClienteGateway : IClienteGateway
     {
         private IRepositoryCliente _repository;
 

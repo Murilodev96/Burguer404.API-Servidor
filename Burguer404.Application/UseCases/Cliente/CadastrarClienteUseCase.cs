@@ -1,30 +1,36 @@
-﻿using Burguer404.Application.Arguments.Cliente;
-using Burguer404.Application.Gateways;
+using Burguer404.Application.Arguments.Cliente;
+using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Entities.Cliente;
+using Burguer404.Domain.Validators.Cliente;
 
 namespace Burguer404.Application.UseCases.Cliente
 {
     public class CadastrarClienteUseCase
     {
-        private readonly ClienteGateway _clienteGateway;
+        private readonly IClienteGateway _clienteGateway;
 
-        public CadastrarClienteUseCase(ClienteGateway clienteGateway)
+        public CadastrarClienteUseCase(IClienteGateway clienteGateway)
         {
             _clienteGateway = clienteGateway;
         }
 
-        public static CadastrarClienteUseCase Create(ClienteGateway clienteGateway) 
+        public static CadastrarClienteUseCase Create(IClienteGateway clienteGateway)
         {
             return new CadastrarClienteUseCase(clienteGateway);
         }
 
         public async Task<ClienteEntity?> ExecuteAsync(ClienteRequest request)
         {
-            var cliente = ClienteEntity.MapCliente(request);
-            if (!(cliente is ClienteEntity))
-                return null;
+            var validacoes = ValidarCliente.Validar_CadastroCliente_Request(request);
 
-            cliente.Status = true;           
+            if (!validacoes.Sucesso)
+            {
+                return null;
+            }
+
+            var cliente = new ClienteEntity();
+
             return await _clienteGateway.CadastrarClienteAsync(cliente);
         }
     }

@@ -1,24 +1,20 @@
-﻿using Burguer404.Application.Gateways;
+using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Entities.Pedido;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
-    public class ListarPedidosUseCase
+    public class ListarPedidoUseCase
     {
-        private readonly PedidosGateway _pedidoGateway;
+        private readonly IPedidosGateway _pedidosGateway;
 
-        public ListarPedidosUseCase(PedidosGateway pedidoGateway)
+        public ListarPedidoUseCase(IPedidosGateway pedidosGateway)
         {
-            _pedidoGateway = pedidoGateway;
-        }
-
-        public static ListarPedidosUseCase Create(PedidosGateway produtoGateway)
-        {
-            return new ListarPedidosUseCase(produtoGateway);
+            _pedidosGateway = pedidosGateway;
         }
 
         public async Task<List<PedidoEntity>?> ExecuteAsync(int clienteId)
-            => await _pedidoGateway.ListarPedidosAsync(clienteId);
+            => await _pedidosGateway.ListarPedidosAsync(clienteId);
 
     }
 }

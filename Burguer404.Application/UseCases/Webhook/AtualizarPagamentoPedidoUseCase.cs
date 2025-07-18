@@ -1,18 +1,19 @@
 ﻿using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Enums;
 
 namespace Burguer404.Application.UseCases.Webhook
 {
     public class AtualizarPagamentoPedidoUseCase
     {
-        private readonly PedidosGateway _pedidosGateway;
+        private readonly IPedidosGateway _pedidosGateway;
 
-        public AtualizarPagamentoPedidoUseCase(PedidosGateway pedidosGateway)
+        public AtualizarPagamentoPedidoUseCase(IPedidosGateway pedidosGateway)
         {
             _pedidosGateway = pedidosGateway;
         }
 
-        public static AtualizarPagamentoPedidoUseCase Create(PedidosGateway pedidosGateway)
+        public static AtualizarPagamentoPedidoUseCase Create(IPedidosGateway pedidosGateway)
         {
             return new AtualizarPagamentoPedidoUseCase(pedidosGateway);
         }

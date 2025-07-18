@@ -1,12 +1,13 @@
-﻿using Burguer404.Application.Gateways;
+using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
     public class CancelarPedidoUseCase
     {
-        private readonly PedidosGateway _pedidoGateway;
+        private readonly IPedidosGateway _pedidoGateway;
 
-        public CancelarPedidoUseCase(PedidosGateway pedidoGateway)
+        public CancelarPedidoUseCase(IPedidosGateway pedidoGateway)
         {
             _pedidoGateway = pedidoGateway;
         }

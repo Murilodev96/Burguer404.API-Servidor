@@ -2,9 +2,11 @@ using Burguer404.Application.Arguments.Pedido;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Ports.Repositories.Pedido;
 
+using Burguer404.Application.Ports.Gateways;
+
 namespace Burguer404.Application.Gateways
 {
-    public class PedidosGateway
+    public class PedidosGateway : IPedidosGateway
     {
         private readonly IRepositoryPedido _repository;
 

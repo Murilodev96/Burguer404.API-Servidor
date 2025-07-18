@@ -1,4 +1,5 @@
-﻿using Burguer404.Application.Gateways;
+using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Entities.Produto;
 
@@ -6,16 +7,16 @@ namespace Burguer404.Application.UseCases.Pedido
 {
     public class VisualizarPedidoUseCase
     {
-        private readonly PedidosGateway _pedidoGateway;
-        private readonly ProdutoGateway _produtoGateway;
+        private readonly IPedidosGateway _pedidosGateway;
+        private readonly IProdutoGateway _produtoGateway;
 
-        public VisualizarPedidoUseCase(PedidosGateway pedidoGateway, ProdutoGateway produtoGateway)
+        public VisualizarPedidoUseCase(IPedidosGateway pedidosGateway, IProdutoGateway produtoGateway)
         {
-            _pedidoGateway = pedidoGateway;
+            _pedidosGateway = pedidosGateway;
             _produtoGateway = produtoGateway;
         }
 
-        public static VisualizarPedidoUseCase Create(PedidosGateway pedidoGateway, ProdutoGateway produtoGateway)
+        public static VisualizarPedidoUseCase Create(PedidosGateway pedidoGateway, IProdutoGateway produtoGateway)
         {
             return new VisualizarPedidoUseCase(pedidoGateway, produtoGateway);
         }
@@ -25,7 +26,7 @@ namespace Burguer404.Application.UseCases.Pedido
             if (string.IsNullOrWhiteSpace(codigo))
                 return (null, null);
 
-            var pedido =  await _pedidoGateway.ObterPedidoPorCodigoPedidoAsync(codigo);
+            var pedido =  await _pedidosGateway.ObterPedidoPorCodigoPedidoAsync(codigo);
 
             if(!(pedido is PedidoEntity))
                 return (null, null);

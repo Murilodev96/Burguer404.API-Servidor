@@ -1,4 +1,4 @@
-﻿using Burguer404.Application.Arguments.Produto;
+using Burguer404.Application.Arguments.Produto;
 using Burguer404.Application.Gateways;
 using Burguer404.Application.Presenters;
 using Burguer404.Application.UseCases.Produto;
@@ -23,14 +23,8 @@ namespace Burguer404.Application.Controllers
             var produtoGateway = new ProdutoGateway(_repository);
             var useCase = CadastrarProdutoUseCase.Create(produtoGateway);
             request.ImagemByte = await useCase.ConverterMemoryStream(request);
-            var produto = await useCase.ExecuteAsync(request);
-
-            if (produto == null)
-            {
-                return new ResponseBase<ProdutoResponse>() { Sucesso = false, Mensagem = "Ocorreu um erro durante a tentativa de cadastro do produto!", Resultado = [] };
-            }
-
-            return ProdutoPresenter.ObterProdutoResponse(produto);
+            var response = await useCase.ExecuteAsync(request);
+            return response;
         }
 
         public async Task<ResponseBase<ProdutoResponse>> ListarProdutos()
@@ -38,16 +32,30 @@ namespace Burguer404.Application.Controllers
             var produtoGateway = new ProdutoGateway(_repository);
             var useCase = ListarProdutosUseCase.Create(produtoGateway);
 
-            var produtos = await useCase.ExecuteAsync();
+            var response = await useCase.ExecuteAsync();
+            var produtos = response.Resultado;
 
-            useCase.ConverterBase64(produtos);             
+            useCase.ConverterBase64(produtos.ToList());
 
             if (produtos == null)
             {
-                return new ResponseBase<ProdutoResponse>() { Sucesso = false, Mensagem = "Ocorreu um erro durante a listagem dos produtos!", Resultado = [] };
+                return new ResponseBase<ProdutoResponse>() { Sucesso = false, Mensagem = "Ocorreu um erro durante a listagem dos produtos!", Resultado = new List<ProdutoResponse>() };
             }
 
-            return ProdutoPresenter.ObterListaProdutoResponse(produtos);
+            // Conversão explícita de ProdutoResponse para ProdutoEntity
+            var produtosEntity = produtos.Select(x => new ProdutoEntity
+            {
+                Id = x.Id,
+                Nome = x.Nome,
+                Descricao = x.Descricao,
+                Preco = x.Preco,
+                ImagemByte = x.ImagemByte,
+                ImagemBase64 = x.ImagemBase64,
+                Status = x.Status,
+                CategoriaProdutoId = x.CategoriaProdutoId
+            }).ToList();
+
+            return ProdutoPresenter.ObterListaProdutoResponse(produtosEntity);
         }
 
         public async Task<ResponseBase<ProdutoResponse>> AtualizarProduto(ProdutoRequest request)
@@ -55,14 +63,8 @@ namespace Burguer404.Application.Controllers
             var produtoGateway = new ProdutoGateway(_repository);
             var useCase = AtualizarProdutoUseCase.Create(produtoGateway);
 
-            var produto = await useCase.ExecuteAsync(request);
-
-            if (produto == null)
-            {
-                return new ResponseBase<ProdutoResponse>() { Sucesso = false, Mensagem = "Ocorreu um erro durante a tentativa de atualização do produto!", Resultado = [] };
-            }
-
-            return ProdutoPresenter.ObterProdutoResponse(produto);
+            var response = await useCase.ExecuteAsync(request);
+            return response;
         }
 
         public async Task<ResponseBase<bool>> RemoverProduto(int produtoId)
@@ -70,9 +72,8 @@ namespace Burguer404.Application.Controllers
             var produtoGateway = new ProdutoGateway(_repository);
             var useCase = RemoverProdutoUseCase.Create(produtoGateway);
 
-            var (sucesso, mensagem) = await useCase.ExecuteAsync(produtoId);
-
-            return new ResponseBase<bool>() { Sucesso = sucesso, Mensagem = mensagem, Resultado = [sucesso] };
+            var response = await useCase.ExecuteAsync(produtoId);
+            return response;
         }
 
         public async Task<ResponseBase<CardapioResponse>> ObterCardapio()
@@ -82,8 +83,7 @@ namespace Burguer404.Application.Controllers
             if (!produtos.Sucesso)
                 return new ResponseBase<CardapioResponse>();
 
-            var itensCardapio = new List<ProdutoResponse>();
-            itensCardapio = [.. produtos.Resultado!];
+            var itensCardapio = new List<ProdutoResponse>(produtos.Resultado!);
 
             return ProdutoPresenter.ObterCardapioResponse(itensCardapio);
         }
@@ -93,9 +93,8 @@ namespace Burguer404.Application.Controllers
             var produtoGateway = new ProdutoGateway(_repository);
             var useCase = VisualizarImagemProdutoUseCase.Create(produtoGateway);
 
-            var (sucesso, mensagem, imagem) = await useCase.ExecuteAsync(produtoId);
-
-            return new ResponseBase<string>() { Sucesso = sucesso, Mensagem = mensagem, Resultado = [imagem] };
+            var response = await useCase.ExecuteAsync(produtoId);
+            return response;
         }
 
         public async Task<ResponseBase<ProdutoResponse>> ObterProdutosPorCategoria(int categoriaId)
@@ -103,14 +102,8 @@ namespace Burguer404.Application.Controllers
             var produtoGateway = new ProdutoGateway(_repository);
             var useCase = ObterProdutosPorCategoriaUseCase.Create(produtoGateway);
 
-            var itens = await useCase.ExecuteAsync(categoriaId);
-
-            if (itens == null)
-            {
-                return new ResponseBase<ProdutoResponse>() { Sucesso = false, Mensagem = "Ocorreu um erro na listagem dos produtos por categoria!", Resultado = [] };
-            }
-
-            return ProdutoPresenter.ObterListaProdutoResponse(itens);
+            var response = await useCase.ExecuteAsync(categoriaId);
+            return response;
         }
     }
 }

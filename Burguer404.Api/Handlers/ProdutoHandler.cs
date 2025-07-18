@@ -1,4 +1,4 @@
-﻿using Burguer404.Application.Arguments.Produto;
+using Burguer404.Application.Arguments.Produto;
 using Burguer404.Application.Controllers;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Arguments.Produto;
@@ -57,6 +57,8 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _controller.AtualizarProduto(request);
+                if (!response.Sucesso)
+                    return BadRequest(response);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -73,6 +75,8 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _controller.RemoverProduto(id);
+                if (!response.Sucesso)
+                    return BadRequest(response);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -105,6 +109,8 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _controller.VisualizarImagem(id);
+                if (!response.Sucesso)
+                    return BadRequest(response);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -121,6 +127,8 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _controller.ObterProdutosPorCategoria(categoriaId);
+                if (!response.Sucesso)
+                    return BadRequest(response);
                 return Ok(response);
             }
             catch (Exception ex)

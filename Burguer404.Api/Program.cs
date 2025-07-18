@@ -11,6 +11,7 @@ builder.Services.AddAutoMapperConfiguration();
 builder.Services.AddSwaggerConfiguration();
 builder.Services.AddOutputCacheConfiguration();
 builder.Services.AddHealthChecksConfiguration();
+builder.Services.AddApplicationConfiguration();
 
 
 builder.Services.AddCors(options =>

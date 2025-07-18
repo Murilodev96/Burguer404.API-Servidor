@@ -1,4 +1,5 @@
-﻿using Burguer404.Application.Gateways;
+using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Domain.Validators.Cliente;
 
@@ -6,14 +7,14 @@ namespace Burguer404.Application.UseCases.Cliente
 {
     public class LoginClienteUseCase
     {
-        private ClienteGateway _clienteGateway;
+        private IClienteGateway _clienteGateway;
 
-        public LoginClienteUseCase(ClienteGateway clienteGateway)
+        public LoginClienteUseCase(IClienteGateway clienteGateway)
         {
             _clienteGateway = clienteGateway;
         }
 
-        public static LoginClienteUseCase Create(ClienteGateway clienteGateway) 
+        public static LoginClienteUseCase Create(IClienteGateway clienteGateway)
         {
             return new LoginClienteUseCase(clienteGateway);
         }

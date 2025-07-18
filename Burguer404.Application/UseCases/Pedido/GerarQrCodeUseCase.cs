@@ -1,5 +1,6 @@
-﻿using Burguer404.Application.Arguments.Pedido;
+using Burguer404.Application.Arguments.Pedido;
 using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Arguments.Pedido;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Validators.Pedido;
@@ -9,16 +10,16 @@ namespace Burguer404.Application.UseCases.Pedido
     public class GerarQrCodeUseCase
     {
 
-        private readonly PedidosGateway _pedidoGateway;
-        private readonly ProdutoGateway _produtoGateway;
+        private readonly IPedidosGateway _pedidoGateway;
+        private readonly IProdutoGateway _produtoGateway;
 
-        public GerarQrCodeUseCase(PedidosGateway pedidoGateway, ProdutoGateway produtoGateway)
+        public GerarQrCodeUseCase(IPedidosGateway pedidoGateway, IProdutoGateway produtoGateway)
         {
             _pedidoGateway = pedidoGateway;
             _produtoGateway = produtoGateway;
         }
 
-        public static GerarQrCodeUseCase Create(PedidosGateway pedidoGateway, ProdutoGateway produtoGateway)
+        public static GerarQrCodeUseCase Create(PedidosGateway pedidoGateway, IProdutoGateway produtoGateway)
         {
             return new GerarQrCodeUseCase(pedidoGateway, produtoGateway);
         }

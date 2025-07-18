@@ -1,14 +1,15 @@
-﻿using Burguer404.Application.Arguments.Pedido;
+using Burguer404.Application.Arguments.Pedido;
 using Burguer404.Application.Gateways;
+using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Entities.Pedido;
 
 namespace Burguer404.Application.UseCases.Pedido
 {
     public class CadastrarPedidoUseCase
     {
-        private readonly PedidosGateway _pedidoGateway;
+        private readonly IPedidosGateway _pedidoGateway;
 
-        public CadastrarPedidoUseCase(PedidosGateway pedidoGateway)
+        public CadastrarPedidoUseCase(IPedidosGateway pedidoGateway)
         {
             _pedidoGateway = pedidoGateway;
         }
