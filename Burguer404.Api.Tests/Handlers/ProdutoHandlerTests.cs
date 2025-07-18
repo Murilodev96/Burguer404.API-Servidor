@@ -193,7 +193,7 @@ namespace Burguer404.Api.Tests.Handlers
         {
             int id = 1;
             var produto = new ProdutoEntity { Id = id, ImagemByte = new byte[] { 1, 2, 3 } };
-            _produtoGatewayMock.Setup(r => r.ObterProdutoPorIdAsync(id)).ReturnsAsync(produto);
+            _produtoGatewayMock.Setup(r => r.VisualizarImagemAsync(id)).ReturnsAsync(produto);
             var controller = new ProdutoController(_produtoGatewayMock.Object);
             var handler = new ProdutoHandler(_produtoGatewayMock.Object);
             var result = await handler.VisualizarImagem(id);
