@@ -77,7 +77,7 @@ namespace Burguer404.Application.UseCases.Pedido
                     description = "Lanchonete Burguer404",
                     total_amount = total,
                     title = $"Confirmação de pagamento do pedido {codigoPedido.CodigoPedido}",
-                    notification_url = "https://23b2-2804-14d-1c79-937b-9070-7f4-d169-b1c.ngrok-free.app",
+                    notification_url = "https://4d162fda0278.ngrok-free.app/PagamentosWebhook/notificacao?source_news=webhooks",
                     external_reference = codigoPedido.CodigoPedido,
                     items = []
                 };

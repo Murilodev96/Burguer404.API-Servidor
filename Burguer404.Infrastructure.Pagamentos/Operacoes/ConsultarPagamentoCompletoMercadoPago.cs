@@ -27,7 +27,7 @@ namespace Burguer404.Infrastructure.Pagamentos.Operacoes
 
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configuration["TokenConsultaMercadoPago"]);
 
-                var respostaPagamento = await httpClient.GetAsync($"{_configuration["UrlConsultarPagamentoCompletoMercadoPago"]}{notificacao.type}");
+                var respostaPagamento = await httpClient.GetAsync($"{_configuration["UrlConsultarPagamentoCompletoMercadoPago"]}{notificacao.data.id}");
                 respostaPagamento.EnsureSuccessStatusCode();
 
                 var jsonPagamento = await respostaPagamento.Content.ReadAsStringAsync();

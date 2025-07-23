@@ -26,7 +26,7 @@ namespace Burguer404.Application.UseCases.Webhook
 
             int novoStatus = status.ToLower() switch
             {
-                "approved" => (int)EnumStatusPedido.EmPreparacao,
+                "approved" => (int)EnumStatusPedido.Recebido,
                 "rejected" or "cancelled" => (int)EnumStatusPedido.Cancelado,
                 _ => pedido.StatusPedidoId
             };

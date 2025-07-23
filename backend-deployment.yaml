@@ -14,12 +14,12 @@ spec:
     spec:
       containers:
       - name: burguer404api
-        image: murilodev96/burguer404api:v3
+        image: murilodev96/burguer404api:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
         env:
         - name: ASPNETCORE_ENVIRONMENT
-          value: "Production"
+          value: "Development "
         - name: ConnectionStrings__DefaultConnection
           valueFrom:
             secretKeyRef:

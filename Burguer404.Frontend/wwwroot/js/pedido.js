@@ -21,7 +21,14 @@
         columns: [
             { data: 'codigoPedido' },
             { data: 'nomeCliente' },
-            { data: 'dataFormatada' },
+            {
+                data: 'dataPedido',
+                render: function (data) {
+                    if (!data) return '';
+                    const date = new Date(data);
+                    return date.toLocaleDateString('pt-BR'); // ex: 15/07/2025
+                }
+            },
             {
                 data: 'dataPedido',
                 visible: false
@@ -47,8 +54,9 @@
         order: [[3, 'desc']],
         language: {
             url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json"
-        }    
-    });    
+        }
+    });
+
 });
 
 function VisualizarPedido(codigo) {
