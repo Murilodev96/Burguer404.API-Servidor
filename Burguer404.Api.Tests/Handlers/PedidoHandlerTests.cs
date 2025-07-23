@@ -1,18 +1,12 @@
 ﻿using Burguer404.Api.Controllers;
 using Burguer404.Application.Arguments.Pedido;
-using Burguer404.Domain.Arguments.Pedido;
-using Burguer404.Domain.Ports.Repositories.Pedido;
-using Burguer404.Domain.Ports.Repositories.Produto;
-using Burguer404.Domain.Entities.Pedido;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Entities.Produto;
+using Burguer404.Domain.Interfaces.Gateways;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Burguer404.Application.Arguments.Produto;
-using Burguer404.Application.UseCases.Pedido;
-using Burguer404.Application.Controllers;
-using Burguer404.Application.Ports.Gateways;
+using Moq;
 
 
 namespace Burguer404.Api.Tests.Handlers

@@ -1,9 +1,9 @@
 using Burguer404.Api.Controllers;
 using Burguer404.Application.Arguments.Produto;
 using Burguer404.Application.Controllers;
-using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Entities.Produto;
+using Burguer404.Domain.Interfaces.Gateways;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 

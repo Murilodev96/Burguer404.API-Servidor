@@ -1,12 +1,10 @@
 ﻿using Burguer404.Api.Controllers;
 using Burguer404.Application.Arguments.Cliente;
-using Burguer404.Domain.Ports.Repositories.Cliente;
+using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Entities.Cliente;
+using Burguer404.Domain.Interfaces.Gateways;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Burguer404.Domain.Entities.Cliente;
-using Burguer404.Application.Controllers;
-using Burguer404.Domain.Arguments.Base;
-using Burguer404.Application.Ports.Gateways;
 
 namespace Burguer404.Api.Tests.Controllers
 {

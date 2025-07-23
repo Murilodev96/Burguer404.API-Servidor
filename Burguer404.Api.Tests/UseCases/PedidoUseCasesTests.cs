@@ -1,6 +1,6 @@
 using Burguer404.Application.Arguments.Pedido;
 using Burguer404.Application.Gateways;
-using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Interfaces.Gateways;
 using Burguer404.Application.UseCases.Pedido;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Entities.Produto;
@@ -30,7 +30,7 @@ namespace Burguer404.Api.Tests.UseCases
         public async Task AvancarStatusPedido_DeveRetornarFalha_QuandoPedidoNaoEncontrado()
         {
             var codigo = "ABC123";
-            var gatewayMock = new Mock<Burguer404.Application.Ports.Gateways.IPedidosGateway>();
+            var gatewayMock = new Mock<IPedidosGateway>();
             gatewayMock.Setup(g => g.ObterPedidoPorCodigoPedidoAsync(codigo)).ReturnsAsync((PedidoEntity)null!);
             var useCase = new AvancarStatusPedidoUseCase(gatewayMock.Object);
             var (sucesso, mensagem) = await useCase.ExecuteAsync(codigo);
@@ -43,7 +43,7 @@ namespace Burguer404.Api.Tests.UseCases
         {
             var codigo = "ABC123";
             var pedido = new PedidoEntity { StatusPedidoId = 1 };
-            var gatewayMock = new Mock<Burguer404.Application.Ports.Gateways.IPedidosGateway>();
+            var gatewayMock = new Mock<IPedidosGateway>();
             gatewayMock.Setup(g => g.ObterPedidoPorCodigoPedidoAsync(codigo)).ReturnsAsync(pedido);
             gatewayMock.Setup(g => g.AlterarStatusPedidoAsync(It.IsAny<PedidoEntity>())).ReturnsAsync(false);
             var useCase = new AvancarStatusPedidoUseCase(gatewayMock.Object);

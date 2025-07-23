@@ -2,7 +2,7 @@ using Burguer404.Application.Arguments.Pedido;
 using Burguer404.Domain.Entities.Pedido;
 using Burguer404.Domain.Ports.Repositories.Pedido;
 
-using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Interfaces.Gateways;
 
 namespace Burguer404.Application.Gateways
 {

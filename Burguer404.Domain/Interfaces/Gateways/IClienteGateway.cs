@@ -1,6 +1,6 @@
 using Burguer404.Domain.Entities.Cliente;
 
-namespace Burguer404.Application.Ports.Gateways
+namespace Burguer404.Domain.Interfaces.Gateways
 {
     public interface IClienteGateway
     {

@@ -1,14 +1,9 @@
 using Burguer404.Application.Arguments.Produto;
-using Burguer404.Application.Gateways;
-using Burguer404.Application.Ports.Gateways;
 using Burguer404.Application.UseCases.Produto;
 using Burguer404.Domain.Arguments.Base;
-using Burguer404.Domain.Arguments.Produto;
 using Burguer404.Domain.Entities.Produto;
-using Burguer404.Domain.Ports.Repositories.Produto;
-using Microsoft.AspNetCore.Mvc;
+using Burguer404.Domain.Interfaces.Gateways;
 using Moq;
-using Xunit;
 
 namespace Burguer404.Api.Tests.UseCases
 {

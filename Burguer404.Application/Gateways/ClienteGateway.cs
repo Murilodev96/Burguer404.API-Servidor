@@ -1,4 +1,4 @@
-using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Interfaces.Gateways;
 using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Domain.Ports.Repositories.Cliente;
 

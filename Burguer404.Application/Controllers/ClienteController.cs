@@ -1,8 +1,8 @@
 using Burguer404.Application.Arguments.Cliente;
-using Burguer404.Application.Ports.Gateways;
 using Burguer404.Application.Presenters;
 using Burguer404.Application.UseCases.Cliente;
 using Burguer404.Domain.Arguments.Base;
+using Burguer404.Domain.Interfaces.Gateways;
 
 namespace Burguer404.Application.Controllers
 {

@@ -1,6 +1,6 @@
 ﻿using Burguer404.Application.Arguments.Cliente;
 using Burguer404.Application.Controllers;
-using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Interfaces.Gateways;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Ports.Repositories.Cliente;
 using Microsoft.AspNetCore.Mvc;

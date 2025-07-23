@@ -1,5 +1,5 @@
 using Burguer404.Application.Arguments.Produto;
-using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Interfaces.Gateways;
 using Burguer404.Application.Presenters;
 using Burguer404.Application.UseCases.Produto;
 using Burguer404.Domain.Arguments.Base;

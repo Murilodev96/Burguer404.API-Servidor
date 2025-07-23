@@ -1,11 +1,8 @@
 using Burguer404.Application.Arguments.Cliente;
-using Burguer404.Application.Gateways;
 using Burguer404.Application.UseCases.Cliente;
 using Burguer404.Domain.Entities.Cliente;
+using Burguer404.Domain.Interfaces.Gateways;
 using Moq;
-using Xunit;
-using System.Collections.Generic;
-using Burguer404.Application.Ports.Gateways;
 
 namespace Burguer404.Api.Tests.UseCases
 {

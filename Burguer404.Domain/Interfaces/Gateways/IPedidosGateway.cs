@@ -1,8 +1,6 @@
 using Burguer404.Domain.Entities.Pedido;
-using Burguer404.Domain.Entities.Produto;
-using Burguer404.Domain.Arguments.Pedido;
 
-namespace Burguer404.Application.Ports.Gateways
+namespace Burguer404.Domain.Interfaces.Gateways
 {
     public interface IPedidosGateway
     {

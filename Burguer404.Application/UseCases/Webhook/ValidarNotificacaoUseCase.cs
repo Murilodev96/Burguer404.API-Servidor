@@ -1,22 +1,15 @@
-using Burguer404.Application.Ports.Gateways;
 using Burguer404.Domain.Arguments.Webhook;
-using System.Net.Http.Headers;
-using System.Text.Json;
 
 namespace Burguer404.Application.UseCases.Webhook
 {
     public class ValidarNotificacaoUseCase
     {
-        private readonly IPedidosGateway _pedidosGateway;
 
-        public ValidarNotificacaoUseCase(IPedidosGateway pedidosGateway)
-        {
-            _pedidosGateway = pedidosGateway;
-        }
+        public ValidarNotificacaoUseCase() { }
 
-        public static ValidarNotificacaoUseCase Create(IPedidosGateway pedidosGateway)
+        public static ValidarNotificacaoUseCase Create()
         {
-            return new ValidarNotificacaoUseCase(pedidosGateway);
+            return new ValidarNotificacaoUseCase();
         }
 
         public async Task ExecuteAsync(NotificacaoWebhook notificacao)

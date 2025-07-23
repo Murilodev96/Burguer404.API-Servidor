@@ -1,5 +1,5 @@
 using Burguer404.Application.Gateways;
-using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Interfaces.Gateways;
 
 namespace Burguer404.Application.UseCases.Pedido
 {

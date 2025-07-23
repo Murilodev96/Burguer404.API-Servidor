@@ -1,5 +1,5 @@
 using Burguer404.Application.Gateways;
-using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Interfaces.Gateways;
 using Burguer404.Application.UseCases.Pedido;
 using Burguer404.Application.UseCases.Webhook;
 using Microsoft.Extensions.DependencyInjection;

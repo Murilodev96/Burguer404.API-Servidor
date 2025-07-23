@@ -1,5 +1,5 @@
 ﻿using Burguer404.Application.Gateways;
-using Burguer404.Application.Ports.Gateways;
+using Burguer404.Domain.Interfaces.Gateways;
 using Burguer404.Application.UseCases.Webhook;
 using Burguer404.Domain.Arguments.Webhook;
 using Burguer404.Domain.Ports.Repositories.Pedido;
@@ -24,7 +24,7 @@ namespace Burguer404.Application.Controllers
 
         public async Task ConsultarPagamento(NotificacaoWebhook notificacao)
         {
-            var useCase = ValidarNotificacaoUseCase.Create(_pedidoGateway);
+            var useCase = ValidarNotificacaoUseCase.Create();
             await useCase.ExecuteAsync(notificacao);
 
             var consultarPagamentoCompleto = ConsultarPagamentoCompletoMercadoPago.Create(_config);
