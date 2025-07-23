@@ -13,12 +13,10 @@ namespace Burguer404.Application.Controllers
     {
         private IRepositoryPedido _repository;
         private IConfiguration _config;
-        private IPedidosGateway _pedidoGateway;
 
         public WebhookController(IRepositoryPedido repository, IConfiguration config)
         {
             _repository = repository;
-            _pedidoGateway = new PedidosGateway(_repository);
             _config = config;
         }
 
