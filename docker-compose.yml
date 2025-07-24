@@ -3,10 +3,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
     env_file:
-      - Burguer404.Api/.env    
-    environment:
-      - SA_PASSWORD=${SA_PASSWORD}
-      - ACCEPT_EULA=Y
+      - Burguer404.Api/.env
     ports:
       - "1433:1433"
     networks:
