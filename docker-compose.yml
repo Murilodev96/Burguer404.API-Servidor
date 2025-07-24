@@ -1,12 +1,12 @@
-version: '3.4'
-
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
+    env_file:
+      - Burguer404.Api/.env    
     environment:
+      - SA_PASSWORD=${SA_PASSWORD}
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=Burguer404@2025
     ports:
       - "1433:1433"
     networks:
@@ -14,27 +14,26 @@ services:
     restart: always
 
   burguer404.api:
-    image: ${DOCKER_REGISTRY-}burguer404api
     build:
       context: .
       dockerfile: Burguer404.Api/Dockerfile
+    image: burguer404api
+    env_file:
+      - Burguer404.Api/.env
     ports:
-      - "5000:5000"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Burguer404;User Id=sa;Password=Burguer404@2025;TrustServerCertificate=True
+      - "5000:5000"    
     networks:
       - burguer-net
 
   burguer404.frontend:
-    image: ${DOCKER_REGISTRY-}burguer404frontend
     build:
       context: .
       dockerfile: Burguer404.Frontend/Dockerfile
+    image: burguer404frontend
+    env_file:
+      - Burguer404.Frontend/.env
     ports:
       - "5001:5001"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - burguer-net
 

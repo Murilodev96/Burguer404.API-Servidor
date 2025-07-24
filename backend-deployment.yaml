@@ -25,4 +25,3 @@ spec:
             secretKeyRef:
               name: db-password
               key: ConnectionStrings__DefaultConnection
-
