@@ -17,9 +17,9 @@ spec:
         image: murilodev96/burguer404front:latest
         ports:
         - containerPort: 5001
-      env:
-            - name: API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: API_URL
+        env:
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: API_URL

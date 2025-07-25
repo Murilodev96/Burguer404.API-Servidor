@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    const apiUrl = window.API_URL;
     var clienteLogadoId = sessionStorage.getItem("clienteLogadoId");
     var perfilClienteId = sessionStorage.getItem("perfilClienteId");
     var nomeClienteLogado = sessionStorage.getItem("nomeClienteLogado");
@@ -15,7 +15,7 @@
     $('#tabelaPedidos').DataTable({
         ajax: {
             type: "GET",
-            url: 'http://localhost:5000/api/PedidoHandler/listar',
+            url: `${apiUrl}/api/PedidoHandler/listar`,
             data: { clienteLogadoId: clienteLogadoId },
         },
         columns: [
@@ -60,8 +60,10 @@
 });
 
 function VisualizarPedido(codigo) {
+    const apiUrl = window.API_URL;
+
     $.ajax({
-        url: 'http://localhost:5000/api/PedidoHandler/visualizar', 
+        url: `${apiUrl}/api/PedidoHandler/visualizar`, 
         type: 'GET', 
         data: { codigo: codigo },
         success: function (response) {
@@ -115,8 +117,10 @@ function VisualizarPedido(codigo) {
 }
 
 function AvancarStatus(codigo) {
+    const apiUrl = window.API_URL;
+
     $.ajax({
-        url: 'http://localhost:5000/api/PedidoHandler/avancarStatusPedido',
+        url: `${apiUrl}/api/PedidoHandler/avancarStatusPedido`,
         type: 'GET',
         data: { codigo: codigo },
         success: function (response) {

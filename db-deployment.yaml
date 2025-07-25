@@ -19,12 +19,15 @@ spec:
         - containerPort: 1433
         env:
         - name: ACCEPT_EULA
-          value: "Y"
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: ACCEPT_EULA
         - name: SA_PASSWORD
           valueFrom:
             secretKeyRef:
-                name: db-password
-                key: SA_PASSWORD
+              name: app-secret
+              key: SA_PASSWORD
         volumeMounts:
         - name: mssql-data
           mountPath: /var/opt/mssql

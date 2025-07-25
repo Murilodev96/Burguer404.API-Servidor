@@ -1,11 +1,14 @@
 ﻿@page
 @model Burguer404.Frontend.Pages.Login.LoginModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     ViewData["Title"] = "Lista de Pedidos";
 }
 <head>
     <meta charset="UTF-8">
     <title>Lista de Pedidos</title>
+
+    <script>window.API_URL = "@Configuration["API_URL"]"; </script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">

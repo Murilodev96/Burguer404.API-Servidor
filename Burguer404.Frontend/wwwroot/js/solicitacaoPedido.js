@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
-    // Inicializa o select2
+    const apiUrl = window.API_URL;
+
     $('select').select2({
         templateResult: formatOption,
         templateSelection: formatSelection,
@@ -9,7 +10,7 @@
     $('select').html('<option>Carregando...</option>');
 
     $.ajax({
-        url: 'http://localhost:5000/api/ProdutoHandler/obterCardapio',
+        url: `${apiUrl}/api/ProdutoHandler/obterCardapio`,
         type: 'GET',
         success: function (response) {            
             if (response.sucesso) {
@@ -92,8 +93,11 @@ function continuarPagamento() {
     const table = $('#tabelaPedidos').DataTable();
     const dadosTabela = table.rows().data();
     const pedidos = [];
+    const apiUrl = window.API_URL;
+
 
     for (let i = 0; i < dadosTabela.length; i++) {
+
         const row = dadosTabela[i];
 
         const lanche = $(row[1]).filter('span').data('lanche-id');
@@ -129,7 +133,7 @@ function continuarPagamento() {
 
     $.ajax({
             type: "POST",
-            url: "http://localhost:5000/api/PedidoHandler/pagamento",
+        url: `${apiUrl}/api/PedidoHandler/pagamento`,
             data: JSON.stringify(pedidos),
             contentType: "application/json",
 

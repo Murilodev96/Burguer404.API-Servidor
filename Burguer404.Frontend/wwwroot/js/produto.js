@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    const apiUrl = "http://localhost:5000";
 
     const EnumCategoriaPedido = {
         1: "Lanche",
@@ -9,7 +10,7 @@
 
     $('#tabelaProdutos').DataTable({
         ajax: {
-            url: 'http://localhost:5000/api/ProdutoHandler/listar',
+            url: `${apiUrl}/api/ProdutoHandler/listar`,
             dataSrc: 'data'
         },
         columns: [
@@ -50,8 +51,9 @@
 });
 
 function buscarImagem(id) {
+    const apiUrl = "http://localhost:5000";
     $.ajax({
-        url: `http://localhost:5000/api/ProdutoHandler/visualizarImagem?id=${id}`,
+        url: `${apiUrl}/api/ProdutoHandler/visualizarImagem?id=${id}`,
         method: 'GET',
         success: function (response) {
             if (response && response.resultado && response.resultado.length > 0) {
@@ -70,7 +72,7 @@ function buscarImagem(id) {
 function excluirProduto(id) {
     if (confirm("Tem certeza que deseja excluir este produto?")) {
         $.ajax({
-            url: `http://localhost:5000/api/ProdutoHandler/remover/?id=${id}`,
+            url: `${apiUrl}/api/ProdutoHandler/remover/?id=${id}`,
             method: 'GET',
             success: function (response) {
                 alert("Produto excluído com sucesso!");

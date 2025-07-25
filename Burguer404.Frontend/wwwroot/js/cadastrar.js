@@ -1,5 +1,6 @@
 ﻿function cadastrar(event) {
     event.preventDefault();
+    const apiUrl = window.API_URL;
 
     const nome = $('#nome').val();
     const email = $('#email').val();
@@ -13,7 +14,7 @@
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:5000/api/ClienteHandler/cadastrar",
+        url: `${apiUrl}/api/ClienteHandler/cadastrar`,
         data: JSON.stringify(request),
         contentType: "application/json",
 
@@ -35,6 +36,8 @@
 
 function cadastrarProduto(event) {
     event.preventDefault();
+    const apiUrl = window.API_URL;
+
 
     const form = document.querySelector("form");
     const formData = new FormData(form);
@@ -42,7 +45,7 @@ function cadastrarProduto(event) {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:5000/api/ProdutoHandler/cadastrar",
+        url: `${apiUrl}/api/ProdutoHandler/cadastrar`,
         data: formData,
         contentType: false,
         processData: false,

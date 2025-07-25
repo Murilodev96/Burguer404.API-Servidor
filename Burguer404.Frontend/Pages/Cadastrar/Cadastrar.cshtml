@@ -1,7 +1,10 @@
 ﻿@page
 @model Burguer404.Frontend.Pages.Cadastrar.CadastrarModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
 }
+
+<script>window.API_URL = "@Configuration["API_URL"]"; </script>
 
 <link rel="stylesheet" href="~/css/cadastrar.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

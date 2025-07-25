@@ -1,5 +1,6 @@
 ﻿@page
 @model IndexModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     Layout = null;
     ViewData["Title"] = "Burguer 404";
@@ -11,6 +12,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    <script>window.API_URL = "@Configuration["API_URL"]"; </script>
+
 
     <!-- CSS -->
     <link rel="stylesheet" href="~/css/principal.css" />

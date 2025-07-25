@@ -1,9 +1,11 @@
 ﻿function Login() {
     var cpf = $('#cpf').val();
     $('#msgErroAutenticacao').text('');
+    const apiUrl = window.API_URL;
+
 
     $.ajax({
-        url: 'http://localhost:5000/api/ClienteHandler/autenticar/cliente',
+        url: `${apiUrl}/api/ClienteHandler/autenticar/cliente`,
         type: 'GET',
         data: { cpf: cpf },
         success: function (response) {
@@ -32,8 +34,10 @@
 }
 
 function LoginAnonimo() {
+    const apiUrl = window.API_URL;
+
     $.ajax({
-        url: 'http://localhost:5000/api/ClienteHandler/autenticar/anonimo',
+        url: `${apiUrl}/api/ClienteHandler/autenticar/anonimo`,
         type: 'GET',
         success: function (response) {
 

@@ -1,5 +1,6 @@
 ﻿@page
 @model Burguer404.Frontend.Pages.Produto.ProdutoModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     ViewData["Title"] = "Cadastro de Produto";
 }
@@ -9,6 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <title>@ViewData["Title"]</title>
+    <script>window.API_URL = "@Configuration["API_URL"]"; </script>
 
     <!-- CSS e Scripts -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
