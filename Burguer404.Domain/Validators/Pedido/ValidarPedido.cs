@@ -71,6 +71,9 @@ namespace Burguer404.Domain.Validators.Pedido
                 return statusPedidoId;
             }
 
+            if (statusPedidoId == (int)EnumStatusPedido.AguardandoPagamento)
+                return (int)EnumStatusPedido.Recebido;
+
             return statusPedidoId + 1;
         }
 

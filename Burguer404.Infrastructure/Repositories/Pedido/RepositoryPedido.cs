@@ -52,6 +52,7 @@ namespace Burguer404.Infrastructure.Data.Repositories.Pedido
                 pedidos = await _context.Pedidos.Include(p => p.StatusPedido)
                                                 .Include(p => p.Cliente)
                                                 .Include(p => p.PedidoProduto)
+                                                .OrderBy(x => x.DataPedido)
                                                 .ToListAsync();
             }
             else 
@@ -61,6 +62,7 @@ namespace Burguer404.Infrastructure.Data.Repositories.Pedido
                                                 .Include(p => p.StatusPedido)
                                                 .Include(p => p.Cliente)
                                                 .Include(p => p.PedidoProduto)
+                                                .OrderBy(x => x.DataPedido)
                                                 .ToListAsync();
             
             }
