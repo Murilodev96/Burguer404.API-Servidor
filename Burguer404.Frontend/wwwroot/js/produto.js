@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    const apiUrl = "http://localhost:5000";
+    const apiUrl = window.API_URL;
 
     const EnumCategoriaPedido = {
         1: "Lanche",
@@ -51,7 +51,7 @@
 });
 
 function buscarImagem(id) {
-    const apiUrl = "http://localhost:5000";
+    const apiUrl = window.API_URL;
     $.ajax({
         url: `${apiUrl}/api/ProdutoHandler/visualizarImagem?id=${id}`,
         method: 'GET',

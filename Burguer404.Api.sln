@@ -33,6 +33,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{F43827F3-62D
 		db-service.yaml = db-service.yaml
 		frontend-deployment.yaml = frontend-deployment.yaml
 		frontend-service.yaml = frontend-service.yaml
+		hpa-backend.yaml = hpa-backend.yaml
+		hpa-frontend.yaml = hpa-frontend.yaml
+		metrics.yaml = metrics.yaml
 		secret.yaml = secret.yaml
 	EndProjectSection
 EndProject
