@@ -2,11 +2,11 @@
 import { sleep } from 'k6';
 
 export let options = {
-    vus: 20,
+    vus: 10000,
     duration: '60s',
 };
 
 export default function () {
-    http.get('http://localhost:5000/api/ClienteHandler/autenticar/cliente');
+    http.get('http://localhost:30081/api/ProdutoHandler/listar');
     sleep(1); 
 }
