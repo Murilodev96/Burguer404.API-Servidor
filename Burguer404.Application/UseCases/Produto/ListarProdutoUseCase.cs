@@ -40,7 +40,7 @@ namespace Burguer404.Application.UseCases.Produto
                     Descricao = p.Descricao,
                     Preco = p.Preco,
                     CategoriaProdutoId = p.CategoriaProdutoId,
-                    ImagemBase64 = p.ImagemBase64
+                    ImagemByte = p.ImagemByte ?? []
                 }).ToList();
                 response.Sucesso = true;
                 response.Resultado = produtosResponse;
