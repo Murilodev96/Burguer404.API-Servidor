@@ -12,6 +12,7 @@ Tecnologias utilizadas:
 - Ajax (comunicação entre Frontend e Backend)
 - Docker
 - Testes unitários em xUnit
+- Kubernets
 
 
 
@@ -22,27 +23,28 @@ Principais funcionalidades:
 - Gestão de pedidos
 - Realização de pedidos (anônimos ou autenticados)
 - Geração de QR Code para pagamento (integração com mercado pago)
+- Consulta de pagamentos (integração com mercado pago)
 - Interface administrativa via Razor Pages
+- Webhook com fluxo mercado pago
 
 
 
 Estrutura do projeto:
 
-Projeto feito na arquitetura hexagonal.
-- Adapters
-  - Entrada
-    - Burguer404.Api (Web Api do projeto, gerencia as entradas e saídas das chamadas dos endpoints)
-     Burguer404.Api.Testes (testes de unidade da Web Api do projeto)
-  - Saida
+Projeto feito na Arquitetura Limpa.
+- Backend
+    - Burguer404.Api (Web Api do projeto, responsável por receber as chamadas e direcionar para as controllers)
+    - Burguer404.Api.Testes (Testes de unidade da Web Api e UseCases do projeto)
+    - Burguer404.Application (Controla o fluxo do projeto entre as camadas de Api(Handlers), Gateway, Presenters e UseCases)
+    - Burguer404.Configurations (Configurações da injeção de dependência e frameworks aplicados no projeto)
+    - Burguer404.Domain (Regras de negócio da aplicação, portas de integração de relacionamento entre as camadas (interfaces), entidades, enums, métodos estáticos de utilidade geral, classes de entrada, saída dos endpoints e validações)
     - Burguer404.Infrastructure.Data (Gerencia a entrada e saída de dados do projeto)
-     Burguer404.Infrastructure.Pagamentos (Gerencia integrações externas relacionadas a pagamentos (mercado pago))
-- Core
-  - Burguer404.Application (Controla o fluxo do projeto entre api, domain, infrastructure)
-   Burguer404.Application.Testes (Testes de unidade da camada de Application)
-   Burguer404.Domain (Regras de negócio da aplicação, portas de integração de relacionamento entre as camadas (interfaces), entidades, enums, métodos estáticos de utilidade geral, classes de entrada e saída dos endpoints e validações)
-   Burguer404.Configurations (Configurações da injeção de dependência e frameworks aplicados no projeto)
+    - Burguer404.Infrastructure.Pagamentos (Gerencia integrações externas relacionadas a pagamentos (mercado pago))
+    - * Burguer404.Application.Testes (Testes de unidade da camada de Application)    
 - Frontend
   - Burguer404.Frontend (Interface entre aplicação X usuário)
+- k8s
+  - Localizado todos os arquivos relacionados ao Kubernets  
 
 
 
@@ -51,15 +53,59 @@ Pré requisitos para execução do projeto:
 - .Net SDK 8
 - SQL Server (necessário o SQL Server Configuration Manager para criação da instância no sql, IDE para consulta do banco pode ser a de escolha)
 - Docker (caso queira rodar no container, para executar localmente é necessário apenas os dois acima)
-
+- Kubernets
+- Ngrok (ou outra ferramenta de exposição de servidores locais)
+- Conta criada no Docker Hub
+- "Opcional" K6 (Utilizado para testes de carga e desempenho de aplicações web e APIs)
+- "Opcional" Chocolatey (Gerenciador de pacotes do Windowns)
 
 
 Execução do projeto: 
 
-- Execução com o docker compose:
+- Execução com Docker Compose:
     - Necessário estar com o docker desktop aberto.
     - Na raiz do projeto executar o comando "docker compose up --build"
     - O projeto será executado locamente pelo docker nas portas 5000 (Api), 5001 (Frontend), 1433 (Sql Server)
+ 
+- Execução com Kubernets:
+    - Abrir o prompt de comando
+    - Acessar a pasta raiz do projeto
+      - cd caminhoDaPasta"
+    - Efetuar autenticação no docker hub
+      - Docker Login
+    - Buildar o projeto do backend localmente utilizando as configurações do Docker Hub
+      - docker build -f ./Burguer404.Api/Dockerfile -t murilodev96/burguer404api:latest .
+    - Efetuar o push do build backend para o Docker Hub
+      - docker push murilodev96/burguer404api:latest
+    - Buildar o projeto do frontend localmente utilizando as configurações do docker hub
+      - docker build -f ./Burguer404.Frontend/Dockerfile -t murilodev96/burguer404front:latest .
+    - Efetuar o push do build backend para o Docker Hub
+      - docker pull murilodev96/burguer404front:latest
+    - Aplicar o arquivo de Configuração
+      - kubectl apply -f configmap.yaml
+    - Aplicar o arquivo de Secrets
+      - kubectl apply -f secret.yaml
+    - Aplicar o arquivo de Metricas para liberar os permissionamentos
+      - kubectl apply -f metrics.yaml
+    - Aplicar os arquivos de HPA (Horizontal Pod Autoscaler)
+      - kubectl apply -f hpa-backend.yaml
+      - kubectl apply -f hpa-frontend.yaml
+      - kubectl apply -f hpa-db.yaml
+    - Aplicar os arquivos de Deployment
+      - kubectl apply -f frontend-deployment.yaml
+      - kubectl apply -f db-deployment.yaml
+      - kubectl apply -f backend-deployment.yaml
+    - Aplicar os arquivos de Service
+      - kubectl apply -f frontend-service.yaml
+      - kubectl apply -f db-service.yaml
+      - kubectl apply -f backend-service.yaml
+    - Executar comando para avaliar status das aplicações
+      - kubectl get pod,svc
+    - O projeto estára disponivel localmente via navegador através dos links e portas abaixo:
+      - Backend
+        - http://localhost:30081/swagger/index.html
+      - Frontend
+        - http://localhost:30080     
 
 
 - Execução local (Ex: pelo Visual Studio):
@@ -94,4 +140,9 @@ Execução do projeto:
     - Agora a API está pronto para ser executado localmente
       - Caso queria executar o frontend junto da API, alterar os projetos de inicialização para "vários projetos de inicialização"
       - Definir como projetos de inicialização a api (Burguer404.Api) e o frontend (Burguer404.Frontend)
-      - Aplicar e salvar
+      - Aplicar e salvar    
+
+
+
+
+   
