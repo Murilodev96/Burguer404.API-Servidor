@@ -15,6 +15,7 @@ Tecnologias utilizadas:
 - Kubernets
 - "Opcional" K6 (Utilizado para testes de carga e desempenho de aplicações web e APIs)
 - "Opcional" Chocolatey (Gerenciador de pacotes do Windowns)
+- "Opcional" Ngrok (ou outra ferramenta de exposição de servidores locais)
 
 
 
@@ -35,14 +36,13 @@ Estrutura do projeto:
 
 Projeto feito na Arquitetura Limpa.
 - Backend
-    - Burguer404.Api (Web Api do projeto, responsável por receber as chamadas e direcionar para as controllers)
+    - Burguer404.Api (Web Api(Handlers) do projeto, responsável por receber as chamadas e direcionar para as controllers)
     - Burguer404.Api.Testes (Testes de unidade da Web Api e UseCases do projeto)
-    - Burguer404.Application (Controla o fluxo do projeto entre as camadas de Api(Handlers), Gateway, Presenters e UseCases)
+    - Burguer404.Application (Controla o fluxo do projeto entre as camadas de Controllers, Gateway, Presenters e UseCases)
     - Burguer404.Configurations (Configurações da injeção de dependência e frameworks aplicados no projeto)
     - Burguer404.Domain (Regras de negócio da aplicação, portas de integração de relacionamento entre as camadas (interfaces), entidades, enums, métodos estáticos de utilidade geral, classes de entrada, saída dos endpoints e validações)
     - Burguer404.Infrastructure.Data (Gerencia a entrada e saída de dados do projeto)
     - Burguer404.Infrastructure.Pagamentos (Gerencia integrações externas relacionadas a pagamentos (mercado pago))
-    - * Burguer404.Application.Testes (Testes de unidade da camada de Application)    
 - Frontend
   - Burguer404.Frontend (Interface entre aplicação X usuário)
 - k8s
@@ -56,7 +56,6 @@ Pré requisitos para execução do projeto:
 - SQL Server (necessário o SQL Server Configuration Manager para criação da instância no sql, IDE para consulta do banco pode ser a de escolha)
 - Docker (caso queira rodar no container, para executar localmente é necessário apenas os dois acima)
 - Kubernets
-- Ngrok (ou outra ferramenta de exposição de servidores locais)
 - Conta criada no Docker Hub
 
 
@@ -70,16 +69,21 @@ Execução do projeto:
 - Execução com Kubernets:
     - Abrir o prompt de comando
     - Acessar a pasta raiz do projeto
-      - cd caminhoDaPasta"
+      - cd caminhoDaPasta
     - Efetuar autenticação no docker hub
       - Docker Login
-    - Buildar o projeto do backend localmente utilizando as configurações do Docker Hub
-      - docker build -f ./Burguer404.Api/Dockerfile -t murilodev96/burguer404api:latest .
-    - Efetuar o push do build backend para o Docker Hub
-      - docker push murilodev96/burguer404api:latest
-    - Buildar o projeto do frontend localmente utilizando as configurações do docker hub
-      - docker build -f ./Burguer404.Frontend/Dockerfile -t murilodev96/burguer404front:latest .
-    - Efetuar o push do build backend para o Docker Hub
+    - Se houver alterações no projeto executar os passos abaixo, caso não, pular para o passo de Pull
+        - Buildar o projeto do backend localmente utilizando as configurações do Docker Hub 
+          - docker build -f ./Burguer404.Api/Dockerfile -t murilodev96/burguer404api:latest .
+        - Efetuar o push do build backend para o Docker Hub
+          - docker push murilodev96/burguer404api:latest
+        - Buildar o projeto do frontend localmente utilizando as configurações do docker hub
+          - docker build -f ./Burguer404.Frontend/Dockerfile -t murilodev96/burguer404front:latest .
+        - Efetuar o push do build backend para o Docker Hub
+          - docker push murilodev96/burguer404front:latest
+    - Efetuar o pull do build backend para o Docker Hub
+      - docker pull murilodev96/burguer404api:latest
+    - Efetuar o pull do build frontend para o Docker Hub
       - docker pull murilodev96/burguer404front:latest
     - Aplicar o arquivo de Configuração
       - kubectl apply -f configmap.yaml
