@@ -144,7 +144,13 @@ Execução do projeto:
     - Agora a API está pronto para ser executado localmente
       - Caso queria executar o frontend junto da API, alterar os projetos de inicialização para "vários projetos de inicialização"
       - Definir como projetos de inicialização a api (Burguer404.Api) e o frontend (Burguer404.Frontend)
-      - Aplicar e salvar    
+      - Aplicar e salvar
+     
+  - Documentação
+      - Link para Visualização da Apresentação: https://youtu.be/gOvtMTrUKzw?si=0tqkMJ24ZD9qSN3S
+      - Link da documentação no miro: https://miro.com/app/board/uXjVJXl2wO8=/?share_link_id=402391334849
+      - Link da collection: https://drive.google.com/file/d/1yRtufcBVtR4tFeNKpR9vDZcpIhkrcXY3/view?usp=sharing
+
 
 
 
