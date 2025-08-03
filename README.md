@@ -13,6 +13,8 @@ Tecnologias utilizadas:
 - Docker
 - Testes unitários em xUnit
 - Kubernets
+- "Opcional" K6 (Utilizado para testes de carga e desempenho de aplicações web e APIs)
+- "Opcional" Chocolatey (Gerenciador de pacotes do Windowns)
 
 
 
@@ -56,8 +58,6 @@ Pré requisitos para execução do projeto:
 - Kubernets
 - Ngrok (ou outra ferramenta de exposição de servidores locais)
 - Conta criada no Docker Hub
-- "Opcional" K6 (Utilizado para testes de carga e desempenho de aplicações web e APIs)
-- "Opcional" Chocolatey (Gerenciador de pacotes do Windowns)
 
 
 Execução do projeto: 
