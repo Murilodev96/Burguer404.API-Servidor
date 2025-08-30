@@ -15,6 +15,7 @@
                 sessionStorage.setItem("perfilClienteId", response.resultado[0].perfilClienteId);
                 sessionStorage.setItem("nomeClienteLogado", response.resultado[0].nome);
                 sessionStorage.setItem("emailClienteLogado", response.resultado[0].email);
+                sessionStorage.setItem("access_token", response.token);
                 window.location.href = "/Login/Login"
             }
             else

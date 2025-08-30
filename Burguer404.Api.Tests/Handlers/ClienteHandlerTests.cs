@@ -4,6 +4,7 @@ using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Entities.Cliente;
 using Burguer404.Domain.Interfaces.Gateways;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Moq;
 
 namespace Burguer404.Api.Tests.Controllers
@@ -12,11 +13,22 @@ namespace Burguer404.Api.Tests.Controllers
     {
         private readonly Mock<IClienteGateway> _gatewayMock;
         private readonly ClienteHandler _handler;
+        private readonly IConfiguration _config;
 
         public ClienteHandlerTests()
         {
             _gatewayMock = new Mock<IClienteGateway>();
-            _handler = new ClienteHandler(_gatewayMock.Object);
+            var configsEmMemoria = new Dictionary<string, string> {
+                {"Jwt:Key", "Burguer404SecretKeyAutenticate2025@postechFiap!!"},
+                {"Jwt:Issuer", "Burguer404"},
+                {"Jwt:Audience", "restaurante"}
+            };
+
+            _config = new ConfigurationBuilder()
+                .AddInMemoryCollection(configsEmMemoria!)
+                .Build();
+
+            _handler = new ClienteHandler(_gatewayMock.Object, _config);
         }
 
         [Fact]
@@ -69,7 +81,7 @@ namespace Burguer404.Api.Tests.Controllers
         [Fact]
         public async Task LoginCliente_DeveRetornarOk()
         {
-            var cpf = "12345678900";
+            var cpf = "111.111.111-11";
             _gatewayMock.Setup(r => r.ObterClientePorCpfAsync(cpf)).ReturnsAsync(new ClienteEntity());
 
             var result = await _handler.LoginCliente(cpf);
@@ -78,19 +90,19 @@ namespace Burguer404.Api.Tests.Controllers
         }
 
         [Fact]
-        public async Task LoginCliente_DeveRetornarBadRequest_EmCasoDeErro()
+        public async Task LoginCliente_DeveRetornarUnauthorized_EmCasoDeErro()
         {
             var cpf = "12345678900";
             _gatewayMock.Setup(r => r.ObterClientePorCpfAsync(cpf))
                 .ThrowsAsync(new Exception("Erro ao autenticar"));
 
             var result = await _handler.LoginCliente(cpf);
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var response = Assert.IsType<ResponseBase<ClienteResponse>>(okResult.Value);
+
+            var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result);
+            var response = Assert.IsType<ResponseBase<ClienteResponse>>(unauthorizedResult.Value);
+
             Assert.False(response.Sucesso);
         }
-
-
 
 
         [Fact]

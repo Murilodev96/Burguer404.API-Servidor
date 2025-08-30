@@ -1,9 +1,9 @@
 ﻿using Burguer404.Application.Arguments.Cliente;
 using Burguer404.Application.Controllers;
-using Burguer404.Domain.Interfaces.Gateways;
 using Burguer404.Domain.Arguments.Base;
-using Burguer404.Domain.Ports.Repositories.Cliente;
+using Burguer404.Domain.Interfaces.Gateways;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace Burguer404.Api.Controllers
 {
@@ -12,10 +12,12 @@ namespace Burguer404.Api.Controllers
     public class ClienteHandler : Controller
     {
         private ClienteController _clienteController;
+        private AutenticacaoController _autenticacao;
 
-        public ClienteHandler(IClienteGateway clienteGateway)
+        public ClienteHandler(IClienteGateway clienteGateway, IConfiguration _config)
         {
             _clienteController = new ClienteController(clienteGateway);
+            _autenticacao = new AutenticacaoController(_config);
         }
 
         [HttpPost("cadastrar")]
@@ -30,7 +32,7 @@ namespace Burguer404.Api.Controllers
             catch (Exception ex)
             {
                 response.Mensagem = ex.Message;
-                return BadRequest(response); 
+                return BadRequest(response);
             }
         }
 
@@ -57,7 +59,13 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _clienteController.LoginCliente(cpf);
-                return Ok(response);
+
+                if (!response.Sucesso)
+                    return Unauthorized(response);
+
+                var token = _autenticacao.GerarJwt(response.Resultado!.FirstOrDefault()!);
+
+                return Ok(new { response.Sucesso, response.Mensagem, response.Resultado, Token = token });
             }
             catch (Exception ex)
             {
@@ -73,7 +81,9 @@ namespace Burguer404.Api.Controllers
             try
             {
                 response = await _clienteController.LoginClienteAnonimo();
-                return Ok(response);
+                var token = _autenticacao.GerarJwt(response.Resultado!.FirstOrDefault()!);
+
+                return Ok(new { response.Sucesso, response.Mensagem, response.Resultado, Token = token });
             }
             catch (Exception ex)
             {
