@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Burguer404.Infrastructure.Auth\Burguer404.Infrastructure.Auth.csproj" />
     <ProjectReference Include="..\Burguer404.Domain\Burguer404.Domain.csproj" />
     <ProjectReference Include="..\Burguer404.Infrastructure.Pagamentos\Burguer404.Infrastructure.Pagamentos.csproj" />
   </ItemGroup>

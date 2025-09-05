@@ -16,7 +16,7 @@ namespace Burguer404.Api.Controllers
 
         public ClienteHandler(IClienteGateway clienteGateway, IConfiguration _config)
         {
-            _clienteController = new ClienteController(clienteGateway);
+            _clienteController = new ClienteController(clienteGateway, _config);
             _autenticacao = new AutenticacaoController(_config);
         }
 

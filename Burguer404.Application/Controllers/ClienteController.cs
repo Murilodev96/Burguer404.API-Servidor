@@ -3,20 +3,32 @@ using Burguer404.Application.Presenters;
 using Burguer404.Application.UseCases.Cliente;
 using Burguer404.Domain.Arguments.Base;
 using Burguer404.Domain.Interfaces.Gateways;
+using Burguer404.Infrastructure.Auth.Autenticacao;
+using Microsoft.Extensions.Configuration;
 
 namespace Burguer404.Application.Controllers
 {
     public class ClienteController
     {
         private IClienteGateway _gateway;
+        private IConfiguration _configuration;
 
-        public ClienteController(IClienteGateway gateway)
+        public ClienteController(IClienteGateway gateway, IConfiguration configuration)
         {
             _gateway = gateway;
+            _configuration = configuration;
         }
 
         public async Task<ResponseBase<ClienteResponse>> LoginCliente(string cpf) 
         {
+            var instaciaAd = AutenticacaoAzureAd.Create(_configuration);
+            var responseAd = await instaciaAd.AutenticarComAzureAd(cpf);
+
+            if (responseAd != null && !responseAd.success)
+            {
+                return new ResponseBase<ClienteResponse>() { Sucesso = false, Mensagem = "Erro de autenticação com o Azure Ad", Resultado = [] };
+            }
+
             var useCase = LoginClienteUseCase.Create(_gateway);
 
             var cliente = await useCase.ExecuteAsync(cpf);
