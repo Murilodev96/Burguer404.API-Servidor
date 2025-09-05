@@ -12,6 +12,7 @@ COPY ["Burguer404.Application/Burguer404.Application.csproj", "Burguer404.Applic
 COPY ["Burguer404.Domain/Burguer404.Domain.csproj", "Burguer404.Domain/"]
 COPY ["Burguer404.Infrastructure.Pagamentos/Burguer404.Infrastructure.Pagamentos.csproj", "Burguer404.Infrastructure.Pagamentos/"]
 COPY ["Burguer404.Infrastructure/Burguer404.Infrastructure.Data.csproj", "Burguer404.Infrastructure/"]
+COPY ["Burguer404.Infrastructure.Auth/Burguer404.Infrastructure.Auth.csproj", "Burguer404.Infrastructure.Auth/"]
 RUN dotnet restore "./Burguer404.Api/Burguer404.Api.csproj"
 COPY . .
 WORKDIR "/src/Burguer404.Api"
