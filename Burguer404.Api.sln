@@ -42,14 +42,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{F43827F3-62D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Burguer404.Infrastructure.Auth", "Burguer404.Infrastructure.Auth\Burguer404.Infrastructure.Auth.csproj", "{21E4FC68-4A43-4A0F-9B04-A07C05EF3120}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{49D869CF-65A6-4708-8EAD-F4ECFDDCAF73}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{4337215C-201C-4A80-A043-8B28845BDADF}"
-	ProjectSection(SolutionItems) = preProject
-		main.tf = main.tf
-		version.tf = version.tf
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,7 +102,6 @@ Global
 		{E7C94B49-8176-4F05-B1F3-4E90126BEE91} = {9DBB01F4-B261-44EA-A177-A37CDC7703E2}
 		{B6A4C113-0343-2FAA-019D-DFCB96A6FF99} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{21E4FC68-4A43-4A0F-9B04-A07C05EF3120} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{4337215C-201C-4A80-A043-8B28845BDADF} = {49D869CF-65A6-4708-8EAD-F4ECFDDCAF73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14AA9200-AD9D-4763-8AD2-A072CB6174D7}
