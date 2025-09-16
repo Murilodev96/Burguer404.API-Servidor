@@ -2,7 +2,7 @@ name: Build, Push e Deploy no AKS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 env:
   DOCKER_API_IMAGE: murilodev96/burguer404api
