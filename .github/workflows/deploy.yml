@@ -75,9 +75,9 @@ jobs:
 
     - name: Atualizar deploys no AKS
       run: |
-        # Substituir as imagens nos YAMLs usando sed
-        sed -i "s|image: murilodev96/burguer404api.*|image: murilodev96/burguer404api:${{ github.sha }}|g" $K8S_DIR/backend-deployment.yaml
-        sed -i "s|image: murilodev96/burguer404front.*|image: murilodev96/burguer404front:${{ github.sha }}|g" $K8S_DIR/frontend-deployment.yaml
+      # Substituir TAGs temporárias pelas versões com SHA
+        sed -i "s|murilodev96/burguer404api:TAG_NOVA_VERSAO|murilodev96/burguer404api:${{ github.sha }}|g" $K8S_DIR/backend-deployment.yaml
+        sed -i "s|murilodev96/burguer404front:TAG_NOVA_VERSAO|murilodev96/burguer404front:${{ github.sha }}|g" $K8S_DIR/frontend-deployment.yaml
 
         kubectl apply -f $K8S_DIR/configmap.yaml
         kubectl apply -f $K8S_DIR/secret.yaml

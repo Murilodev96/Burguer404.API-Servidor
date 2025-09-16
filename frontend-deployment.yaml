@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: burguer404front
-        image: murilodev96/burguer404front:latest
+        image: murilodev96/burguer404front:TAG_NOVA_VERSAO
         ports:
         - containerPort: 5001
         env:
