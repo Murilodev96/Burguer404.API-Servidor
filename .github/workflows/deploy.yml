@@ -29,6 +29,9 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    - name: Importar recursos existentes se necessário
+      run: bash ${{ env.TF_DIR }}/import-resources.sh
 
     - name: Terraform Init
       working-directory: ${{ env.TF_DIR }}
