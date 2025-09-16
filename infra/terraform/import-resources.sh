@@ -3,7 +3,7 @@
 
 RESOURCE_GROUP_NAME="rg-burguer404"
 LOCATION="East US"
-TF_DIR="$(dirname "$0")/infra/terraform"  # pega caminho absoluto relativo ao script
+TF_DIR="$(dirname "$0")"  # Diretório atual do script, que já é infra/terraform
 
 if az group exists --name $RESOURCE_GROUP_NAME; then
   echo "Resource group $RESOURCE_GROUP_NAME já existe, importando para o estado do Terraform..."
