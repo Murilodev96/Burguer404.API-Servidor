@@ -6,4 +6,4 @@ data:
   ACCEPT_EULA: "Y"
   ASPNETCORE_ENVIRONMENT: "Development"
   DB_HOST: "db-burguer404-service"
-  API_URL: "http://backend-service"
+  API_URL: "http://4.157.225.147"
