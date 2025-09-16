@@ -23,6 +23,7 @@ namespace Burguer404.Api.Controllers
         [HttpPost("cadastrar")]
         public async Task<ActionResult> CadastrarCliente(ClienteRequest request)
         {
+        //comentario de teste
             var response = new ResponseBase<ClienteResponse>();
             try
             {
