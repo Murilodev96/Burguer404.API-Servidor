@@ -7,7 +7,11 @@ TF_DIR="$(dirname "$0")"  # Diretório atual do script, que já é infra/terrafo
 
 if az group exists --name $RESOURCE_GROUP_NAME; then
   echo "Resource group $RESOURCE_GROUP_NAME já existe, importando para o estado do Terraform..."
-  
+
+  # Inicializa o terraform (com backend)
+  terraform -chdir="$TF_DIR" init
+
+  # Importa o recurso para o estado
   terraform -chdir="$TF_DIR" import azurerm_resource_group.rg /subscriptions/$(az account show --query id -o tsv)/resourceGroups/$RESOURCE_GROUP_NAME
 
 else
