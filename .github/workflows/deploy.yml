@@ -75,7 +75,7 @@ jobs:
 
     - name: Atualizar deploys no AKS
       run: |
-      # Substituir TAGs temporárias pelas versões com SHA
+        # Substituir TAGs temporárias pelas versões com SHA
         sed -i "s|murilodev96/burguer404api:TAG_NOVA_VERSAO|murilodev96/burguer404api:${{ github.sha }}|g" $K8S_DIR/backend-deployment.yaml
         sed -i "s|murilodev96/burguer404front:TAG_NOVA_VERSAO|murilodev96/burguer404front:${{ github.sha }}|g" $K8S_DIR/frontend-deployment.yaml
 
