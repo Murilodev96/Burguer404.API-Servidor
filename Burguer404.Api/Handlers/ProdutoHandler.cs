@@ -21,6 +21,7 @@ namespace Burguer404.Api.Controllers
         [HttpPost("cadastrar")]
         public async Task<ActionResult> CadastrarProduto([FromForm] ProdutoRequest request)
         {
+            //comentario aleatorio
             var response = new ResponseBase<ProdutoResponse>();
             try
             {
