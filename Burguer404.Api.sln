@@ -50,13 +50,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "terraform", "terraform", "{
 		version.tf = version.tf
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{C7CD9C62-1BDA-4651-B66A-7AA98424AA4F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{69EC4B02-8320-432D-87EB-7596870B8EB7}"
-	ProjectSection(SolutionItems) = preProject
-		deploy.yml = deploy.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,7 +111,6 @@ Global
 		{B6A4C113-0343-2FAA-019D-DFCB96A6FF99} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{21E4FC68-4A43-4A0F-9B04-A07C05EF3120} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{4337215C-201C-4A80-A043-8B28845BDADF} = {49D869CF-65A6-4708-8EAD-F4ECFDDCAF73}
-		{69EC4B02-8320-432D-87EB-7596870B8EB7} = {C7CD9C62-1BDA-4651-B66A-7AA98424AA4F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {14AA9200-AD9D-4763-8AD2-A072CB6174D7}
