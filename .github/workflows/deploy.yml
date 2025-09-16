@@ -31,7 +31,8 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         
     - name: Importar recursos existentes se necessário
-      run: bash ${{ env.TF_DIR }}/import-resources.sh
+      working-directory: ${{ env.TF_DIR }}
+      run: bash import-resources.sh
 
     - name: Terraform Init
       working-directory: ${{ env.TF_DIR }}

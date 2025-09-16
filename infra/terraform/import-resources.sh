@@ -3,10 +3,13 @@
 
 RESOURCE_GROUP_NAME="rg-burguer404"
 LOCATION="East US"
+TF_DIR="infra/terraform"  # pasta onde estão os arquivos .tf
 
 # Verifica se o resource group existe
 if az group exists --name $RESOURCE_GROUP_NAME; then
   echo "Resource group $RESOURCE_GROUP_NAME já existe, importando para o estado do Terraform..."
+
+  cd $TF_DIR || exit 1  # vai para a pasta do Terraform
 
   # Importa o resource group para o estado do Terraform
   terraform import azurerm_resource_group.rg /subscriptions/$(az account show --query id -o tsv)/resourceGroups/$RESOURCE_GROUP_NAME
